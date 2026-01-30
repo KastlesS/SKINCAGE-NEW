@@ -1,0 +1,14 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>{{object|yesno:'Actualizar usuario,Creación de un nuevo usuario'}}</h2>
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="{{object|yesno:'Actualizar,Crear'}}">
+    </form>
+    {% if object %}
+    <a class="btn btn-danger" href="{% url 'delete-user' object.id_usuario %}"> Eliminar </a>
+    {% endif %}
+</div>
+{% endblock %}

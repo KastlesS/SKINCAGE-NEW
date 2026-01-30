@@ -1,0 +1,33 @@
+{% extends "portfolio/base.html" %}
+
+{% block content %}
+    <form action="" method="get">
+        <label for="aspecto">Buscar Skin por nombre: <input type="text" name="aspecto" id="aspecto" placeholder="nombre de la skin" value="{{aspecto}}"></label>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <div id="skins">
+        {% for s in skin %} 
+            <a class="link-skin" href="{% url 'update' s.id %}">{{s.nombre}}</a>
+        {% endfor %}
+    </div>
+    
+    <div class="pagination">
+        <span class="step-links">
+            {% if skin.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ skin.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ skin.number }} of {{ skin.paginator.num_pages }}.
+            </span>
+
+            {% if skin.has_next %}
+                <a href="?page={{ skin.next_page_number }}">next</a>
+                <a href="?page={{ skin.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    <script src="/static/js/skins.js" defer></script>
+{% endblock %}

@@ -1,0 +1,95 @@
+/* Fondo general */
+body {
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: radial-gradient(circle at top, #1a1a2e, #0b0b14);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #eaeaf0;
+}
+
+/* Contenedor del formulario */
+.formulario {
+    background: linear-gradient(180deg, #121220, #0d0d18);
+    padding: 2.5rem 2.8rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow:
+        0 0 40px rgba(120, 70, 255, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+/* Título (si luego agregas uno) */
+.formulario h1,
+.formulario h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+}
+
+/* Grupo de inputs */
+.form-group {
+    margin-bottom: 1.3rem;
+}
+
+/* Labels */
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+    color: #cfcfe8;
+}
+
+/* Inputs */
+.form_control {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    background-color: #1a1a2b;
+    border: 1px solid #2a2a44;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+}
+
+/* Placeholder */
+.form_control::placeholder {
+    color: #8b8bb5;
+}
+
+/* Focus input */
+.form_control:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.35);
+    background-color: #1e1e35;
+}
+
+/* Botón */
+.btn-primary {
+    width: 100%;
+    margin-top: 0.8rem;
+    padding: 0.7rem;
+    background: linear-gradient(135deg, #6d28d9, #8b5cf6);
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    transition: all 0.25s ease;
+}
+
+/* Hover botón */
+.btn-primary:hover {
+    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    box-shadow: 0 0 18px rgba(167, 139, 250, 0.6);
+    transform: translateY(-1px);
+}
+
+/* Active botón */
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.4);
+}

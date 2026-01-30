@@ -1,0 +1,28 @@
+{% extends 'portfolio/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block messages %}
+    {% if messages %}
+        {% for message in messages %}
+        <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fade show" {%endif %} role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endblock messages %}
+
+{% block content %}
+<div class="container">
+    <h2>{{object|yesno:'Actualizar proyecto,Creación de un nuevo proyecto'}}</h2>
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        <!-- {{ form.as_p }} -->
+        {% crispy form %}
+        {{ crispy}}
+        <input type="submit" value="{{object|yesno:'Actualizar,Crear'}}">
+    </form>
+    {% if object %}
+    <a class="btn btn-danger" href="{% url 'delete' object.id_skin %}"> Eliminar </a>
+    {% endif %}
+</div>
+{% endblock %}
