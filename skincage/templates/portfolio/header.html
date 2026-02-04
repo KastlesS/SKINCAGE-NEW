@@ -7,10 +7,13 @@
             <li><a href="#">Services</a></li>
             <li><a href="#">About us</a></li>
         </ul>
+        {% if user.is_authenticated %}
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit">Logout</button>
         </form>
-        <button><a href="{% url 'login' %}">Iniciar Sesion</a></button>
+        {% else %}
+            <button><a href="{% url 'login' %}">Iniciar Sesion</a></button>
+        {% endif %}
     </nav>
 </header>
