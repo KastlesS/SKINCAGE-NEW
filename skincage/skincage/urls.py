@@ -29,17 +29,13 @@ router.register('skin-list', SkinListViewSet, basename='skin-list')
 router.register('skin-crud', SkinCRUDView, basename='skin-crud')
 
 urlpatterns = [
-    path('inicio/', Home.as_view(), name="home"),
+    path('', Home.as_view(), name="home"),
     path('skins/', VistaSkins.as_view(), name='skins'),
     path('admin/', admin.site.urls),
     path('create/', view=SkinCreate.as_view(), name="crear"),
     path('update/<int:pk>/', view=SkinUpdate.as_view(), name="update"),
     path('delete/<int:pk>/', SkinDeleteView.as_view(), name='delete'),
-    # path('user/', VistaUsers.as_view(), name='user'),
-    # path('user/create', view=CreateUser.as_view(), name='create-user'),
-    # path('user/update/<int:pk>', view=UpdateUser.as_view(), name='update-user'),
-    # path('user/delete/<int:pk>', view=DeleteUser.as_view(), name='delete-user'),
-    path('', LoginFormView2.as_view(), name='login'),
+    path('login/', LoginFormView2.as_view(), name='login'),
     path('logout/', Logout.as_view(), name='logout'),
     path('api/', include(router.urls)),
 ]

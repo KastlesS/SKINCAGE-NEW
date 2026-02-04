@@ -10,7 +10,7 @@ from .form import SkinForm
 
 # Create your views here.
 class VistaSkins(TemplateView):
-    template_name = 'portfolio/home.html'
+    template_name = 'skins/home.html'
 
     def get_context_data(self, **kwargs):
         context = super(VistaSkins, self).get_context_data(**kwargs)
