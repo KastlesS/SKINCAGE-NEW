@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 
 # Create your views here.
 class LoginFormView2(LoginView):
-    template_name = 'portfolio/login.html'
+    template_name = 'login/login.html'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
