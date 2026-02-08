@@ -32,4 +32,3 @@ docker-compose*
 nginx/
 certbot/
 secrets/
-scripts/
