@@ -3,7 +3,6 @@ version: '3.8'
 services:
   web:
     container_name: skincage_web
-    image: skincage:latest
     volumes:
       - static_volume:/code/skincage/static
       - media_volume:/code/skincage/media
