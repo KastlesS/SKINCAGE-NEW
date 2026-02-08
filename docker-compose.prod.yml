@@ -79,7 +79,7 @@ services:
       - ./nginx/ssl:/etc/nginx/ssl:ro
       - static_volume:/code/skincage/static:ro
       - media_volume:/code/skincage/media:ro
-      - ./certbot/conf:/etc/letsencrypt:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot:ro
     depends_on:
       - web
