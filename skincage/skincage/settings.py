@@ -34,7 +34,10 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ["skincage.online","www.skincage.online",]
+ALLOWED_HOSTS = os.getenv(
+    'ALLOWED_HOSTS',
+    'skincage.online,www.skincage.online'
+).split(',')
 
 CSRF_TRUSTED_ORIGINS = [
     "https://skincage.online",
