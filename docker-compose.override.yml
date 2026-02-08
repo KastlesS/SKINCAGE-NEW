@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: python /code/skincage/manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./skincage:/code
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=insecure-development-key
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+      - DB_ENGINE=django.db.backends.sqlite3
+      - DB_NAME=/code/db.sqlite3

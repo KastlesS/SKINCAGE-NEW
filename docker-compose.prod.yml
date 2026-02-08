@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  web:
+    image: tu_usuario_dockerhub/skincage:latest
+    container_name: skincage_web_prod
+    command: /entrypoint.sh
+    environment:
+      - DEBUG=False
+      - ALLOWED_HOSTS=tu_dominio.com,www.tu_dominio.com
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=skincage_db
+      - DB_USER=skincage_user
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+      - DB_HOST=db
+      - DB_PORT=5432
+      - SECRET_KEY_FILE=/run/secrets/secret_key
+    secrets:
+      - secret_key
+      - db_password
+    volumes:
+      - static_volume:/code/skincage/static
+      - media_volume:/code/skincage/media
+      - ./scripts:/scripts:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - skincage_network
+    restart: always
+
+  migrate:
+    image: tu_usuario_dockerhub/skincage:latest
+    container_name: skincage_migrate
+    command: python /code/skincage/manage.py migrate --noinput
+    environment:
+      - DEBUG=False
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=skincage_db
+      - DB_USER=skincage_user
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+      - DB_HOST=db
+      - DB_PORT=5432
+      - SECRET_KEY_FILE=/run/secrets/secret_key
+    secrets:
+      - secret_key
+      - db_password
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - skincage_network
+
+  db:
+    image: postgres:15-alpine
+    container_name: skincage_db
+    environment:
+      - POSTGRES_DB=skincage_db
+      - POSTGRES_USER=skincage_user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
+    secrets:
+      - db_password
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    networks:
+      - skincage_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U skincage_user -d skincage_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  nginx:
+    image: nginx:alpine
+    container_name: skincage_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - static_volume:/code/skincage/static:ro
+      - media_volume:/code/skincage/media:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
+    depends_on:
+      - web
+    networks:
+      - skincage_network
+    restart: always
+
+secrets:
+  secret_key:
+    file: ./secrets/secret_key.txt
+  db_password:
+    file: ./secrets/db_password.txt
+
+volumes:
+  static_volume:
+  media_volume:
+  db_volume:
+
+networks:
+  skincage_network:
+    driver: bridge
