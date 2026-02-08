@@ -11,6 +11,8 @@
     {% block style %}
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% endblock %}
+
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     {% block header %}{% include "portfolio/header.html" %}{% endblock %}

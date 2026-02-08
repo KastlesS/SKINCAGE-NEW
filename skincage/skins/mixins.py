@@ -7,5 +7,4 @@ class SkinMixin(SuccessMessageMixin):
     # fields = ['id_skin','nombre', 'desgaste', 'stattrack', 'precio', 'stock']
 
     def get_success_url(self):
-        object = self.object
-        return reverse_lazy('update', kwargs={'pk': object.id})
+        return reverse_lazy('skins')

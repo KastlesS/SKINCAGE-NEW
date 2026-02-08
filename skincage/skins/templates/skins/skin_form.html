@@ -16,13 +16,13 @@
 <div class="container">
     <h2>{{object|yesno:'Actualizar proyecto,Creación de un nuevo proyecto'}}</h2>
     <form method="post" enctype="multipart/form-data">{% csrf_token %}
-        <!-- {{ form.as_p }} -->
-        {% crispy form %}
-        {{ crispy}}
+        {{ form.as_p }}
+        <!-- {% crispy form %} -->
         <input type="submit" value="{{object|yesno:'Actualizar,Crear'}}">
     </form>
     {% if object %}
-    <a class="btn btn-danger" href="{% url 'delete' object.id_skin %}"> Eliminar </a>
+    <a class="btn btn-danger" href="{% url 'delete' object.id %}"> Eliminar </a>
     {% endif %}
 </div>
+<script src="/static/js/validacion.js" defer></script>
 {% endblock %}
