@@ -44,7 +44,7 @@ class SkinUpdate(SkinMixin,UpdateView):
     model = Skin
     fields = ['id','nombre', 'desgaste', 'stattrack', 'precio', 'stock', 'categoria', 'rareza']
     success_message = "Skin actualizada correctamente"
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('skins')
 
 class SkinDeleteView(DeleteView):
     model = Skin

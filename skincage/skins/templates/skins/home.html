@@ -1,4 +1,9 @@
 {% extends "portfolio/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/skins.css' %}">
+{% endblock %}
 
 {% block content %}
     <form action="" method="get">
@@ -8,7 +13,7 @@
 
     <div id="skins">
         {% for s in skin %} 
-            <a class="link-skin" href="{% url 'update' s.id %}">{{s.nombre}}</a>
+            <a class="link-skin" href="{% url 'update' s.id %}">{{ s.nombre }} - {{ s.precio }}€ - {{ s.desgaste }}</a>
         {% endfor %}
     </div>
     

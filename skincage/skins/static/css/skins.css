@@ -1,0 +1,69 @@
+/* Contenedor principal de las cards */
+#skins {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Card individual */
+.skin {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 260px;
+    min-height: 160px;
+    padding: 16px;
+    border-radius: 12px;
+
+    background: #1f2430;
+    color: white;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efecto hover */
+.skin:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+/* Nombre */
+.skin h3 {
+    font-size: 1.1rem;
+    margin: 0 0 8px 0;
+    color: #ffffff;
+}
+
+/* Precio */
+.skin p:nth-of-type(1) {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #4caf50;
+    margin: 4px 0;
+}
+
+/* Desgaste */
+.skin p:nth-of-type(2) {
+    font-size: 0.9rem;
+    color: #bbbbbb;
+    margin: 4px 0 12px 0;
+}
+
+/* Botón actualizar */
+.skin a {
+    text-decoration: none;
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    background: #733bf6;
+    color: white;
+    font-weight: bold;
+    transition: background 0.2s ease;
+}
+
+.skin a:hover {
+    background: #8b25eb;
+}
