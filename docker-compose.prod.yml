@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   web:
-    image: skincage:latest  # Cambiar a: tu_usuario_dockerhub/skincage:latest para producción
+    image: kastless/proyecto:latest
     container_name: skincage_web_prod
     command: /entrypoint.sh
     environment:
@@ -28,7 +28,7 @@ services:
     restart: always
 
   migrate:
-    image: skincage:latest  # Debe ser la misma imagen que web
+    image: kastless/proyecto:latest
     container_name: skincage_migrate
     command: python /code/skincage/manage.py migrate --noinput
     environment:
