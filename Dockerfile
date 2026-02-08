@@ -13,3 +13,10 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+
+COPY skincage /code/skincage
+COPY scripts/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Crear directorio para estáticos
+RUN mkdir -p /code/skincage/static /code/skincage/media

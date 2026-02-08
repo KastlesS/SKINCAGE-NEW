@@ -1,10 +1,14 @@
-version: '3'
+version: '3.8'
 
 services:
   web:
-    build: . 
-    command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - "85:8000"      
+    container_name: skincage_web
+    image: skincage:latest
     volumes:
-      - ./skincage/:/code
+      - static_volume:/code/skincage/static
+      - media_volume:/code/skincage/media
+
+volumes:
+  static_volume:
+  media_volume:
+  db_volume:
