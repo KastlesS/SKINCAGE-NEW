@@ -155,7 +155,7 @@ Ir a https://hub.docker.com y crear una cuenta
 ```bash
 docker build -t tu_usuario_dockerhub/skincage:latest .
 ```
-
+clear
 ### 4.3 Login en DockerHub
 
 ```bash
