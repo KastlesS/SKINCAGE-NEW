@@ -11,6 +11,7 @@ fabio==2025.10.0
 Faker==40.1.2
 fonttools==4.61.1
 greenlet==3.3.1
+gunicorn==25.0.3
 h5py==3.15.1
 hdf5plugin==6.0.0
 kiwisolver==1.4.9
