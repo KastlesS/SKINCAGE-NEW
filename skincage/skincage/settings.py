@@ -22,9 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
-if not SECRET_KEY and os.path.exists('/run/secrets/secret_key'):
-    with open('/run/secrets/secret_key', 'r') as f:
-        SECRET_KEY = f.read().strip()
+if not SECRET_KEY:
+    if os.path.exists('/run/secrets/secret_key'):
+        with open('/run/secrets/secret_key', 'r') as f:
+            SECRET_KEY = f.read().strip()
+
+# Si todavía no hay SECRET_KEY, usar una por defecto (SOLO DESARROLLO)
+if not SECRET_KEY:
+    SECRET_KEY = 'django-insecure-development-key-change-me-in-production'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
@@ -143,9 +148,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join('/code/skincage/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Estos son los directorios donde Django busca archivos estáticos
+# NO deben incluir STATIC_ROOT (donde se recolectan los estáticos)
 STATICFILES_DIRS = [
-    os.path.join('/code/skincage/static'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 # Default primary key field type

@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   web:
-    image: tu_usuario_dockerhub/skincage:latest
+    image: skincage:latest  # Cambiar a: tu_usuario_dockerhub/skincage:latest para producción
     container_name: skincage_web_prod
     command: /entrypoint.sh
     environment:
@@ -11,15 +11,13 @@ services:
       - DB_ENGINE=django.db.backends.postgresql
       - DB_NAME=skincage_db
       - DB_USER=skincage_user
-      - DB_PASSWORD_FILE=/run/secrets/db_password
       - DB_HOST=db
       - DB_PORT=5432
-      - SECRET_KEY_FILE=/run/secrets/secret_key
     secrets:
       - secret_key
       - db_password
     volumes:
-      - static_volume:/code/skincage/static
+      - static_volume:/code/skincage/staticfiles
       - media_volume:/code/skincage/media
       - ./scripts:/scripts:ro
     depends_on:
@@ -30,7 +28,7 @@ services:
     restart: always
 
   migrate:
-    image: tu_usuario_dockerhub/skincage:latest
+    image: skincage:latest  # Debe ser la misma imagen que web
     container_name: skincage_migrate
     command: python /code/skincage/manage.py migrate --noinput
     environment:
@@ -38,10 +36,8 @@ services:
       - DB_ENGINE=django.db.backends.postgresql
       - DB_NAME=skincage_db
       - DB_USER=skincage_user
-      - DB_PASSWORD_FILE=/run/secrets/db_password
       - DB_HOST=db
       - DB_PORT=5432
-      - SECRET_KEY_FILE=/run/secrets/secret_key
     secrets:
       - secret_key
       - db_password
