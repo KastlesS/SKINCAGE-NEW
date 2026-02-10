@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./skincage:/code
+      - .:/code
     environment:
       - DEBUG=True
       - SECRET_KEY=insecure-development-key
