@@ -5,7 +5,8 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    command: python /code/manage.py runserver 0.0.0.0:8000
+    command: python /code/skincage/manage.py runserver 0.0.0.0:8000
+    working_dir: /code/skincage
     ports:
       - "8000:8000"
     volumes:
@@ -15,4 +16,4 @@ services:
       - SECRET_KEY=insecure-development-key
       - ALLOWED_HOSTS=localhost,127.0.0.1
       - DB_ENGINE=django.db.backends.sqlite3
-      - DB_NAME=/code/db.sqlite3
+      - DB_NAME=/code/skincage/db.sqlite3

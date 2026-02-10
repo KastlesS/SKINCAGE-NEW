@@ -23,14 +23,15 @@ if [ -z "$SECRET_KEY" ]; then
 fi
 
 # Ejecutar gunicorn
-exec gunicorn \
-    --bind 0.0.0.0:8000 \
-    --workers 4 \
-    --worker-class sync \
-    --worker-tmp-dir /dev/shm \
-    --max-requests 1000 \
-    --max-requests-jitter 100 \
-    --timeout 60 \
-    --access-logfile - \
-    --error-logfile - \
-    skincage.wsgi:application
+if [ $# -gt 0 ]; then
+    exec "$@"
+else
+    # Si no se le pasa nada (como en tu actual prod.yml), lanza gunicorn por defecto
+    echo "Iniciando Gunicorn por defecto..."
+    exec gunicorn \
+        --bind 0.0.0.0:8000 \
+        --workers 4 \
+        --worker-class sync \
+        --timeout 60 \
+        skincage.wsgi:application
+fi

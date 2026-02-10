@@ -3,11 +3,11 @@ version: '3.8'
 services:
   web:
     container_name: skincage_web
-    volumes:
-      - static_volume:/code/skincage/static
-      - media_volume:/code/skincage/media
+#     volumes:
+#       - static_volume:/code/skincage/static
+#       - media_volume:/code/skincage/media
 
-volumes:
-  static_volume:
-  media_volume:
-  db_volume:
+# volumes:
+#   static_volume:
+#   media_volume:
+#   db_volume:
