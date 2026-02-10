@@ -1,19 +1,21 @@
 <header class="cabecera">
-    <h1>SkinCage</h1>
+    <h1><a href="{% url 'home' %}">SkinCage</a></h1>
     <nav id="navbar">
         <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">About us</a></li>
+            {% if not user.is_authenticated %}
+                <li><a href="{% url 'login' %}">Iniciar Sesion</a></li>
+            {% else %}
+                <li><a href="#">Perfil</a></li>
+            {% endif %}
         </ul>
         {% if user.is_authenticated %}
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
-        {% else %}
-            <button><a href="{% url 'login' %}">Iniciar Sesion</a></button>
+            <div class="logout">
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
         {% endif %}
     </nav>
 </header>
