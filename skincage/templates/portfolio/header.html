@@ -1,21 +1,32 @@
 <header class="cabecera">
-    <h1><a href="{% url 'home' %}">SkinCage</a></h1>
-    <nav id="navbar">
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
-            {% if not user.is_authenticated %}
-                <li><a href="{% url 'login' %}">Iniciar Sesion</a></li>
-            {% else %}
-                <li><a href="#">Perfil</a></li>
-            {% endif %}
-        </ul>
-        {% if user.is_authenticated %}
-            <div class="logout">
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
+    <div class="header-container">
+        <div class="logo">
+            <h1><a href="{% url 'home' %}">SkinCage</a></h1>
+        </div>
+
+        <div class="nav-wrapper">
+            <nav id="navbar">
+                <ul>
+                    <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                    <li><a href="{% url 'skins' %}" class="nav-link">Mercado</a></li>
+                    <li><a href="#" class="nav-link">Comunidad</a></li>
+                    
+                    {% if user.is_authenticated %}
+                        <li><a href="#" class="nav-link">Perfil</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+
+            <div class="auth-actions">
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'login' %}" class="btn-auth">Iniciar Sesión</a>
+                {% else %}
+                    <form action="{% url 'logout' %}" method="post" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-auth btn-logout">Logout</button>
+                    </form>
+                {% endif %}
             </div>
-        {% endif %}
-    </nav>
+        </div>
+    </div>
 </header>

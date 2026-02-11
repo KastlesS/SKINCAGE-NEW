@@ -1,16 +1,65 @@
 {% extends "portfolio/base.html" %}
+{% load static %}
 
-{%block content%}
-    <div class="inicio">
+{% block content %}
+    <section class="inicio">
         <div class="content">
             <h3>La mejor página de reservas de skins</h3>
             <p>Ofrecemos la mejor experiencia de mercado de todo Counter-Strike.</p>
+            <div class="botones-header">
+                <a href="{% url 'skins' %}" class="boton">Mostrar Mercado</a>
+            </div>
         </div>
-        <div class="imagen">
-            <img src="" alt="imagenDecoración">
+        <div class="imagen-hero">
+            <img src="{% static 'img/hero-skin.png' %}" alt="Skin de Counter-Strike destacada">
         </div>
-        <div>
-            <button class="boton"><a href="{% url 'skins' %}">Mostar Mercado</a></button>
+    </section>
+
+    <hr>
+
+    <section class="caracteristicas">
+        <h2>¿Por qué elegir Skincage?</h2>
+        <div class="grid-features">
+            <div class="feature-card">
+                <i class="icon-seguridad"></i>
+                <h4>Seguridad Total</h4>
+                <p>Tus reservas están protegidas por nuestro sistema de validación directa.</p>
+            </div>
+            <div class="feature-card">
+                <i class="icon-rayo"></i>
+                <h4>Rapidez</h4>
+                <p>Reserva tu skin favorita en menos de 30 segundos.</p>
+            </div>
+            <div class="feature-card">
+                <i class="icon-coleccion"></i>
+                <h4>Gran Catálogo</h4>
+                <p>Desde cuchillos raros hasta las skins más populares del mercado.</p>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <section class="como-funciona">
+        <h2>Cómo reservar tu Skin</h2>
+        <div class="pasos">
+            <div class="paso">
+                <span class="numero">1</span>
+                <p>Explora nuestro mercado y elige la skin que más te guste.</p>
+            </div>
+            <div class="paso">
+                <span class="numero">2</span>
+                <p>Haz clic en el botón de "Reservar" para asegurar el precio.</p>
+            </div>
+            <div class="paso">
+                <span class="numero">3</span>
+                <p>¡Listo! Recibe las instrucciones para completar el intercambio.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-final">
+        <h2>¿Listo para mejorar tu inventario?</h2>
+        <p>Únete a miles de usuarios que ya confían en Skincage.</p>
+        <a href="{% url 'skins' %}" class="boton-primario">Ir al Mercado ahora</a>
+    </section>
+
 {% endblock %}

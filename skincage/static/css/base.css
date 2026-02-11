@@ -33,40 +33,104 @@ body {
 }
 
 /* =========================
-   HEADER
+   HEADER AJUSTADO
 ========================= */
 .cabecera {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background: rgba(15, 15, 25, 0.7);
-    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(10, 10, 15, 0.9);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-color);
+    padding: 12px 0; /* Ajuste fino de padding vertical */
 }
 
-.cabecera h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.6rem;
+.header-container {
+    max-width: 1400px; /* Un poco más ancho para aprovechar los extremos */
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between; /* Empuja logo a izq y wrapper a der */
+    align-items: center; /* Alineación vertical central global */
+    padding: 0 40px;
+}
+
+/* Contenedor de la derecha */
+.nav-wrapper {
+    display: flex;
+    align-items: center; /* Alinea nav y botones verticalmente */
+    gap: 40px; /* Espacio entre el menú y los botones */
+}
+
+.logo h1 {
+    margin: 0;
+    line-height: 1; /* Evita espacios extra debajo del texto */
+}
+
+.logo a {
+    text-decoration: none;
     color: var(--accent);
-    text-shadow: 0 0 8px var(--accent-glow);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
 }
 
 #navbar ul {
-    list-style: none;
     display: flex;
-    gap: 25px;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center; /* Alinea los <li> verticalmente */
 }
 
-#navbar a {
-    color: var(--text-main);
+.nav-link {
     text-decoration: none;
+    color: var(--text-muted);
     font-weight: 500;
-    transition: 0.2s;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    display: block; /* Para que el padding afecte correctamente */
+    line-height: 1; /* Fuerza la altura de línea para igualar botones */
 }
 
-#navbar a:hover {
-    color: var(--accent);
+.nav-link:hover {
+    color: var(--accent-glow);
+}
+
+/* Botones de acción */
+.auth-actions {
+    display: flex;
+    align-items: center;
+}
+
+.btn-auth {
+    display: inline-flex; /* Flex para centrar texto dentro del botón */
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--accent), #7c3aed);
+    color: white !important;
+    text-decoration: none;
+    padding: 0 22px; /* Quitamos padding superior/inferior para controlarlo con height */
+    height: 40px; /* Altura fija para control total */
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-auth:hover {
+    box-shadow: 0 0 15px var(--accent);
+    transform: translateY(-2px);
+}
+
+.logout-form {
+    display: flex;
+    align-items: center;
 }
 
 /* botones */
@@ -119,15 +183,72 @@ button:hover {
 }
 
 /* =========================
-   FOOTER
+   FOOTER MEJORADO
 ========================= */
 .footer {
-    margin-top: 60px;
-    padding: 20px;
-    text-align: center;
+    margin-top: 80px;
+    padding: 60px 20px 20px;
     background: var(--bg-secondary);
     border-top: 1px solid var(--border-color);
     color: var(--text-muted);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    padding-bottom: 40px;
+}
+
+.footer-logo {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--accent);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px var(--accent-glow);
+}
+
+.footer-column h4 {
+    color: var(--text-main);
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.footer-column ul {
+    list-style: none;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer-column a:hover {
+    color: var(--accent);
+    padding-left: 5px;
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Ajuste para móviles */
+@media (max-width: 600px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
 }
 
 /* =========================
@@ -135,4 +256,151 @@ button:hover {
 ========================= */
 .container {
     max-width: 1200px;
+}
+
+/* =========================
+   ESTILOS ESPECÍFICOS LANDING
+========================= */
+
+/* Ajuste para la sección Inicio (Hero) */
+.inicio {
+    display: flex;
+    flex-direction: row; /* Cambio a fila para pantallas grandes */
+    align-items: center;
+    justify-content: space-between;
+    min-height: 85vh;
+    gap: 40px;
+}
+
+.imagen-hero img {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 20px var(--accent));
+    animation: flotar 4s ease-in-out infinite;
+}
+
+@keyframes flotar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Sección Características */
+.caracteristicas {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.caracteristicas h2 {
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 40px;
+    color: var(--accent);
+}
+
+.grid-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.feature-card {
+    background: var(--bg-secondary);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    transition: 0.3s;
+}
+
+.feature-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.1);
+}
+
+.feature-card h4 {
+    font-family: 'Orbitron', sans-serif;
+    margin: 15px 0;
+    color: var(--accent-glow);
+}
+
+/* Sección Cómo Funciona */
+.como-funciona {
+    padding: 80px 20px;
+    background: rgba(168, 85, 247, 0.03);
+}
+
+.como-funciona h2 {
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 50px;
+}
+
+.pasos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+}
+
+.paso {
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+    text-align: center;
+}
+
+.numero {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* Llamada a la Acción (CTA) Final */
+.cta-final {
+    padding: 100px 20px;
+    text-align: center;
+    background: linear-gradient(transparent, var(--bg-secondary));
+}
+
+.cta-final h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.boton-primario {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 15px 40px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 10px;
+    font-family: 'Orbitron', sans-serif;
+    transition: 0.3s;
+}
+
+.boton-primario:hover {
+    background: var(--accent-glow);
+    box-shadow: 0 0 25px var(--accent);
+}
+
+/* Media Query para móviles */
+@media (max-width: 768px) {
+    .inicio {
+        flex-direction: column;
+        text-align: center;
+    }
+    .content h3 {
+        font-size: 1.8rem;
+    }
 }
