@@ -404,3 +404,15 @@ button:hover {
         font-size: 1.8rem;
     }
 }
+
+
+.karambit-spin {
+    width: 300px; /* Ajusta el tamaño a tu diseño */
+    animation: spin 8s linear infinite;
+    filter: drop-shadow(0 0 10px rgba(173, 55, 255, 0.5)); /* Opcional: brillo lila como tu web */
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
