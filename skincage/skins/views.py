@@ -14,24 +14,57 @@ class VistaSkins(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(VistaSkins, self).get_context_data(**kwargs)
+        
+        # 1. Capturar todos los parámetros del GET
         aspecto = self.request.GET.get("aspecto", "")
-        if aspecto:
-            skins = Skin.objects.filter(nombre__icontains=aspecto)
-        else:
-            skins = Skin.objects.all()
-
+        price_min = self.request.GET.get("price_min", "")
+        price_max = self.request.GET.get("price_max", "")
+        float_min = self.request.GET.get("float_min", "")
+        float_max = self.request.GET.get("float_max", "")
+        stattrak = self.request.GET.get("stattrak", "")
         marcado_view = self.request.GET.get("marcado", "")
 
+        # 2. Empezar con todos los objetos
+        skins = Skin.objects.all()
+
+        # 3. Aplicar filtros condicionales
+        if aspecto:
+            skins = skins.filter(nombre__icontains=aspecto)
+        
+        if price_min:
+            skins = skins.filter(precio__gte=price_min)
+        
+        if price_max:
+            skins = skins.filter(precio__lte=price_max)
+            
+        if float_min:
+            # Usamos 'desgaste' que es el nombre en tu modelo
+            skins = skins.filter(desgaste__gte=float_min)
+            
+        if float_max:
+            skins = skins.filter(desgaste__lte=float_max)
+
+        if stattrak == 'on': # Los checkboxes envían 'on' si están marcados
+            skins = skins.filter(stattrak=True)
+
+        # 4. Lógica de ordenación que ya tenías
         if marcado_view == 'True':
-            context['skin'] = context['skin'].order_by("nombre")
+            skins = skins.order_by("nombre")
 
-        context['marcado'] = marcado_view
+        # 5. Guardar valores en el context para que se mantengan en los inputs del HTML
         context['aspecto'] = aspecto
+        context['price_min'] = price_min
+        context['price_max'] = price_max
+        context['float_min'] = float_min
+        context['float_max'] = float_max
+        context['stattrak'] = stattrak
+        context['marcado'] = marcado_view
 
+        # 6. Paginación (20 por página según tu código)
         paginador = Paginator(skins, 20)
         pagina = self.request.GET.get("page", 1)
         context['skin'] = paginador.get_page(pagina)
-        
+
         return context
     
 class SkinCreate(SkinMixin,CreateView):
