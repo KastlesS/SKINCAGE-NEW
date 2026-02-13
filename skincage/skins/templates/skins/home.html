@@ -3,36 +3,168 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/skins.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}
 
 {% block content %}
-    <form action="" method="get">
-        <label for="aspecto">Buscar Skin por nombre: <input type="text" name="aspecto" id="aspecto" placeholder="nombre de la skin" value="{{aspecto}}"></label>
-        <button type="submit">Buscar</button>
-    </form>
-
-    <div id="skins">
-        {% for s in skin %} 
-            <a class="link-skin" href="{% url 'update' s.id %}">{{ s.nombre }} - {{ s.precio }}€ - {{ s.desgaste }}</a>
-        {% endfor %}
-    </div>
+<div class="skincage-layout">
     
-    <div class="pagination">
-        <span class="step-links">
-            {% if skin.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ skin.previous_page_number }}">previous</a>
-            {% endif %}
+    <aside class="sidebar-filters">
+        <form action="" method="get" id="filter-form">
+            
+            <div class="filter-section search-section">
+                <h3>Buscar</h3>
+                <div class="search-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" name="aspecto" id="aspecto" placeholder="Nombre de la skin..." value="{{aspecto}}">
+                </div>
+            </div>
 
-            <span class="current">
-                Page {{ skin.number }} of {{ skin.paginator.num_pages }}.
-            </span>
+            <div class="filter-section">
+                <div class="filter-header">
+                    <h3>Precio</h3>
+                </div>
+                
+                <div class="price-inputs-row">
+                    <div class="price-field">
+                        <label>Desde</label>
+                        <div class="input-with-symbol">
+                            <input type="number" name="price_min" placeholder="0" value="{{ request.GET.price_min }}">
+                            <span class="symbol">€</span>
+                        </div>
+                    </div>
+                    
+                    <div class="price-field">
+                        <label>Hasta</label>
+                        <div class="input-with-symbol">
+                            <input type="number" name="price_max" placeholder="∞" value="{{ request.GET.price_max }}">
+                            <span class="symbol">€</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            {% if skin.has_next %}
-                <a href="?page={{ skin.next_page_number }}">next</a>
-                <a href="?page={{ skin.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
-    <script src="/static/js/skins.js" defer></script>
+            <div class="filter-section">
+                <div class="filter-header">
+                    <h3>Wear</h3>
+                    <i class="fa-solid fa-chevron-up"></i>
+                </div>
+                
+                <div class="wear-container">
+                    <div class="wear-bar-wrapper">
+                        <div class="wear-color-bar"></div>
+                        <div class="wear-pointer pointer-min" style="left: 0%;"></div>
+                        <div class="wear-pointer pointer-max" style="left: 100%;"></div>
+                    </div>
+    
+                    <div class="wear-inputs-row">
+                        <div class="wear-field">
+                            <label>Minimum</label>
+                            <input type="number" name="float_min" step="0.0001" value="0" min="0" max="1">
+                        </div>
+                        <div class="wear-field">
+                            <label>Maximum</label>
+                            <input type="number" name="float_max" step="0.0001" value="1" min="0" max="1">
+                        </div>
+                    </div>
+    
+                    <div class="wear-shorthand-buttons">
+                        <button type="button">FN</button>
+                        <button type="button">MW</button>
+                        <button type="button">FT</button>
+                        <button type="button">WW</button>
+                        <button type="button">BS</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section special-section">
+                <h3>Especial</h3>
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="stattrak" id="stattrak" {% if request.GET.stattrak %}checked{% endif %}>
+                    <span class="checkmark box"></span>
+                    <span class="label-text orange-text">StatTrak™</span>
+                </label>
+                </div>
+
+             <div class="filter-actions">
+                <button type="submit" class="btn-apply-filters">Aplicar Filtros</button>
+            </div>
+
+        </form>
+    </aside>
+
+    <main class="main-content">
+        <div id="skins-grid" class="skins-grid">
+            {% for s in skin %}
+                <a class="skin-card" href="{% url 'update' s.id %}">
+                    <div class="card-upper">
+                        <div class="card-header">
+                            <i class="fa-regular fa-heart wishlist-icon"></i>
+                            
+                            <span class="wear-name">{{ s.desgaste }}</span>
+                        </div>
+                        
+                        <div class="image-container">
+                            <img src="{{ s.imagen_url|default:'/static/img/placeholder_skin.png' }}" alt="{{ s.nombre }}" loading="lazy">
+                        </div>
+                         
+                        <div class="skin-title">
+                            {% if s.es_stattrak %}<span class="orange-text">StatTrak™</span>{% endif %}
+                            {{ s.nombre }}
+                        </div>
+                    </div>
+
+                    <div class="card-lower">
+                        <div class="price-container">
+                            <span class="price">{{ s.precio }} €</span>
+                            </div>
+
+                        <div class="float-bar-visual">
+                            <div class="float-marker"></div>
+                        </div>
+                        
+                        <div class="float-details">
+                            <span class="float-value">{{ s.float_value|default:"N/A" }}</span>
+                        </div>
+                    </div>
+                </a>
+            {% empty %}
+                <div class="no-results">
+                    <p>No se encontraron skins con estos filtros.</p>
+                </div>
+            {% endfor %}
+        </div>
+        
+        {% if skin.paginator.num_pages > 1 %}
+        <div class="pagination-container">
+            <div class="pagination-capsule">
+                {% if skin.has_previous %}
+                    <a class="page-nav" href="?page=1{{ current_filters }}" title="Primero">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </a>
+                    <a class="page-nav" href="?page={{ skin.previous_page_number }}{{ current_filters }}">
+                        <i class="fa-solid fa-chevron-left"></i> Anterior
+                    </a>
+                {% endif %}
+
+                <span class="page-current">
+                    Página <strong>{{ skin.number }}</strong> de {{ skin.paginator.num_pages }}
+                </span>
+
+                {% if skin.has_next %}
+                    <a class="page-nav" href="?page={{ skin.next_page_number }}{{ current_filters }}">
+                        Siguiente <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                    <a class="page-nav" href="?page={{ skin.paginator.num_pages }}{{ current_filters }}" title="Último">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </main>
+</div>
+
+<script src="{% static 'js/skincage_filters.js' %}" defer></script>
 {% endblock %}

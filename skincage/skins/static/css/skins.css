@@ -1,69 +1,256 @@
-/* Contenedor principal de las cards */
-#skins {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px;
+/* 1. VARIABLES Y RESET */
+:root {
+    --bg-main: #0b0b0e;
+    --bg-card: #16161c;
+    --bg-sidebar: #121218;
+    --accent-purple: #7c4dff;
+    --accent-purple-hover: #9e7aff;
+    --text-main: #e1e1e6;
+    --text-muted: #8b8b9e;
+    --border-color: #2d2d3a;
+    --stattrak-orange: #ff9800;
+    --rarity-gradient: linear-gradient(180deg, rgba(124, 77, 255, 0.1) 0%, rgba(11, 11, 14, 0) 100%);
 }
 
-/* Card individual */
-.skin {
+/* 2. LAYOUT Y GRID */
+.skincage-layout {
+    display: flex;
+    gap: 24px;
+    padding: 20px;
+    background: var(--bg-main);
+    min-height: 100vh;
+    color: var(--text-main);
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.skins-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* 3. SIDEBAR FILTERS (STICKY) */
+.sidebar-filters {
+    width: 280px;
+    min-width: 280px;
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+    height: fit-content;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
+}
+
+.filter-section {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.filter-header h3 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+}
+
+/* 4. INPUTS UNIVERSALES (OPTIMIZADOS) */
+input[type="text"], 
+input[type="number"] {
+    width: 100%;
+    background: #1c1c24 !important;
+    border: 1px solid var(--border-color) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    transition: all 0.2s ease;
+    outline: none;
+    -webkit-appearance: none; /* Quita flechas en Chrome */
+    -moz-appearance: textfield; /* Quita flechas en Firefox */
+}
+
+input:focus {
+    border-color: var(--accent-purple) !important;
+    box-shadow: 0 0 0 2px rgba(124, 77, 255, 0.2);
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input-wrapper i {
+    position: absolute;
+    left: 12px;
+    color: var(--text-muted);
+}
+
+.search-input-wrapper input { padding-left: 35px !important; }
+
+/* 5. SECCIÓN WEAR (DISEÑO CSFLOAT) */
+.wear-bar-wrapper {
+    position: relative;
+    height: 25px;
+    margin-bottom: 20px;
+}
+
+.wear-color-bar {
+    height: 8px;
+    width: 100%;
+    border-radius: 4px;
+    position: absolute;
+    top: 10px;
+    background: linear-gradient(90deg, #2ecc71 7%, #a3cb38 15%, #f1c40f 38%, #e67e22 45%, #e74c3c 100%);
+}
+
+.wear-pointer {
+    position: absolute;
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    transform: translateX(-50%);
+    cursor: pointer;
+}
+
+.pointer-min { top: 2px; border-top: 8px solid white; }
+.pointer-max { top: 18px; border-bottom: 8px solid white; }
+
+.wear-inputs-row { display: flex; gap: 12px; margin-bottom: 15px; }
+
+.wear-shorthand-buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+}
+
+.wear-shorthand-buttons button {
+    background: #1c1c24;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    padding: 6px 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.wear-shorthand-buttons button:hover { background: var(--accent-purple); color: white; }
+
+/* 6. CARDS DE SKINS */
+.skin-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    width: 260px;
-    min-height: 160px;
-    padding: 16px;
-    border-radius: 12px;
-
-    background: #1f2430;
-    color: white;
-
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s;
 }
 
-/* Efecto hover */
-.skin:hover {
+.skin-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    border-color: var(--accent-purple);
 }
 
-/* Nombre */
-.skin h3 {
-    font-size: 1.1rem;
-    margin: 0 0 8px 0;
-    color: #ffffff;
+.card-upper { padding: 12px; background: var(--rarity-gradient); flex: 1; }
+
+.card-header { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); }
+
+.image-container { padding: 15px; text-align: center; }
+
+.image-container img { max-width: 100%; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
+
+.card-lower { background: rgba(0,0,0,0.2); padding: 12px; border-top: 1px solid var(--border-color); }
+
+.price { font-size: 1.1rem; font-weight: bold; }
+
+.float-bar-visual {
+    height: 4px; background: #333; border-radius: 2px;
+    margin: 10px 0 5px; position: relative; overflow: hidden;
 }
 
-/* Precio */
-.skin p:nth-of-type(1) {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #4caf50;
-    margin: 4px 0;
+.float-bar-visual::before {
+    content: ""; position: absolute; width: 100%; height: 100%;
+    background: linear-gradient(90deg, #2ecc71, #f1c40f, #e74c3c);
 }
 
-/* Desgaste */
-.skin p:nth-of-type(2) {
-    font-size: 0.9rem;
-    color: #bbbbbb;
-    margin: 4px 0 12px 0;
+.float-marker {
+    position: absolute; top: 0; width: 2px; height: 100%;
+    background: white; z-index: 2;
 }
 
-/* Botón actualizar */
-.skin a {
-    text-decoration: none;
-    text-align: center;
-    padding: 8px;
-    border-radius: 6px;
-    background: #733bf6;
-    color: white;
-    font-weight: bold;
-    transition: background 0.2s ease;
+/* 7. PAGINACIÓN CÁPSULA */
+.pagination-container { margin: 50px 0; display: flex; justify-content: center; }
+
+.pagination-capsule {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--bg-card); padding: 10px 20px;
+    border-radius: 100px; border: 1px solid var(--border-color);
 }
 
-.skin a:hover {
-    background: #8b25eb;
+.page-nav {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.85rem; padding: 6px 14px; border-radius: 50px;
+    transition: 0.2s;
 }
+
+.page-nav:hover { background: rgba(124, 77, 255, 0.1); color: var(--accent-purple); }
+
+.page-current { color: white; padding: 0 15px; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); }
+
+.page-current strong { color: var(--accent-purple); }
+
+/* --- AJUSTE DE PRECIO HORIZONTAL --- */
+.price-inputs-row {
+    display: flex;
+    gap: 10px; /* Espacio entre 'Desde' y 'Hasta' */
+}
+
+.price-field {
+    flex: 1; /* Hace que ambos ocupen el mismo ancho */
+}
+
+.price-field label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.input-with-symbol {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Ajuste del input para dejar espacio al símbolo */
+.input-with-symbol input {
+    padding-right: 30px ; 
+    text-align: left ; /* Alineado a la izquierda para el precio */
+}
+
+.input-with-symbol .symbol {
+    position: absolute;
+    right: 12px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    pointer-events: none; /* Para que no interfiera al hacer clic */
+}
+
+/* 8. RESPONSIVE */
+@media (max-width: 1200px) { .skins-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px) { .skins-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .skins-grid { grid-template-columns: 1fr; } }
