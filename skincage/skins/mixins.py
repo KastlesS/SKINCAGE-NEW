@@ -8,3 +8,4 @@ class SkinMixin(SuccessMessageMixin):
 
     def get_success_url(self):
         return reverse_lazy('skins')
+    
