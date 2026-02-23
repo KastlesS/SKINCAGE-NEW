@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'login',
     'widget_tweaks',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -200,3 +201,15 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'BLACKLIST_AFTER_ROTATION':False,
+}
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES':[
+#         'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.'
+#     ]
+# }

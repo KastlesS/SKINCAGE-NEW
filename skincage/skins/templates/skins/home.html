@@ -45,14 +45,11 @@
             <div class="filter-section">
                 <div class="filter-header">
                     <h3>Wear</h3>
-                    <i class="fa-solid fa-chevron-up"></i>
                 </div>
                 
                 <div class="wear-container">
                     <div class="wear-bar-wrapper">
                         <div class="wear-color-bar"></div>
-                        <div class="wear-pointer pointer-min" style="left: 0%;"></div>
-                        <div class="wear-pointer pointer-max" style="left: 100%;"></div>
                     </div>
     
                     <div class="wear-inputs-row">
@@ -62,7 +59,7 @@
                         </div>
                         <div class="wear-field">
                             <label>Maximum</label>
-                            <input type="number" name="float_max" step="0.0001" value="1" min="0" max="1">
+                            <input type="number" name="float_max" step="0.0001" value="10" min="0" max="10">
                         </div>
                     </div>
     
@@ -96,12 +93,6 @@
             {% for s in skin %}
                 <a class="skin-card" href="{% url 'update' s.id %}">
                     <div class="card-upper">
-                        <div class="card-header">
-                            <i class="fa-regular fa-heart wishlist-icon"></i>
-                            
-                            <span class="wear-name">{{ s.desgaste }}</span>
-                        </div>
-                        
                         <div class="image-container">
                             <img src="{{ s.imagen_url|default:'/static/img/placeholder_skin.png' }}" alt="{{ s.nombre }}" loading="lazy">
                         </div>

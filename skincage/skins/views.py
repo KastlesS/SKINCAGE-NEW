@@ -1,22 +1,32 @@
 from typing import Any
 from django.core.paginator import Paginator
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 from .models import Skin
 from .mixins import SkinMixin
 from .form import SkinForm
+from urllib.parse import urlencode
 
+class RequestUserMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_authenticated
+    
+    def handle_no_permission(self):
+        return redirect('mercado')
 
 # Create your views here.
-class VistaSkins(TemplateView):
+class VistaSkins(RequestUserMixin,TemplateView):
     template_name = 'skins/home.html'
 
     def get_context_data(self, **kwargs):
         context = super(VistaSkins, self).get_context_data(**kwargs)
         
         # 1. Capturar todos los parámetros del GET
-        aspecto = self.request.GET.get("aspecto", "")
+        aspecto = self.request.GET.get("aspecto")
         price_min = self.request.GET.get("price_min", "")
         price_max = self.request.GET.get("price_max", "")
         float_min = self.request.GET.get("float_min", "")
@@ -65,6 +75,11 @@ class VistaSkins(TemplateView):
         pagina = self.request.GET.get("page", 1)
         context['skin'] = paginador.get_page(pagina)
 
+        # filtros = self.request.GET.copy()
+        # if 'page' in filtros:
+        #     filtros.pop('page')
+        # context['querystring'] = urlencode(filtros)
+
         return context
     
 class SkinCreate(SkinMixin,CreateView):
@@ -85,4 +100,7 @@ class SkinDeleteView(DeleteView):
 
 class Home(TemplateView):
     template_name = 'portfolio/index.html'
+
+class MercadoViewRegistered(TemplateView):
+    template_name = 'skins/mercado_register.html'
 

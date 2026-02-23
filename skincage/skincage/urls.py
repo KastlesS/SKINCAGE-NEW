@@ -19,10 +19,10 @@ from rest_framework import routers
 from rest_framework.routers import DefaultRouter
 from django.contrib import admin
 from django.urls import path, include
-from skins.views import VistaSkins, SkinCreate, SkinUpdate, SkinDeleteView, Home
+from skins.views import VistaSkins, SkinCreate, SkinUpdate, SkinDeleteView, Home, MercadoViewRegistered
 # from users.views import VistaUsers, CreateUser, DeleteUser, UpdateUser
 from login.views import LoginFormView2, Logout
-from skins.api.views import SkinListViewSet, SkinCRUDView
+from skins.api.views import SkinListViewSet, SkinCRUDView 
 
 router = routers.DefaultRouter()
 router.register('skin-list', SkinListViewSet, basename='skin-list')
@@ -38,4 +38,7 @@ urlpatterns = [
     path('login/', LoginFormView2.as_view(), name='login'),
     path('logout/', Logout.as_view(), name='logout'),
     path('api/', include(router.urls)),
+    path('api/auth/', include('djoser.urls')),
+    path('api/auth/', include('djoser.urls.jwt')),
+    path('mercado/', MercadoViewRegistered.as_view(), name='mercado'),
 ]
