@@ -25,7 +25,6 @@ class VistaSkins(RequestUserMixin,TemplateView):
     def get_context_data(self, **kwargs):
         context = super(VistaSkins, self).get_context_data(**kwargs)
         
-        # 1. Capturar todos los parámetros del GET
         aspecto = self.request.GET.get("aspecto")
         price_min = self.request.GET.get("price_min", "")
         price_max = self.request.GET.get("price_max", "")
@@ -34,10 +33,8 @@ class VistaSkins(RequestUserMixin,TemplateView):
         stattrak = self.request.GET.get("stattrak", "")
         marcado_view = self.request.GET.get("marcado", "")
 
-        # 2. Empezar con todos los objetos
         skins = Skin.objects.all()
 
-        # 3. Aplicar filtros condicionales
         if aspecto:
             skins = skins.filter(nombre__icontains=aspecto)
         
@@ -48,20 +45,18 @@ class VistaSkins(RequestUserMixin,TemplateView):
             skins = skins.filter(precio__lte=price_max)
             
         if float_min:
-            # Usamos 'desgaste' que es el nombre en tu modelo
             skins = skins.filter(desgaste__gte=float_min)
             
         if float_max:
             skins = skins.filter(desgaste__lte=float_max)
 
-        if stattrak == 'on': # Los checkboxes envían 'on' si están marcados
-            skins = skins.filter(stattrak=True)
+        if stattrak == 'on': 
+            skins = skins.filter(stattrack=True)
 
-        # 4. Lógica de ordenación que ya tenías
+       
         if marcado_view == 'True':
             skins = skins.order_by("nombre")
 
-        # 5. Guardar valores en el context para que se mantengan en los inputs del HTML
         context['aspecto'] = aspecto
         context['price_min'] = price_min
         context['price_max'] = price_max
@@ -70,7 +65,6 @@ class VistaSkins(RequestUserMixin,TemplateView):
         context['stattrak'] = stattrak
         context['marcado'] = marcado_view
 
-        # 6. Paginación (20 por página según tu código)
         paginador = Paginator(skins, 20)
         pagina = self.request.GET.get("page", 1)
         context['skin'] = paginador.get_page(pagina)
