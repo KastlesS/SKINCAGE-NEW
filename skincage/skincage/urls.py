@@ -38,6 +38,7 @@ urlpatterns = [
     path('delete/<int:pk>/', SkinDeleteView.as_view(), name='delete'),
     path('login/', LoginFormView2.as_view(), name='login'),
     path('logout/', Logout.as_view(), name='logout'),
+    path('oauth/', include('social_django.urls', namespace='social')),
     path('api/', include(router.urls)),
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.jwt')),
