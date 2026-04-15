@@ -18,6 +18,14 @@ class RequestUserMixin(UserPassesTestMixin):
     def handle_no_permission(self):
         return redirect('mercado')
 
+class AdminRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_staff
+    
+    def handle_no_permission(self):
+        return redirect('home')
+
+
 # Create your views here.
 class VistaSkins(RequestUserMixin,TemplateView):
     template_name = 'skins/home.html'
@@ -82,7 +90,7 @@ class SkinCreate(SkinMixin,CreateView):
     success_message = "Skin creada correctamente"
     success_url = reverse_lazy('home')
 
-class SkinUpdate(SkinMixin,UpdateView):
+class SkinUpdate(AdminRequiredMixin, SkinMixin, UpdateView):
     model = Skin
     fields = ['id','nombre', 'desgaste', 'stattrack', 'precio', 'stock', 'categoria', 'rareza']
     success_message = "Skin actualizada correctamente"

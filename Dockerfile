@@ -16,7 +16,7 @@ RUN pip install -r requirements.txt
 
 COPY skincage /code/skincage
 COPY scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 
 # Crear directorio para estáticos
 RUN mkdir -p /code/skincage/static /code/skincage/media

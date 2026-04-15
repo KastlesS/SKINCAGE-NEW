@@ -22,11 +22,12 @@ from django.urls import path, include
 from skins.views import VistaSkins, SkinCreate, SkinUpdate, SkinDeleteView, Home, MercadoViewRegistered
 # from users.views import VistaUsers, CreateUser, DeleteUser, UpdateUser
 from login.views import LoginFormView2, Logout
-from skins.api.views import SkinListViewSet, SkinCRUDView 
+from skins.api.views import SkinListViewSet, SkinCRUDView, SkinPublicViewSet 
 
 router = routers.DefaultRouter()
 router.register('skin-list', SkinListViewSet, basename='skin-list')
 router.register('skin-crud', SkinCRUDView, basename='skin-crud')
+router.register('skin-public', SkinPublicViewSet, basename='skin-public')
 
 urlpatterns = [
     path('', Home.as_view(), name="home"),
