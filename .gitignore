@@ -6,3 +6,11 @@ __pycache__/
 *.pyo
 *.pyd
 skincage/db.sqlite3
+*.yml
+/secrets/
+db_password.txt
+secret_key.txt
+/scripts/
+/nginx/
+*.sh
+*.conf
