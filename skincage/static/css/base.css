@@ -46,12 +46,12 @@ body {
 }
 
 .header-container {
-    max-width: 1400px; /* Un poco más ancho para aprovechar los extremos */
+    max-width: 100%;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between; /* Empuja logo a izq y wrapper a der */
-    align-items: center; /* Alineación vertical central global */
-    padding: 0 40px;
+    justify-content: space-between; /* Logo izq, nav der */
+    align-items: center;
+    padding: 0 24px;
 }
 
 /* Contenedor de la derecha */

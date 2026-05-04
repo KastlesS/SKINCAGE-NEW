@@ -4,6 +4,14 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/skins.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Force the base container to take full width for this specific view */
+        body > .container {
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -55,11 +63,11 @@
                     <div class="wear-inputs-row">
                         <div class="wear-field">
                             <label>Minimum</label>
-                            <input type="number" name="float_min" step="0.0001" value="0" min="0" max="1">
+                            <input type="number" name="float_min" step="0.0001" value="{{ request.GET.float_min|default:'' }}" min="0" max="1">
                         </div>
                         <div class="wear-field">
                             <label>Maximum</label>
-                            <input type="number" name="float_max" step="0.0001" value="10" min="0" max="10">
+                            <input type="number" name="float_max" step="0.0001" value="{{ request.GET.float_max|default:'' }}" min="0" max="1">
                         </div>
                     </div>
     
@@ -98,22 +106,21 @@
                         </div>
                          
                         <div class="skin-title">
-                            {% if s.es_stattrak %}<span class="orange-text">StatTrak™</span>{% endif %}
-                            {{ s.nombre }}
+                            {% if s.es_stattrak %}<span class="orange-text">ST™</span> {% endif %}{{ s.nombre }}
                         </div>
                     </div>
 
                     <div class="card-lower">
                         <div class="price-container">
                             <span class="price">{{ s.precio }} €</span>
-                            </div>
+                        </div>
 
                         <div class="float-bar-visual">
                             <div class="float-marker"></div>
                         </div>
                         
                         <div class="float-details">
-                            <span class="float-value">{{ s.desgaste|default:"N/A" }}</span>
+                            <span class="float-value" style="font-size:0.65rem; color:#8b8b9e;">{{ s.desgaste|default:"N/A" }}</span>
                         </div>
                     </div>
                 </a>

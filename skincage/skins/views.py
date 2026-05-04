@@ -33,7 +33,7 @@ class VistaSkins(RequestUserMixin,TemplateView):
     def get_context_data(self, **kwargs):
         context = super(VistaSkins, self).get_context_data(**kwargs)
         
-        aspecto = self.request.GET.get("aspecto")
+        aspecto = self.request.GET.get("aspecto", "")
         price_min = self.request.GET.get("price_min", "")
         price_max = self.request.GET.get("price_max", "")
         float_min = self.request.GET.get("float_min", "")
@@ -47,21 +47,32 @@ class VistaSkins(RequestUserMixin,TemplateView):
             skins = skins.filter(nombre__icontains=aspecto)
         
         if price_min:
-            skins = skins.filter(precio__gte=price_min)
+            try:
+                skins = skins.filter(precio__gte=float(price_min))
+            except ValueError:
+                pass
         
         if price_max:
-            skins = skins.filter(precio__lte=price_max)
+            try:
+                skins = skins.filter(precio__lte=float(price_max))
+            except ValueError:
+                pass
             
         if float_min:
-            skins = skins.filter(desgaste__gte=float_min)
+            try:
+                skins = skins.filter(desgaste__gte=float(float_min))
+            except ValueError:
+                pass
             
         if float_max:
-            skins = skins.filter(desgaste__lte=float_max)
+            try:
+                skins = skins.filter(desgaste__lte=float(float_max))
+            except ValueError:
+                pass
 
         if stattrak == 'on': 
             skins = skins.filter(stattrack=True)
 
-       
         if marcado_view == 'True':
             skins = skins.order_by("nombre")
 
@@ -73,14 +84,15 @@ class VistaSkins(RequestUserMixin,TemplateView):
         context['stattrak'] = stattrak
         context['marcado'] = marcado_view
 
-        paginador = Paginator(skins, 20)
+        paginador = Paginator(skins, 50)
         pagina = self.request.GET.get("page", 1)
         context['skin'] = paginador.get_page(pagina)
 
-        # filtros = self.request.GET.copy()
-        # if 'page' in filtros:
-        #     filtros.pop('page')
-        # context['querystring'] = urlencode(filtros)
+        filtros = self.request.GET.copy()
+        if 'page' in filtros:
+            filtros.pop('page')
+        encoded = urlencode(filtros)
+        context['current_filters'] = f"&{encoded}" if encoded else ""
 
         return context
     

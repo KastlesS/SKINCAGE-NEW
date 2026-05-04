@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'djoser',
     'social_django',
+    'images',
 ]
 
 MIDDLEWARE = [

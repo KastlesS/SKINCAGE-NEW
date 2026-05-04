@@ -30,3 +30,13 @@ class Skin(models.Model):
     stock = models.IntegerField(verbose_name='stock')
     categoria = models.CharField(max_length=30, choices=Categoria.choices)
     rareza = models.CharField(max_length=30, choices=Rareza.choices)
+
+    @property
+    def imagen_url(self):
+        # Retrieve the first related image from the new 'images' app
+        img = self.imagenes.first()
+        return img.url if img else None
+
+    @property
+    def es_stattrak(self):
+        return self.stattrack
