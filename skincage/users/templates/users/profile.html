@@ -1,0 +1,22 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<!-- React CSS -->
+<link rel="stylesheet" crossorigin href="{% static 'react/assets/profileApp-aCI9ytxN.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="react-profile-root"></div>
+
+<!-- Configuración global para React -->
+<script>
+    window.SKINCAGE_CONFIG = {
+        isAuthenticated: {{ user.is_authenticated|yesno:"true,false" }},
+        username: "{{ user.username|default:'' }}"
+    };
+</script>
+
+<!-- Scripts de React (Vite) -->
+<script type="module" crossorigin src="{% static 'react/profileApp.js' %}"></script>
+{% endblock %}
