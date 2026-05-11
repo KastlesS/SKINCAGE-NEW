@@ -1,33 +1,19 @@
 """
 URL configuration for skincage project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from os import name
-from rest_framework import routers
 from rest_framework.routers import DefaultRouter
 from django.contrib import admin
 from django.urls import path, include
 from skins.views import VistaSkins, SkinCreate, SkinUpdate, SkinDeleteView, Home, MercadoViewRegistered
-# from users.views import VistaUsers, CreateUser, DeleteUser, UpdateUser
 from login.views import LoginFormView2, Logout
-from skins.api.views import SkinListViewSet, SkinCRUDView, SkinPublicViewSet 
+from skins.api.views import SkinListViewSet, SkinCRUDView, SkinPublicViewSet, ReservaViewSet
+from users.views import ProfilePageView
 
-router = routers.DefaultRouter()
+router = DefaultRouter()
 router.register('skin-list', SkinListViewSet, basename='skin-list')
 router.register('skin-crud', SkinCRUDView, basename='skin-crud')
 router.register('skin-public', SkinPublicViewSet, basename='skin-public')
+router.register('reservas', ReservaViewSet, basename='reservas')
 
 urlpatterns = [
     path('', Home.as_view(), name="home"),
@@ -42,5 +28,8 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.jwt')),
+    path('api/users/', include('users.api.urls')),
     path('mercado/', MercadoViewRegistered.as_view(), name='mercado'),
+    # Página de perfil React
+    path('perfil/', ProfilePageView.as_view(), name='perfil'),
 ]

@@ -99,7 +99,7 @@
     <main class="main-content">
         <div id="skins-grid" class="skins-grid">
             {% for s in skin %}
-                <a class="skin-card" href="{% url 'update' s.id %}">
+                <div data-skin-id="{{ s.id }}" class="skin-card skin-card-clickable" style="cursor: pointer;">
                     <div class="card-upper">
                         <div class="image-container">
                             <img src="{{ s.imagen_url|default:'/static/img/placeholder_skin.png' }}" alt="{{ s.nombre }}" loading="lazy">
@@ -123,7 +123,7 @@
                             <span class="float-value" style="font-size:0.65rem; color:#8b8b9e;">{{ s.desgaste|default:"N/A" }}</span>
                         </div>
                     </div>
-                </a>
+                </div>
             {% empty %}
                 <div class="no-results">
                     <p>No se encontraron skins con estos filtros.</p>
@@ -158,8 +158,23 @@
             </div>
         </div>
         {% endif %}
-    </main>
+</main>
 </div>
 
+<!-- Contenedor para el Modal de React -->
+<div id="react-skin-modal-root"></div>
+
+<!-- Configuración global para React -->
+<script>
+    window.SKINCAGE_CONFIG = {
+        isAuthenticated: {{ user.is_authenticated|yesno:"true,false" }},
+        username: "{{ user.username|default:'' }}"
+    };
+</script>
+
 <script src="{% static 'js/skincage_filters.js' %}" defer></script>
+<!-- Scripts de React (Vite) -->
+<script type="module" crossorigin src="{% static 'react/skinModal.js' %}"></script>
+<link rel="stylesheet" crossorigin href="{% static 'react/assets/skinModal-BuBA8yPr.css' %}">
+
 {% endblock %}
