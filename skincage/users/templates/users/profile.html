@@ -1,9 +1,197 @@
 {% extends "portfolio/base.html" %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
 {% block content %}
-<div class="container" style="padding: 2rem;">
-    <h2 style="color: white;">Perfil de Usuario</h2>
-    <p style="color: white;">Bienvenido, {{ user.username }}</p>
+<div class="profile-page">
+
+  {# ── CABECERA ── #}
+  <div class="profile-header">
+    <div class="profile-avatar-wrapper">
+      {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="Avatar" class="profile-avatar" id="avatar-preview">
+      {% else %}
+        <div class="avatar-placeholder" id="avatar-placeholder">
+          {{ user.username|slice:":1" }}
+        </div>
+        <img src="" alt="Avatar" class="profile-avatar" id="avatar-preview" style="display:none;">
+      {% endif %}
+      <button class="avatar-edit-btn" id="avatar-btn" title="Cambiar foto">
+        <i class="fa-solid fa-camera" style="color:white; font-size:0.8rem;"></i>
+      </button>
+      <input type="file" id="avatar-input" accept="image/*" style="display:none;">
+    </div>
+
+    <div class="profile-info">
+      <div class="profile-username">{{ user.first_name|default:user.username }}</div>
+      <div class="profile-email"><i class="fa-regular fa-envelope" style="margin-right:6px; color:var(--accent);"></i>{{ user.email }}</div>
+      <div class="profile-balance-badge">
+        <i class="fa-solid fa-wallet"></i>
+        <span class="balance-label">Balance:</span>
+        <strong>{{ profile.balance }} €</strong>
+      </div>
+    </div>
+  </div>
+
+  {# ── EDITAR DATOS ── #}
+  <div class="profile-section">
+    <div class="profile-section-title">
+      <i class="fa-solid fa-user-pen"></i> Editar información
+    </div>
+    <form id="profile-form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="profile-form-grid">
+        <div class="profile-field">
+          <label for="pf-username">Nombre de usuario</label>
+          <input type="text" id="pf-username" name="username" value="{{ user.username }}" placeholder="Tu nombre de usuario">
+        </div>
+        <div class="profile-field">
+          <label for="pf-first-name">Nombre visible</label>
+          <input type="text" id="pf-first-name" name="first_name" value="{{ user.first_name }}" placeholder="Tu nombre">
+        </div>
+        <div class="profile-field">
+          <label for="pf-email">Correo electrónico</label>
+          <input type="email" id="pf-email" name="email" value="{{ user.email }}" readonly title="El correo no se puede cambiar aquí">
+        </div>
+      </div>
+      <button type="submit" class="btn-save">
+        <i class="fa-solid fa-floppy-disk" style="margin-right:6px;"></i>Guardar cambios
+      </button>
+      <div id="profile-feedback" class="profile-feedback"></div>
+    </form>
+  </div>
+
+  {# ── SKINS EN RESERVA ── #}
+  <div class="profile-section">
+    <div class="profile-section-title">
+      <i class="fa-solid fa-shield-halved"></i> Mis reservas
+    </div>
+
+    {% if reservas %}
+    <table class="reservas-table">
+      <thead>
+        <tr>
+          <th>Skin</th>
+          <th>Nombre</th>
+          <th>Float</th>
+          <th>Precio reserva</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reserva in reservas %}
+        <tr>
+          <td>
+            {% if reserva.skin.imagen_url %}
+              <img src="{{ reserva.skin.imagen_url }}" alt="{{ reserva.skin.nombre }}" class="skin-thumb">
+            {% else %}
+              <div class="skin-thumb" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);">
+                <i class="fa-solid fa-image"></i>
+              </div>
+            {% endif %}
+          </td>
+          <td>
+            {% if reserva.skin.es_stattrak %}
+              <span style="color: #f97316; font-size:0.75rem; font-weight:700;">ST™</span>
+            {% endif %}
+            {{ reserva.skin.nombre }}
+          </td>
+          <td style="color: var(--text-muted); font-size: 0.85rem;">{{ reserva.skin.desgaste }}</td>
+          <td style="color: var(--accent-glow); font-weight:600;">{{ reserva.precio_reserva }} €</td>
+          <td>
+            <span class="badge-estado badge-{{ reserva.estado }}">{{ reserva.get_estado_display }}</span>
+          </td>
+          <td style="color: var(--text-muted); font-size: 0.82rem;">{{ reserva.fecha_reserva|date:"d/m/Y" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-reservas">
+      <span class="empty-icon"><i class="fa-regular fa-folder-open"></i></span>
+      <p>Todavía no tienes ninguna reserva activa.</p>
+    </div>
+    {% endif %}
+  </div>
+
 </div>
+
+<script>
+(function() {
+  // ─── Avatar preview & upload ───
+  const avatarBtn = document.getElementById('avatar-btn');
+  const avatarInput = document.getElementById('avatar-input');
+  const avatarPreview = document.getElementById('avatar-preview');
+  const avatarPlaceholder = document.getElementById('avatar-placeholder');
+
+  if (avatarBtn) {
+    avatarBtn.addEventListener('click', () => avatarInput.click());
+  }
+
+  if (avatarInput) {
+    avatarInput.addEventListener('change', function() {
+      const file = this.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        avatarPreview.src = e.target.result;
+        avatarPreview.style.display = 'block';
+        avatarPreview.classList.add('profile-avatar');
+        if (avatarPlaceholder) avatarPlaceholder.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ─── Formulario de perfil ───
+  const profileForm = document.getElementById('profile-form');
+  const feedback = document.getElementById('profile-feedback');
+
+  if (profileForm) {
+    profileForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append('username', document.getElementById('pf-username').value.trim());
+      formData.append('first_name', document.getElementById('pf-first-name').value.trim());
+      const csrfToken = profileForm.querySelector('[name=csrfmiddlewaretoken]').value;
+
+      // Añadir avatar si se eligió uno
+      if (avatarInput && avatarInput.files[0]) {
+        formData.append('avatar', avatarInput.files[0]);
+      }
+
+      feedback.style.display = 'none';
+      feedback.className = 'profile-feedback';
+
+      fetch("{% url 'perfil-actualizar' %}", {
+        method: 'POST',
+        headers: { 'X-CSRFToken': csrfToken },
+        body: formData,
+      })
+      .then(r => r.json())
+      .then(data => {
+        feedback.style.display = 'block';
+        if (data.success) {
+          feedback.classList.add('success');
+          feedback.textContent = data.message || 'Guardado correctamente.';
+        } else {
+          feedback.classList.add('error');
+          feedback.textContent = data.error || 'Error al guardar.';
+        }
+      })
+      .catch(() => {
+        feedback.style.display = 'block';
+        feedback.classList.add('error');
+        feedback.textContent = 'Error de conexión.';
+      });
+    });
+  }
+})();
+</script>
 {% endblock %}
