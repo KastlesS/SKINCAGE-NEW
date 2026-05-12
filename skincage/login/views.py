@@ -27,3 +27,30 @@ class LoginFormView2(LoginView):
     
 class Logout(LogoutView):
     next_page = reverse_lazy('home')
+
+import json
+from django.views import View
+from django.http import JsonResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import login
+
+class RegisterView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            email = data.get('email', '').strip()
+            password = data.get('password', '')
+            
+            if not email or not password:
+                return JsonResponse({'error': 'Email y contraseña son obligatorios.'}, status=400)
+            
+            if User.objects.filter(username=email).exists() or User.objects.filter(email=email).exists():
+                return JsonResponse({'error': 'Ya existe un usuario con este correo.'}, status=400)
+            
+            user = User.objects.create_user(username=email, email=email, password=password)
+            # Log the user in after successful registration
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return JsonResponse({'success': True, 'redirect_url': str(reverse_lazy('home'))})
+            
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)

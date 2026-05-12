@@ -8,43 +8,57 @@
 
 {% block content %}
   <div class="formulario">
-    <form action="." method="post">
-      {% csrf_token %}
-      <div class="form-group">
-        <label for="id_username">Usuario</label>
-        {{ form.username|add_class:'form_control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su usuario' }}
-      </div>
-      <div class="form-group">
-        <label for="id_password">Contraseña</label>
-        {{ form.password|add_class:'form_control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su contraseña' }}
-      </div>
-      <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-    </form>
+    <div id="login-section">
+      <form action="." method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_username">Usuario</label>
+          {{ form.username|add_class:'form_control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su usuario' }}
+        </div>
+        <div class="form-group">
+          <label for="id_password">Contraseña</label>
+          {{ form.password|add_class:'form_control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su contraseña' }}
+        </div>
+        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+      </form>
 
-    <hr class="my-4">
+      <hr class="my-4">
 
-    <div class="d-grid gap-2">
-      <a class="btn btn-outline-dark" href="{% url 'social:begin' 'google-oauth2' %}">
-        Iniciar sesión con Google
-      </a>
+      <div class="d-grid gap-2">
+        <a class="btn btn-outline-dark" href="{% url 'social:begin' 'google-oauth2' %}">
+          Iniciar sesión con Google
+        </a>
+      </div>
+
+      <hr class="my-4">
+      
+      <div class="registro-section">
+        <h3 style="color: #fff; text-align: center; margin-bottom: 20px;">¿No tienes cuenta?</h3>
+        <div class="d-grid gap-2">
+          <button id="show-register" class="btn btn-outline-light">Crear cuenta</button>
+        </div>
+      </div>
     </div>
 
-    <hr class="my-4">
-    
-    <div class="registro-section">
-      <h3 style="color: #fff; text-align: center; margin-bottom: 20px;">¿No tienes cuenta?</h3>
-      <div id="react-register-root"></div>
+    <div id="register-section" style="display: none;">
+      <h3 style="color: #fff; text-align: center; margin-bottom: 20px;">Crear una cuenta</h3>
+      <form id="register-form">
+        <div id="register-error" class="alert alert-danger" style="display: none;"></div>
+        <div class="form-group">
+          <label for="reg_email" style="color: #fff;">Correo electrónico</label>
+          <input type="email" id="reg_email" name="email" class="form_control" placeholder="Ingrese su correo" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="reg_password" style="color: #fff;">Contraseña</label>
+          <input type="password" id="reg_password" name="password" class="form_control" placeholder="Ingrese su contraseña" required autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+      </form>
+      <hr class="my-4">
+      <div class="d-grid gap-2">
+        <button id="show-login" class="btn btn-outline-light">Volver a Iniciar sesión</button>
+      </div>
     </div>
   </div>
-
-  <!-- Configuración global para React -->
-  <script>
-      window.SKINCAGE_CONFIG = {
-          isAuthenticated: {{ user.is_authenticated|yesno:"true,false" }}
-      };
-  </script>
-
-  <!-- Scripts de React (Vite) -->
-  <script type="module" crossorigin src="{% static 'react/registerForm.js' %}"></script>
-  <link rel="stylesheet" crossorigin href="{% static 'react/assets/registerForm-CZgNtvAp.css' %}">
+  <script src="{% static 'js/register.js' %}"></script>
 {% endblock %}

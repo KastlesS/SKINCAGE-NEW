@@ -5,7 +5,7 @@ from rest_framework.routers import DefaultRouter
 from django.contrib import admin
 from django.urls import path, include
 from skins.views import VistaSkins, SkinCreate, SkinUpdate, SkinDeleteView, Home, MercadoViewRegistered
-from login.views import LoginFormView2, Logout
+from login.views import LoginFormView2, Logout, RegisterView
 from skins.api.views import SkinListViewSet, SkinCRUDView, SkinPublicViewSet, ReservaViewSet
 from users.views import ProfilePageView
 
@@ -23,6 +23,7 @@ urlpatterns = [
     path('update/<int:pk>/', view=SkinUpdate.as_view(), name="update"),
     path('delete/<int:pk>/', SkinDeleteView.as_view(), name='delete'),
     path('login/', LoginFormView2.as_view(), name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
     path('logout/', Logout.as_view(), name='logout'),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('api/', include(router.urls)),
@@ -30,6 +31,5 @@ urlpatterns = [
     path('api/auth/', include('djoser.urls.jwt')),
     path('api/users/', include('users.api.urls')),
     path('mercado/', MercadoViewRegistered.as_view(), name='mercado'),
-    # Página de perfil React
     path('perfil/', ProfilePageView.as_view(), name='perfil'),
 ]

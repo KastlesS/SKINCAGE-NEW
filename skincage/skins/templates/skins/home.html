@@ -161,20 +161,6 @@
 </main>
 </div>
 
-<!-- Contenedor para el Modal de React -->
-<div id="react-skin-modal-root"></div>
-
-<!-- Configuración global para React -->
-<script>
-    window.SKINCAGE_CONFIG = {
-        isAuthenticated: {{ user.is_authenticated|yesno:"true,false" }},
-        username: "{{ user.username|default:'' }}"
-    };
-</script>
-
 <script src="{% static 'js/skincage_filters.js' %}" defer></script>
-<!-- Scripts de React (Vite) -->
-<script type="module" crossorigin src="{% static 'react/skinModal.js' %}"></script>
-<link rel="stylesheet" crossorigin href="{% static 'react/assets/skinModal-BuBA8yPr.css' %}">
 
 {% endblock %}

@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 
 
 class ProfilePageView(LoginRequiredMixin, TemplateView):
-    """Sirve el template que monta la SPA React del perfil de usuario."""
+    """Sirve el template del perfil de usuario."""
     template_name = 'users/profile.html'
     login_url = 'login'
 
