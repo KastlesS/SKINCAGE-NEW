@@ -51,6 +51,13 @@ class Profile(models.Model):
         blank=True,
         default="",
     )
+    avatar = models.ImageField(
+        verbose_name="Foto de perfil",
+        upload_to="avatars/",
+        blank=True,
+        null=True,
+        help_text="Imagen de perfil del usuario",
+    )
     avatar_url = models.URLField(
         verbose_name="Avatar URL",
         blank=True,

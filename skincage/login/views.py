@@ -38,19 +38,23 @@ class RegisterView(View):
     def post(self, request, *args, **kwargs):
         try:
             data = json.loads(request.body)
+            username = data.get('username', '').strip()
             email = data.get('email', '').strip()
             password = data.get('password', '')
-            
-            if not email or not password:
-                return JsonResponse({'error': 'Email y contraseña son obligatorios.'}, status=400)
-            
-            if User.objects.filter(username=email).exists() or User.objects.filter(email=email).exists():
-                return JsonResponse({'error': 'Ya existe un usuario con este correo.'}, status=400)
-            
-            user = User.objects.create_user(username=email, email=email, password=password)
+
+            if not username or not email or not password:
+                return JsonResponse({'error': 'Nombre de usuario, email y contraseña son obligatorios.'}, status=400)
+
+            if User.objects.filter(username=username).exists():
+                return JsonResponse({'error': 'Ese nombre de usuario ya está en uso.'}, status=400)
+
+            if User.objects.filter(email=email).exists():
+                return JsonResponse({'error': 'Ya existe una cuenta con ese correo.'}, status=400)
+
+            user = User.objects.create_user(username=username, email=email, password=password)
             # Log the user in after successful registration
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return JsonResponse({'success': True, 'redirect_url': str(reverse_lazy('home'))})
-            
+
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)

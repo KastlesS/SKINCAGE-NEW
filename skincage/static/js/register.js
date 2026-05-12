@@ -25,21 +25,30 @@ document.addEventListener("DOMContentLoaded", function() {
     if (registerForm) {
         registerForm.addEventListener("submit", function(e) {
             e.preventDefault();
-            
-            const email = document.getElementById("reg_email").value;
+
+            const username = document.getElementById("reg_username").value.trim();
+            const email = document.getElementById("reg_email").value.trim();
             const password = document.getElementById("reg_password").value;
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            
+            // Get CSRF from the hidden field inside the register form
+            const csrfToken = document.getElementById("reg-csrf").value
+                || document.querySelector('[name=csrfmiddlewaretoken]').value;
+
             registerError.style.display = "none";
             registerError.innerText = "";
-            
+
+            if (!username) {
+                registerError.style.display = "block";
+                registerError.innerText = "El nombre de usuario es obligatorio.";
+                return;
+            }
+
             fetch("/register/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRFToken": csrfToken
                 },
-                body: JSON.stringify({ email: email, password: password })
+                body: JSON.stringify({ username: username, email: email, password: password })
             })
             .then(response => response.json())
             .then(data => {
@@ -58,3 +67,4 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
