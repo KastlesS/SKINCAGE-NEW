@@ -99,7 +99,7 @@
     <main class="main-content">
         <div id="skins-grid" class="skins-grid">
             {% for s in skin %}
-                <div data-skin-id="{{ s.id }}" class="skin-card skin-card-clickable" style="cursor: pointer;">
+                <a href="{% if user.is_staff %}{% url 'update' s.id %}{% else %}{% url 'skin_detail' s.id %}{% endif %}" class="skin-card skin-card-clickable" style="text-decoration: none; color: inherit;">
                     <div class="card-upper">
                         <div class="image-container">
                             <img src="{{ s.imagen_url|default:'/static/img/placeholder_skin.png' }}" alt="{{ s.nombre }}" loading="lazy">
@@ -116,14 +116,14 @@
                         </div>
 
                         <div class="float-bar-visual">
-                            <div class="float-marker"></div>
+                            <div class="float-marker" style="left: calc({{ s.desgaste|default:0 }} * 100%)"></div>
                         </div>
                         
                         <div class="float-details">
                             <span class="float-value" style="font-size:0.65rem; color:#8b8b9e;">{{ s.desgaste|default:"N/A" }}</span>
                         </div>
                     </div>
-                </div>
+                </a>
             {% empty %}
                 <div class="no-results">
                     <p>No se encontraron skins con estos filtros.</p>

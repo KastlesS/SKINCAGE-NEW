@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, DetailView
 from .models import Skin
 from .mixins import SkinMixin
 from .form import SkinForm
@@ -17,6 +17,11 @@ class RequestUserMixin(UserPassesTestMixin):
     
     def handle_no_permission(self):
         return redirect('mercado')
+
+class SkinDetailView(RequestUserMixin, DetailView):
+    model = Skin
+    template_name = 'skins/skin_detail.html'
+    context_object_name = 'skin'
 
 class AdminRequiredMixin(UserPassesTestMixin):
     def test_func(self):

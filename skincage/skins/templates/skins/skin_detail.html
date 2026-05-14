@@ -1,0 +1,73 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/skins.css' %}">
+    <link rel="stylesheet" href="{% static 'css/skin_detail.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="skin-detail-container">
+    <a href="javascript:history.back()" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Volver al mercado
+    </a>
+
+    <div class="detail-layout">
+        <div class="detail-image-section">
+            <img src="{{ skin.imagen_url|default:'/static/img/placeholder_skin.png' }}" alt="{{ skin.nombre }}">
+        </div>
+
+        <div class="detail-info-section">
+            <div class="info-header">
+                <span class="skin-badge rarity-{{ skin.rareza|lower }}">
+                    {{ skin.get_rareza_display }}
+                </span>
+                {% if skin.es_stattrak %}
+                <span class="stattrak-tag">StatTrak™ Tecnología</span>
+                {% endif %}
+                <h1 class="detail-title">{{ skin.nombre }}</h1>
+                <div class="detail-price">{{ skin.precio }} €</div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Categoría</span>
+                    <span class="info-value">{{ skin.get_categoria_display }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Disponibilidad</span>
+                    <span class="info-value">{% if skin.stock > 0 %}{{ skin.stock }} en stock{% else %}Agotado{% endif %}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">ID de Skin</span>
+                    <span class="info-value">#{{ skin.id|stringformat:"05d" }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Tipo</span>
+                    <span class="info-value">{{ skin.get_rareza_display }}</span>
+                </div>
+            </div>
+
+            <div class="wear-progress-container">
+                <span class="info-label">Desgaste (Float): <strong>{{ skin.desgaste }}</strong></span>
+                <div class="wear-bar-full">
+                    <div class="wear-pointer" style="left: calc({{ skin.desgaste }} * 100%)"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-1" style="font-size: 0.65rem; color: #8b8b9e;">
+                    <span>Factory New (0.00)</span>
+                    <span>Battle-Scarred (1.00)</span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                {% if user.is_authenticated %}
+                    <a href="#" class="btn-reserve">Reservar Skin</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn-reserve">Inicia sesión para reservar</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
