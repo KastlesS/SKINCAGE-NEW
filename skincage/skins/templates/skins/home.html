@@ -1,164 +1,220 @@
-{% extends "portfolio/base.html" %}
-{% load static %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/skins.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* Force the base container to take full width for this specific view */
-        body > .container {
-            max-width: 100% !important;
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-    </style>
-{% endblock %}
-
-{% block content %}
+{% extends "portfolio/base.html" %} {% load static %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/skins.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+/>
+<style>
+  /* Force the base container to take full width for this specific view */
+  body > .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+</style>
+{% endblock %} {% block content %}
 <div class="skincage-layout">
-    <aside class="sidebar-filters">
-        <form action="" method="get" id="filter-form">
-            <div class="filter-section search-section">
-                <h3>Buscar</h3>
-                <div class="search-input-wrapper">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" name="aspecto" id="aspecto" placeholder="Nombre de la skin..." value="{{aspecto}}">
-                </div>
-            </div>
-
-            <div class="filter-section">
-                <div class="filter-header">
-                    <h3>Precio</h3>
-                </div>
-                
-                <div class="price-inputs-row">
-                    <div class="price-field">
-                        <label>Desde</label>
-                        <div class="input-with-symbol">
-                            <input type="number" name="price_min" placeholder="0" value="{{ request.GET.price_min }}">
-                            <span class="symbol">€</span>
-                        </div>
-                    </div>
-                    
-                    <div class="price-field">
-                        <label>Hasta</label>
-                        <div class="input-with-symbol">
-                            <input type="number" name="price_max" placeholder="∞" value="{{ request.GET.price_max }}">
-                            <span class="symbol">€</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-section">
-                <div class="filter-header">
-                    <h3>Wear</h3>
-                </div>
-                
-                <div class="wear-container">
-                    <div class="wear-bar-wrapper">
-                        <div class="wear-color-bar"></div>
-                    </div>
-    
-                    <div class="wear-inputs-row">
-                        <div class="wear-field">
-                            <label>Minimum</label>
-                            <input type="number" name="float_min" step="0.0001" value="{{ request.GET.float_min|default:'' }}" min="0" max="1">
-                        </div>
-                        <div class="wear-field">
-                            <label>Maximum</label>
-                            <input type="number" name="float_max" step="0.0001" value="{{ request.GET.float_max|default:'' }}" min="0" max="1">
-                        </div>
-                    </div>
-    
-                    <div class="wear-shorthand-buttons">
-                        <button type="button">FN</button>
-                        <button type="button">MW</button>
-                        <button type="button">FT</button>
-                        <button type="button">WW</button>
-                        <button type="button">BS</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-section special-section">
-                <h4>Especial</h4>
-                <label class="custom-checkbox">
-                    <input type="checkbox" name="stattrak" id="stattrak" {% if request.GET.stattrak %}checked{% endif %}>
-                    <span class="checkmark box"></span>
-                    <span class="label-text orange-text">StatTrak™</span>
-                </label>
-                </div>
-
-             <div class="filter-actions">
-                <button type="submit" class="btn-apply-filters">Aplicar Filtros</button>
-            </div>
-        </form>
-    </aside>
-
-    <main class="main-content">
-        <div id="skins-grid" class="skins-grid">
-            {% for s in skin %}
-                <a href="{% if user.is_staff %}{% url 'update' s.id %}{% else %}{% url 'skin_detail' s.id %}{% endif %}" class="skin-card skin-card-clickable" style="text-decoration: none; color: inherit;">
-                    <div class="card-upper">
-                        <div class="image-container">
-                            <img src="{{ s.imagen_url|default:'/static/img/placeholder_skin.png' }}" alt="{{ s.nombre }}" loading="lazy">
-                        </div>
-                         
-                        <div class="skin-title">
-                            {% if s.es_stattrak %}<span class="orange-text">ST™</span> {% endif %}{{ s.nombre }}
-                        </div>
-                    </div>
-
-                    <div class="card-lower">
-                        <div class="price-container">
-                            <span class="price">{{ s.precio }} €</span>
-                        </div>
-
-                        <div class="float-bar-visual">
-                            <div class="float-marker" style="left: calc({{ s.desgaste|default:0 }} * 100%)"></div>
-                        </div>
-                        
-                        <div class="float-details">
-                            <span class="float-value" style="font-size:0.65rem; color:#8b8b9e;">{{ s.desgaste|default:"N/A" }}</span>
-                        </div>
-                    </div>
-                </a>
-            {% empty %}
-                <div class="no-results">
-                    <p>No se encontraron skins con estos filtros.</p>
-                </div>
-            {% endfor %}
+  <aside class="sidebar-filters">
+    <form action="" method="get" id="filter-form">
+      <div class="filter-section search-section">
+        <h3>Buscar</h3>
+        <div class="search-input-wrapper">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            name="aspecto"
+            id="aspecto"
+            placeholder="Nombre de la skin..."
+            value="{{aspecto}}"
+          />
         </div>
-        
-        {% if skin.paginator.num_pages > 1 %}
-        <div class="pagination-container">
-            <div class="pagination-capsule">
-                {% if skin.has_previous %}
-                    <a class="page-nav" href="?page=1{{ current_filters }}" title="Primero">
-                        <i class="fa-solid fa-angles-left"></i>
-                    </a>
-                    <a class="page-nav" href="?page={{ skin.previous_page_number }}{{ current_filters }}">
-                        <i class="fa-solid fa-chevron-left"></i> Anterior
-                    </a>
-                {% endif %}
+      </div>
 
-                <span class="page-current">
-                    Página <strong>{{ skin.number }}</strong> de {{ skin.paginator.num_pages }}
-                </span>
-
-                {% if skin.has_next %}
-                    <a class="page-nav" href="?page={{ skin.next_page_number }}{{ current_filters }}">
-                        Siguiente <i class="fa-solid fa-chevron-right"></i>
-                    </a>
-                    <a class="page-nav" href="?page={{ skin.paginator.num_pages }}{{ current_filters }}" title="Último">
-                        <i class="fa-solid fa-angles-right"></i>
-                    </a>
-                {% endif %}
-            </div>
+      <div class="filter-section">
+        <div class="filter-header">
+          <h3>Precio</h3>
         </div>
+
+        <div class="price-inputs-row">
+          <div class="price-field">
+            <label>Desde</label>
+            <div class="input-with-symbol">
+              <input
+                type="number"
+                name="price_min"
+                placeholder="0"
+                value="{{ request.GET.price_min }}"
+              />
+              <span class="symbol">€</span>
+            </div>
+          </div>
+
+          <div class="price-field">
+            <label>Hasta</label>
+            <div class="input-with-symbol">
+              <input
+                type="number"
+                name="price_max"
+                placeholder="∞"
+                value="{{ request.GET.price_max }}"
+              />
+              <span class="symbol">€</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-header">
+          <h3>Wear</h3>
+        </div>
+
+        <div class="wear-container">
+          <div class="wear-bar-wrapper">
+            <div class="wear-color-bar"></div>
+          </div>
+
+          <div class="wear-inputs-row">
+            <div class="wear-field">
+              <label>Minimum</label>
+              <input
+                type="number"
+                name="float_min"
+                step="0.0001"
+                value="{{ request.GET.float_min|default:'' }}"
+                min="0"
+                max="1"
+              />
+            </div>
+            <div class="wear-field">
+              <label>Maximum</label>
+              <input
+                type="number"
+                name="float_max"
+                step="0.0001"
+                value="{{ request.GET.float_max|default:'' }}"
+                min="0"
+                max="1"
+              />
+            </div>
+          </div>
+
+          <div class="wear-shorthand-buttons">
+            <button type="button">FN</button>
+            <button type="button">MW</button>
+            <button type="button">FT</button>
+            <button type="button">WW</button>
+            <button type="button">BS</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-section special-section">
+        <h4>Especial</h4>
+        <label class="custom-checkbox">
+          <input
+            type="checkbox"
+            name="stattrak"
+            id="stattrak"
+            {% if request.GET.stattrak %}checked{% endif %}
+          />
+          <span class="checkmark box"></span>
+          <span class="label-text orange-text">StatTrak™</span>
+        </label>
+      </div>
+
+      <div class="filter-actions">
+        <button type="submit" class="btn-apply-filters">Aplicar Filtros</button>
+      </div>
+    </form>
+  </aside>
+
+  <main class="main-content">
+    <div id="skins-grid" class="skins-grid">
+      {% for s in skin %}
+      <a
+        href="{% if user.is_staff %}{% url 'update' s.id %}{% else %}{% url 'skin_detail' s.id %}{% endif %}{% if filter_params %}?{{ filter_params }}{% endif %}"
+        class="skin-card skin-card-clickable"
+        style="text-decoration: none; color: inherit"
+      >
+        <div class="card-upper">
+          <div class="image-container">
+            <img
+              src="{{ s.imagen_url|default:'/static/img/placeholder_skin.png' }}"
+              alt="{{ s.nombre }}"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="skin-title">
+            {% if s.es_stattrak %}<span class="orange-text">ST™</span>{% endif %} {{ s.nombre }}
+          </div>
+        </div>
+
+        <div class="card-lower">
+          <div class="price-container">
+            <span class="price">{{ s.precio }} €</span>
+          </div>
+
+          <div class="float-bar-visual">
+            <div
+              class="float-marker"
+              style="left: calc({{ s.desgaste|default:0 }} * 100%)"
+            ></div>
+          </div>
+
+          <div class="float-details">
+            <span class="float-value" style="font-size: 0.65rem; color: #8b8b9e"
+              >{{ s.desgaste|default:"N/A" }}</span
+            >
+          </div>
+        </div>
+      </a>
+      {% empty %}
+      <div class="no-results">
+        <p>No se encontraron skins con estos filtros.</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if skin.paginator.num_pages > 1 %}
+    <div class="pagination-container">
+      <div class="pagination-capsule">
+        {% if skin.has_previous %}
+        <a class="page-nav" href="?page=1{{ current_filters }}" title="Primero">
+          <i class="fa-solid fa-angles-left"></i>
+        </a>
+        <a
+          class="page-nav"
+          href="?page={{ skin.previous_page_number }}{{ current_filters }}"
+        >
+          <i class="fa-solid fa-chevron-left"></i> Anterior
+        </a>
         {% endif %}
-</main>
+
+        <span class="page-current">
+          Página <strong>{{ skin.number }}</strong> de {{ skin.paginator.num_pages }}
+        </span>
+
+        {% if skin.has_next %}
+        <a
+          class="page-nav"
+          href="?page={{ skin.next_page_number }}{{ current_filters }}"
+        >
+          Siguiente <i class="fa-solid fa-chevron-right"></i>
+        </a>
+        <a
+          class="page-nav"
+          href="?page={{ skin.paginator.num_pages }}{{ current_filters }}"
+          title="Último"
+        >
+          <i class="fa-solid fa-angles-right"></i>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </main>
 </div>
 
 <script src="{% static 'js/skincage_filters.js' %}" defer></script>

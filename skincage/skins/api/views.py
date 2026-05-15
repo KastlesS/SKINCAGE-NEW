@@ -45,6 +45,8 @@ class ReservaViewSet(
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        if self.request.user.is_staff:
+            return Reserva.objects.all().select_related('skin', 'usuario')
         return Reserva.objects.filter(usuario=self.request.user).select_related('skin')
 
     def perform_create(self, serializer):

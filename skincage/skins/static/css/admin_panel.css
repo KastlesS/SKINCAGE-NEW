@@ -1,0 +1,83 @@
+.admin-dashboard {
+  padding: 2rem;
+  color: #fff;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.dashboard-card {
+  background-color: #1a1a24;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #2f2f3e;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+.dashboard-card h3 {
+  color: #f39c12;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #2f2f3e;
+  padding-bottom: 0.8rem;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.data-list {
+  list-style: none;
+  padding: 0;
+  max-height: 400px;
+  overflow-y: auto;
+  margin: 0;
+}
+
+.data-list::-webkit-scrollbar {
+  width: 6px;
+}
+.data-list::-webkit-scrollbar-track {
+  background: #1a1a24;
+}
+.data-list::-webkit-scrollbar-thumb {
+  background: #3a3a4e;
+  border-radius: 4px;
+}
+.data-item {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #2f2f3e;
+  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.data-item:last-child {
+  border-bottom: none;
+}
+.item-title {
+  font-weight: 600;
+  color: #e0e0e0;
+}
+.item-subtitle {
+  font-size: 0.85rem;
+  color: #8b8b9e;
+}
+.badge {
+  background: #2f2f3e;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin-left: auto;
+}
+.badge.admin {
+  background: #f39c12;
+  color: #000;
+}
+.flex-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}

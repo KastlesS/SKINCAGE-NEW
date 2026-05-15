@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="skin-detail-container">
-    <a href="javascript:history.back()" class="back-link">
+    <a href="{% url 'skins' %}{{ current_filters|safe }}" class="back-link">
         <i class="fa-solid fa-arrow-left"></i> Volver al mercado
     </a>
 
@@ -69,5 +69,48 @@
             </div>
         </div>
     </div>
+
+    {% if related_skins %}
+    <div class="related-skins-section">
+        <h2 class="section-title">Skins Relacionadas</h2>
+        
+        <div id="relatedSkinsCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for s in related_skins %}
+                    {% if forloop.counter0|divisibleby:4 %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="related-grid">
+                    {% endif %}
+                    
+                    <a href="{% url 'skin_detail' s.id %}{{ current_filters|safe }}" class="related-card">
+                        <div class="related-image">
+                            <img src="{{ s.imagen_url|default:'/static/img/placeholder_skin.png' }}" alt="{{ s.nombre }}">
+                        </div>
+                        <div class="related-info">
+                            <div class="related-name">{{ s.nombre }}</div>
+                            <div class="related-price">{{ s.precio }} €</div>
+                        </div>
+                    </a>
+
+                    {% if forloop.counter|divisibleby:4 or forloop.last %}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+            {% if related_skins|length > 4 %}
+            <button class="carousel-control-prev" type="button" data-bs-target="#relatedSkinsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#relatedSkinsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

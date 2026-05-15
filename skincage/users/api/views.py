@@ -4,6 +4,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import ProfileSerializer, RegisterSerializer
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class ProfileView(generics.RetrieveUpdateAPIView):
@@ -47,3 +50,14 @@ class RegisterView(generics.CreateAPIView):
             },
             status=status.HTTP_201_CREATED,
         )
+
+class AdminUserListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
+        
+        users = User.objects.all().values('id', 'username', 'email', 'is_staff', 'date_joined')
+        return Response(list(users))
+

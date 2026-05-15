@@ -13,6 +13,9 @@
                     
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'perfil' %}" class="nav-link">Perfil</a></li>
+                        {% if user.is_staff %}
+                        <li><a href="{% url 'admin_panel' %}" class="nav-link" style="color: #f39c12;">Panel Admin</a></li>
+                        {% endif %}
                     {% endif %}
                 </ul>
             </nav>

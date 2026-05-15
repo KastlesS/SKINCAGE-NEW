@@ -23,6 +23,21 @@ class SkinDetailView(RequestUserMixin, DetailView):
     template_name = 'skins/skin_detail.html'
     context_object_name = 'skin'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get 12 random skins of the same category, excluding the current one
+        related = Skin.objects.filter(
+            categoria=self.object.categoria
+        ).exclude(id=self.object.id).order_by('?')[:12]
+        context['related_skins'] = related
+
+        # Preserve filters from URL parameters
+        filtros = self.request.GET.copy()
+        encoded = urlencode(filtros)
+        context['current_filters'] = f"?{encoded}" if encoded else ""
+        
+        return context
+
 class AdminRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.is_staff
@@ -98,6 +113,7 @@ class VistaSkins(RequestUserMixin,TemplateView):
             filtros.pop('page')
         encoded = urlencode(filtros)
         context['current_filters'] = f"&{encoded}" if encoded else ""
+        context['filter_params'] = encoded
 
         return context
     
@@ -122,4 +138,7 @@ class Home(TemplateView):
 
 class MercadoViewRegistered(TemplateView):
     template_name = 'skins/mercado_register.html'
+
+class AdminPanelView(AdminRequiredMixin, TemplateView):
+    template_name = 'skins/admin_panel.html'
 
