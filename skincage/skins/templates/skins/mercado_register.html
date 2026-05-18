@@ -1,16 +1,28 @@
-{% extends "portfolio/base.html" %}
-{% load static %}
+{% extends "portfolio/base.html" %} {% load static %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/skins.css' %}" />
+<link rel="stylesheet" href="{% static 'css/mercado_register.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+/>
+{% endblock %} {% block content %}
+<div class="mercado-register-container">
+  <main class="auth-card">
+    <h3>Acceso Restringido</h3>
 
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/skins.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-{% endblock %}
+    <p>
+      Necesitas estar registrado para poder ver el mercado y acceder a todas las
+      funcionalidades de Skincage.
+    </p>
 
-{% block content %}
-    <main>
-        <h3>Necesitas estar registrado para poder ver el mercado</h3>
-        <div>
-            <a href="{% url 'login' %}" class="btn-auth">Iniciar Sesión</a>
-        </div>
-    </main>
+    <div class="actions-group">
+      <a href="{% url 'login' %}" class="btn-primary-glow">
+        <i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión
+      </a>
+      <a href="{% url 'login' %}#register" class="btn-secondary-outline">
+        <i class="fa-solid fa-user-plus"></i> Crear una Cuenta
+      </a>
+    </div>
+  </main>
+</div>
 {% endblock %}

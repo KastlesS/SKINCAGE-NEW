@@ -1,0 +1,97 @@
+.mercado-register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 280px);
+    padding: 60px 20px;
+}
+
+.auth-card {
+    background: var(--bg-card, #16161c);
+    border: 1px solid var(--border-color, #2d2d3a);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+}
+
+.auth-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.auth-card p {
+    color: var(--text-muted, #8b8b9e);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+}
+
+.actions-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.btn-primary-glow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--accent-purple, #7c4dff), #5c35cc);
+    color: #ffffff !important;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+    border: none;
+    box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+}
+
+.btn-primary-glow:hover {
+    background: linear-gradient(135deg, var(--accent-purple-hover, #9e7aff), var(--accent-purple, #7c4dff));
+    box-shadow: 0 0 20px rgba(124, 77, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-secondary-outline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: transparent;
+    color: #cfcfe8 !important;
+    text-decoration: none;
+    padding: 11px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary-outline:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff !important;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 576px) {
+    .auth-card {
+        padding: 2rem 1.5rem;
+    }
+    .auth-card h3 {
+        font-size: 1.4rem;
+    }
+}

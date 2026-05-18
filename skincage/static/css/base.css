@@ -30,6 +30,9 @@ body {
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 /* =========================
@@ -186,11 +189,12 @@ button:hover {
    FOOTER MEJORADO
 ========================= */
 .footer {
-    margin-top: 80px;
+    margin-top: auto;
     padding: 60px 20px 20px;
     background: var(--bg-secondary);
     border-top: 1px solid var(--border-color);
     color: var(--text-muted);
+    flex-shrink: 0;
 }
 
 .footer-container {
@@ -256,6 +260,10 @@ button:hover {
 ========================= */
 .container {
     max-width: 1200px;
+    width: 100%;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 /* =========================
@@ -325,8 +333,29 @@ button:hover {
 
 /* Sección Cómo Funciona */
 .como-funciona {
-    padding: 80px 20px;
-    background: rgba(168, 85, 247, 0.03);
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: 80px 40px;
+    background: linear-gradient(180deg, rgba(168, 85, 247, 0.03) 0%, rgba(10, 10, 15, 0.2) 100%);
+    border-top: 1px solid rgba(168, 85, 247, 0.08);
+    border-bottom: 1px solid rgba(168, 85, 247, 0.08);
+    margin-top: 80px;
+    margin-bottom: 80px;
+    overflow: hidden;
+}
+
+.como-funciona::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.3), transparent);
 }
 
 .como-funciona h2 {
@@ -340,6 +369,8 @@ button:hover {
     flex-wrap: wrap;
     justify-content: center;
     gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .paso {
@@ -367,7 +398,12 @@ button:hover {
 .cta-final {
     padding: 100px 20px;
     text-align: center;
-    background: linear-gradient(transparent, var(--bg-secondary));
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 80px auto;
+    position: relative;
 }
 
 .cta-final h2 {
