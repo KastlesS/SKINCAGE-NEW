@@ -1,0 +1,166 @@
+{% extends "portfolio/base.html" %} {% load static %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/skin_detail.css' %}" />
+<style>
+  .reserva-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 30px;
+  }
+  @media (max-width: 768px) {
+    .reserva-container {
+      grid-template-columns: 1fr;
+    }
+  }
+  .reserva-form-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .balance-info {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+  }
+  .duration-selector {
+    margin-bottom: 20px;
+  }
+  .duration-selector select {
+    width: 100%;
+    padding: 10px;
+    background: #111118;
+    color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  .reserva-warning {
+    color: #ef4444;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .reserva-actions {
+    display: flex;
+    gap: 15px;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="reserva-container">
+  <div class="skin-card detail-card" style="margin: 0; max-width: 100%">
+    <div class="skin-image-wrapper">
+      {% if skin.imagen_url %}
+      <img
+        src="{{ skin.imagen_url }}"
+        alt="{{ skin.nombre }}"
+        class="skin-image detail-image"
+      />
+      {% else %}
+      <img
+        src="{% static 'img/placeholder_skin.png' %}"
+        alt="Placeholder"
+        class="skin-image detail-image"
+      />
+      {% endif %}
+    </div>
+    <div class="skin-info p-3">
+      <h2 style="font-family: &quot;Orbitron&quot;, sans-serif">
+        {{ skin.nombre }}
+      </h2>
+      <div
+        style="
+          color: var(--accent);
+          font-size: 1.5rem;
+          font-weight: bold;
+          font-family: &quot;Orbitron&quot;, sans-serif;
+        "
+      >
+        {{ skin.precio }} €
+      </div>
+      <p style="color: var(--text-muted); margin-top: 10px">
+        Rareza: {{ skin.get_rareza_display }}<br />
+        Float: {{ skin.desgaste }}
+      </p>
+    </div>
+  </div>
+  <div class="reserva-form-section">
+    <h2
+      style="font-family: &quot;Orbitron&quot;, sans-serif; margin-bottom: 20px"
+    >
+      Confirmar Reserva
+    </h2>
+
+    <div class="balance-info">
+      Tu Balance Actual:
+      <strong id="user-balance" data-balance="{{ balance|stringformat:'f' }}"
+        >{{ balance }} €</strong
+      >
+    </div>
+
+    <form method="post" id="reserva-form">
+      {% csrf_token %}
+      <input
+        type="hidden"
+        id="skin-price"
+        value="{{ skin.precio|stringformat:'f' }}"
+      />
+
+      <div class="duration-selector">
+        <label
+          for="duracion"
+          style="display: block; margin-bottom: 8px; color: var(--text-muted)"
+        >
+          Selecciona la duración de la reserva:
+        </label>
+        <select name="duracion" id="duracion">
+          <option value="1">1 hora</option>
+          <option value="6">6 horas</option>
+          <option value="12">12 horas</option>
+          <option value="24" selected>24 horas</option>
+          <option value="48">48 horas</option>
+          <option value="72">72 horas</option>
+        </select>
+      </div>
+
+      <div id="balance-warning" class="reserva-warning">
+        Balance insuficiente. Necesitas <span id="balance-diff"></span> € más
+        para reservar esta skin.
+      </div>
+
+      <div class="reserva-actions">
+        <button
+          type="submit"
+          id="btn-confirmar"
+          class="btn-reserve"
+          style="flex: 1; border: none; cursor: pointer"
+        >
+          Confirmar Reserva
+        </button>
+        <a
+          href="{% url 'skin_detail' skin.id %}"
+          class="btn-reserve"
+          style="
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-muted);
+            flex: 1;
+            text-align: center;
+          "
+        >
+          Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{% static 'skins/js/confirmar_reserva.js' %}"></script>
+{% endblock %}

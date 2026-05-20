@@ -34,7 +34,6 @@ class Skin(models.Model):
 
     @property
     def imagen_url(self):
-        # Retrieve the first related image from the new 'images' app
         img = self.imagenes.first()
         return img.url if img else None
 
@@ -46,10 +45,6 @@ class Skin(models.Model):
         return self.nombre
 
 
-class Reserva(models.Model):
-    """Reserva de una skin por parte de un usuario registrado."""
-
-    class EstadoChoices(models.TextChoices):
         PENDIENTE   = 'pendiente',   'Pendiente'
         CONFIRMADA  = 'confirmada',  'Confirmada'
         CANCELADA   = 'cancelada',   'Cancelada'
@@ -90,6 +85,16 @@ class Reserva(models.Model):
         default='',
         verbose_name='Notas',
     )
+    duracion_horas = models.PositiveSmallIntegerField(
+        choices=[(1, '1 hora'), (6, '6 horas'), (12, '12 horas'), (24, '24 horas'), (48, '48 horas'), (72, '72 horas')],
+        default=24,
+        verbose_name='Duración en horas',
+    )
+    fecha_expiracion = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Fecha de Expiración',
+    )
 
     class Meta:
         verbose_name = 'Reserva'
@@ -98,3 +103,23 @@ class Reserva(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} — {self.skin.nombre} ({self.estado})"
+
+    def ha_expirado(self):
+        from django.utils import timezone
+        return self.fecha_expiracion and timezone.now() > self.fecha_expiracion
+
+    def tiempo_restante(self):
+        from django.utils import timezone
+        if self.fecha_expiracion:
+            delta = self.fecha_expiracion - timezone.now()
+            return max(delta.total_seconds(), 0)
+        return 0
+
+    @classmethod
+    def expirar_pendientes(cls):
+        from django.utils import timezone
+        expiradas = cls.objects.filter(
+            estado=cls.EstadoChoices.CONFIRMADA,
+            fecha_expiracion__lt=timezone.now()
+        )
+        expiradas.update(estado=cls.EstadoChoices.CANCELADA)

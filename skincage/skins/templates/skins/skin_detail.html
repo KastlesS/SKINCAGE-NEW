@@ -61,8 +61,10 @@
             </div>
 
             <div class="action-buttons">
-                {% if user.is_authenticated %}
-                    <a href="#" class="btn-reserve">Reservar Skin</a>
+                {% if skin_reservada %}
+                    <span class="btn-reserve" style="background: var(--bg-secondary); border-color: var(--border-color); color: var(--text-muted); cursor: not-allowed; text-align: center;">Esta skin ya está reservada</span>
+                {% elif user.is_authenticated %}
+                    <a href="{% url 'confirmar_reserva' skin.id %}" class="btn-reserve">Reservar Skin</a>
                 {% else %}
                     <a href="{% url 'login' %}" class="btn-reserve">Inicia sesión para reservar</a>
                 {% endif %}

@@ -81,6 +81,8 @@
           <th>Precio reserva</th>
           <th>Estado</th>
           <th>Fecha</th>
+          <th>Tiempo Restante</th>
+          <th>Acción</th>
         </tr>
       </thead>
       <tbody>
@@ -107,6 +109,23 @@
             <span class="badge-estado badge-{{ reserva.estado }}">{{ reserva.get_estado_display }}</span>
           </td>
           <td style="color: var(--text-muted); font-size: 0.82rem;">{{ reserva.fecha_reserva|date:"d/m/Y" }}</td>
+          <td>
+            {% if reserva.estado == 'confirmada' and reserva.fecha_expiracion %}
+              <span class="countdown-timer" data-expiracion="{{ reserva.fecha_expiracion.isoformat }}" style="font-family: monospace; font-weight: bold; color: var(--accent-glow);">Calculando...</span>
+            {% else %}
+              <span style="color: var(--text-muted);">—</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if reserva.estado == 'confirmada' %}
+              <form method="post" action="{% url 'cancelar_reserva' reserva.id %}" onsubmit="return confirm('¿Seguro que quieres cancelar la reserva? El dinero volverá a tu balance.');" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" class="btn" style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;">Cancelar</button>
+              </form>
+            {% else %}
+              <span style="color: var(--text-muted);">—</span>
+            {% endif %}
+          </td>
         </tr>
         {% endfor %}
       </tbody>
@@ -192,6 +211,38 @@
       });
     });
   }
+
+  // ─── Countdown para las reservas ───
+  function updateCountdowns() {
+    const timers = document.querySelectorAll('.countdown-timer');
+    const now = new Date();
+    
+    timers.forEach(timer => {
+      const expDate = new Date(timer.getAttribute('data-expiracion'));
+      const diffMs = expDate - now;
+      
+      if (diffMs <= 0) {
+        timer.textContent = 'Expirada';
+        timer.style.color = '#ef4444';
+      } else {
+        const totalSeconds = Math.floor(diffMs / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        
+        timer.textContent = 
+          String(hours).padStart(2, '0') + ':' + 
+          String(minutes).padStart(2, '0') + ':' + 
+          String(seconds).padStart(2, '0');
+      }
+    });
+  }
+  
+  if (document.querySelectorAll('.countdown-timer').length > 0) {
+    updateCountdowns();
+    setInterval(updateCountdowns, 1000);
+  }
+
 })();
 </script>
 {% endblock %}

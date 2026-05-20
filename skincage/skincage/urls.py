@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from skins.views import VistaSkins, SkinCreate, SkinUpdate, SkinDeleteView, Home, MercadoViewRegistered, SkinDetailView, AdminPanelView
+from skins.views import VistaSkins, SkinCreate, SkinUpdate, SkinDeleteView, Home, MercadoViewRegistered, SkinDetailView, AdminPanelView, ConfirmarReservaView, CancelarReservaView
 from login.views import LoginFormView2, Logout, RegisterView
 from skins.api.views import SkinListViewSet, SkinCRUDView, SkinPublicViewSet, ReservaViewSet
 from users.views import ProfilePageView, UpdateProfileView
@@ -25,6 +25,8 @@ urlpatterns = [
     path('create/', view=SkinCreate.as_view(), name="crear"),
     path('update/<int:pk>/', view=SkinUpdate.as_view(), name="update"),
     path('skin/<int:pk>/', SkinDetailView.as_view(), name='skin_detail'),
+    path('skin/<int:pk>/reservar/', ConfirmarReservaView.as_view(), name='confirmar_reserva'),
+    path('reserva/<int:pk>/cancelar/', CancelarReservaView.as_view(), name='cancelar_reserva'),
     path('delete/<int:pk>/', SkinDeleteView.as_view(), name='delete'),
     path('login/', LoginFormView2.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),

@@ -1,12 +1,15 @@
 from typing import Any
 from django.core.paginator import Paginator
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, DetailView
-from .models import Skin
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, DetailView, View
+from django.contrib import messages
+from django.db import transaction
+from django.utils import timezone
+import datetime
+from .models import Skin, Reserva
 from .mixins import SkinMixin
 from .form import SkinForm
 from urllib.parse import urlencode
@@ -36,6 +39,13 @@ class SkinDetailView(RequestUserMixin, DetailView):
         encoded = urlencode(filtros)
         context['current_filters'] = f"?{encoded}" if encoded else ""
         
+        # Check if skin is currently reserved
+        Reserva.expirar_pendientes()
+        context['skin_reservada'] = self.object.reservas.filter(
+            estado=Reserva.EstadoChoices.CONFIRMADA,
+            fecha_expiracion__gt=timezone.now()
+        ).exists()
+        
         return context
 
 class AdminRequiredMixin(UserPassesTestMixin):
@@ -44,6 +54,86 @@ class AdminRequiredMixin(UserPassesTestMixin):
     
     def handle_no_permission(self):
         return redirect('home')
+
+
+class ConfirmarReservaView(RequestUserMixin, DetailView):
+    model = Skin
+    template_name = 'skins/confirmar_reserva.html'
+    context_object_name = 'skin'
+
+    def get(self, request, *args, **kwargs):
+        Reserva.expirar_pendientes()
+        self.object = self.get_object()
+        
+        if self.object.reservas.filter(
+            estado=Reserva.EstadoChoices.CONFIRMADA,
+            fecha_expiracion__gt=timezone.now()
+        ).exists():
+            messages.error(request, 'Esta skin ya no está disponible para reserva.')
+            return redirect('skins')
+            
+        context = self.get_context_data(object=self.object)
+        context['balance'] = request.user.profile.balance
+        return self.render_to_response(context)
+        
+    def post(self, request, *args, **kwargs):
+        Reserva.expirar_pendientes()
+        self.object = self.get_object()
+        
+        if self.object.reservas.filter(
+            estado=Reserva.EstadoChoices.CONFIRMADA,
+            fecha_expiracion__gt=timezone.now()
+        ).exists():
+            messages.error(request, 'Esta skin ya ha sido reservada por otro usuario.')
+            return redirect('skins')
+            
+        try:
+            duracion = int(request.POST.get('duracion', 24))
+        except ValueError:
+            duracion = 24
+            
+        if duracion not in [1, 6, 12, 24, 48, 72]:
+            duracion = 24
+            
+        precio = self.object.precio
+        perfil = request.user.profile
+        
+        with transaction.atomic():
+            if perfil.balance < precio:
+                messages.error(request, 'Balance insuficiente para realizar esta reserva.')
+                return redirect('confirmar_reserva', pk=self.object.pk)
+                
+            fecha_exp = timezone.now() + datetime.timedelta(hours=duracion)
+            Reserva.objects.create(
+                usuario=request.user,
+                skin=self.object,
+                estado=Reserva.EstadoChoices.CONFIRMADA,
+                precio_reserva=precio,
+                duracion_horas=duracion,
+                fecha_expiracion=fecha_exp
+            )
+            
+            perfil.balance -= precio
+            perfil.save()
+            
+        messages.success(request, f'Has reservado la skin {self.object.nombre} por {duracion} horas.')
+        return redirect('perfil')
+
+
+class CancelarReservaView(RequestUserMixin, View):
+    def post(self, request, *args, **kwargs):
+        reserva = get_object_or_404(Reserva, pk=kwargs['pk'], usuario=request.user, estado=Reserva.EstadoChoices.CONFIRMADA)
+        
+        with transaction.atomic():
+            reserva.estado = Reserva.EstadoChoices.CANCELADA
+            reserva.save()
+            
+            perfil = request.user.profile
+            perfil.balance += reserva.precio_reserva
+            perfil.save()
+            
+        messages.success(request, 'La reserva ha sido cancelada y se ha devuelto el dinero a tu balance.')
+        return redirect('perfil')
 
 
 # Create your views here.
@@ -61,7 +151,14 @@ class VistaSkins(RequestUserMixin,TemplateView):
         stattrak = self.request.GET.get("stattrak", "")
         marcado_view = self.request.GET.get("marcado", "")
 
+        Reserva.expirar_pendientes()
         skins = Skin.objects.all()
+
+        ids_reservados = Reserva.objects.filter(
+            estado=Reserva.EstadoChoices.CONFIRMADA,
+            fecha_expiracion__gt=timezone.now()
+        ).values_list('skin_id', flat=True)
+        skins = skins.exclude(id__in=ids_reservados)
 
         if aspecto:
             skins = skins.filter(nombre__icontains=aspecto)
