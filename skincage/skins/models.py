@@ -45,9 +45,12 @@ class Skin(models.Model):
         return self.nombre
 
 
+class Reserva(models.Model):
+    class EstadoChoices(models.TextChoices):
         PENDIENTE   = 'pendiente',   'Pendiente'
         CONFIRMADA  = 'confirmada',  'Confirmada'
         CANCELADA   = 'cancelada',   'Cancelada'
+        COMPLETADA  = 'completada',  'Completada'
 
     usuario = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -122,4 +125,4 @@ class Skin(models.Model):
             estado=cls.EstadoChoices.CONFIRMADA,
             fecha_expiracion__lt=timezone.now()
         )
-        expiradas.update(estado=cls.EstadoChoices.CANCELADA)
+        expiradas.update(estado=cls.EstadoChoices.COMPLETADA)

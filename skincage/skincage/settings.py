@@ -192,6 +192,7 @@ LOGIN_URL = 'login'
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
+    'login.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 

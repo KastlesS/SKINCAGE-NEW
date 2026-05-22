@@ -1,18 +1,16 @@
-from django.shortcuts import render
-
-# Create your views here.
 from typing import Any
+from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
-from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from .forms import EmailLoginForm
 
 
 # Create your views here.
 class LoginFormView2(LoginView):
     template_name = 'login/login.html'
+    authentication_form = EmailLoginForm
     success_url = reverse_lazy('home')
 
     def dispatch(self, request, *args, **kwargs):

@@ -13,8 +13,8 @@
       <form action="." method="post">
         {% csrf_token %}
         <div class="form-group">
-          <label for="id_username">Usuario</label>
-          {{ form.username|add_class:'form_control'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su usuario' }}
+          <label for="id_username">Correo electrónico</label>
+          {{ form.username|add_class:'form_control'|attr:'autocomplete:email'|attr:'placeholder:Ingrese su correo electrónico' }}
         </div>
         <div class="form-group">
           <label for="id_password">Contraseña</label>
