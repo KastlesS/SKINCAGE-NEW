@@ -275,6 +275,55 @@
 .badge-pendiente  { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
 .badge-confirmada { background: rgba(34, 197, 94, 0.15);  color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3);  }
 .badge-cancelada  { background: rgba(239, 68, 68, 0.15);  color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);  }
+.badge-completada { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+
+/* Add Balance Styles */
+.balance-add-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.balance-presets {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.btn-balance-preset {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+    font-family: 'Orbitron', sans-serif;
+}
+.btn-balance-preset:hover {
+    background: rgba(168, 85, 247, 0.1);
+    border-color: var(--accent);
+    color: var(--accent-glow);
+}
+.balance-custom {
+    display: flex;
+    gap: 10px;
+    max-width: 300px;
+}
+.custom-balance-field {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: 0.2s;
+}
+.custom-balance-field:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.15);
+}
 
 .empty-reservas {
     text-align: center;

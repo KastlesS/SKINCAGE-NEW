@@ -1,0 +1,77 @@
+/* =========================
+   HEADER AJUSTADO
+========================= */
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(10, 10, 15, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px 0; /* Ajuste fino de padding vertical */
+}
+
+.header-container {
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between; /* Logo izq, nav der */
+  align-items: center;
+  padding: 0 24px;
+}
+
+/* Contenedor de la derecha */
+.nav-wrapper {
+  display: flex;
+  align-items: center; /* Alinea nav y botones verticalmente */
+  gap: 40px; /* Espacio entre el menú y los botones */
+}
+
+.logo h1 {
+  margin: 0;
+  line-height: 1; /* Evita espacios extra debajo del texto */
+}
+
+.logo a {
+  text-decoration: none;
+  color: var(--accent);
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.8rem;
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+
+#navbar ul {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center; /* Alinea los <li> verticalmente */
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: 0.3s;
+  display: block; /* Para que el padding afecte correctamente */
+  line-height: 1; /* Fuerza la altura de línea para igualar botones */
+}
+
+.nav-link:hover {
+  color: var(--accent-glow);
+}
+
+/* Botones de acción */
+.auth-actions {
+  display: flex;
+  align-items: center;
+}
+
+.logout-form {
+  display: flex;
+  align-items: center;
+}

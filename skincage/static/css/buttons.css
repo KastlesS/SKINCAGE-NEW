@@ -1,0 +1,108 @@
+/* =========================
+   BOTONES
+========================= */
+button {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-weight: 500;
+}
+
+button:hover {
+  box-shadow: 0 0 12px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.btn-auth {
+  display: inline-flex; /* Flex para centrar texto dentro del botón */
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent), #7c3aed);
+  color: white !important;
+  text-decoration: none;
+  padding: 0 22px; /* Quitamos padding superior/inferior para controlarlo con height */
+  height: 40px; /* Altura fija para control total */
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: "Inter", sans-serif;
+}
+
+.btn-auth:hover {
+  box-shadow: 0 0 15px var(--accent);
+  transform: translateY(-2px);
+}
+
+.boton {
+  width: fit-content;
+  padding: 12px 24px;
+  font-size: 1rem;
+  background: linear-gradient(135deg, #9333ea, #c084fc);
+  border-radius: 10px;
+  text-decoration: none;
+  color: white;
+}
+
+.boton-secundario {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: 1px solid var(--text-muted);
+  border-radius: 10px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.boton-secundario:hover {
+  border-color: var(--text-main);
+  color: var(--text-main);
+}
+
+.boton-primario {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 15px 40px;
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--text-muted);
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 10px;
+  font-family: "Orbitron", sans-serif;
+  transition: 0.3s;
+}
+
+.boton-primario:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--text-main);
+}
+
+.boton-base-datos {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  transition: all 0.3s ease;
+}
+
+.boton-base-datos:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+}
