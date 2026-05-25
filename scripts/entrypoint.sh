@@ -22,5 +22,5 @@ exec gunicorn skincage.wsgi:application \
     --access-logfile - \
     --error-logfile - \
     --log-level info \
-    --chdir /code
+    --chdir /code/skincage
 
