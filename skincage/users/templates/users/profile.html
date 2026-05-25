@@ -65,6 +65,27 @@
     </form>
   </div>
 
+  {# ── AÑADIR FONDOS ── #}
+  <div class="profile-section">
+    <div class="profile-section-title">
+      <i class="fa-solid fa-coins" style="color: #f59e0b;"></i> Añadir fondos (Simulación)
+    </div>
+    <div class="balance-add-container">
+      <div class="balance-presets">
+        <button type="button" class="btn-balance-preset" data-amount="5">5 €</button>
+        <button type="button" class="btn-balance-preset" data-amount="10">10 €</button>
+        <button type="button" class="btn-balance-preset" data-amount="20">20 €</button>
+        <button type="button" class="btn-balance-preset" data-amount="50">50 €</button>
+        <button type="button" class="btn-balance-preset" data-amount="100">100 €</button>
+      </div>
+      <div class="balance-custom">
+        <input type="number" id="custom-balance-input" placeholder="Otra cantidad..." min="0.01" step="0.01" class="custom-balance-field">
+        <button type="button" id="btn-add-custom" class="btn-save" style="margin-top:0;">Añadir</button>
+      </div>
+      <div id="balance-feedback" class="profile-feedback" style="margin-top: 15px;"></div>
+    </div>
+  </div>
+
   {# ── SKINS EN RESERVA ── #}
   <div class="profile-section">
     <div class="profile-section-title">
@@ -111,7 +132,7 @@
           <td style="color: var(--text-muted); font-size: 0.82rem;">{{ reserva.fecha_reserva|date:"d/m/Y" }}</td>
           <td>
             {% if reserva.estado == 'confirmada' and reserva.fecha_expiracion %}
-              <span class="countdown-timer" data-expiracion="{{ reserva.fecha_expiracion.isoformat }}" style="font-family: monospace; font-weight: bold; color: var(--accent-glow);">Calculando...</span>
+              <span class="countdown-timer" data-expiracion="{{ reserva.fecha_expiracion|date:'U' }}" style="font-family: monospace; font-weight: bold; color: var(--accent-glow);">Calculando...</span>
             {% else %}
               <span style="color: var(--text-muted);">—</span>
             {% endif %}
@@ -120,7 +141,10 @@
             {% if reserva.estado == 'confirmada' %}
               <form method="post" action="{% url 'cancelar_reserva' reserva.id %}" onsubmit="return confirm('¿Seguro que quieres cancelar la reserva? El dinero volverá a tu balance.');" style="margin:0;">
                 {% csrf_token %}
-                <button type="submit" class="btn" style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;">Cancelar</button>
+                <button type="submit"
+                        class="btn btn-cancel-reserva"
+                        data-fecha-reserva="{{ reserva.fecha_reserva|date:'U' }}"
+                        style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;">Cancelar</button>
               </form>
             {% else %}
               <span style="color: var(--text-muted);">—</span>
@@ -141,108 +165,9 @@
 </div>
 
 <script>
-(function() {
-  // ─── Avatar preview & upload ───
-  const avatarBtn = document.getElementById('avatar-btn');
-  const avatarInput = document.getElementById('avatar-input');
-  const avatarPreview = document.getElementById('avatar-preview');
-  const avatarPlaceholder = document.getElementById('avatar-placeholder');
-
-  if (avatarBtn) {
-    avatarBtn.addEventListener('click', () => avatarInput.click());
-  }
-
-  if (avatarInput) {
-    avatarInput.addEventListener('change', function() {
-      const file = this.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        avatarPreview.src = e.target.result;
-        avatarPreview.style.display = 'block';
-        avatarPreview.classList.add('profile-avatar');
-        if (avatarPlaceholder) avatarPlaceholder.style.display = 'none';
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  // ─── Formulario de perfil ───
-  const profileForm = document.getElementById('profile-form');
-  const feedback = document.getElementById('profile-feedback');
-
-  if (profileForm) {
-    profileForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const formData = new FormData();
-      formData.append('username', document.getElementById('pf-username').value.trim());
-      formData.append('first_name', document.getElementById('pf-first-name').value.trim());
-      const csrfToken = profileForm.querySelector('[name=csrfmiddlewaretoken]').value;
-
-      // Añadir avatar si se eligió uno
-      if (avatarInput && avatarInput.files[0]) {
-        formData.append('avatar', avatarInput.files[0]);
-      }
-
-      feedback.style.display = 'none';
-      feedback.className = 'profile-feedback';
-
-      fetch("{% url 'perfil-actualizar' %}", {
-        method: 'POST',
-        headers: { 'X-CSRFToken': csrfToken },
-        body: formData,
-      })
-      .then(r => r.json())
-      .then(data => {
-        feedback.style.display = 'block';
-        if (data.success) {
-          feedback.classList.add('success');
-          feedback.textContent = data.message || 'Guardado correctamente.';
-        } else {
-          feedback.classList.add('error');
-          feedback.textContent = data.error || 'Error al guardar.';
-        }
-      })
-      .catch(() => {
-        feedback.style.display = 'block';
-        feedback.classList.add('error');
-        feedback.textContent = 'Error de conexión.';
-      });
-    });
-  }
-
-  // ─── Countdown para las reservas ───
-  function updateCountdowns() {
-    const timers = document.querySelectorAll('.countdown-timer');
-    const now = new Date();
-    
-    timers.forEach(timer => {
-      const expDate = new Date(timer.getAttribute('data-expiracion'));
-      const diffMs = expDate - now;
-      
-      if (diffMs <= 0) {
-        timer.textContent = 'Expirada';
-        timer.style.color = '#ef4444';
-      } else {
-        const totalSeconds = Math.floor(diffMs / 1000);
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-        
-        timer.textContent = 
-          String(hours).padStart(2, '0') + ':' + 
-          String(minutes).padStart(2, '0') + ':' + 
-          String(seconds).padStart(2, '0');
-      }
-    });
-  }
-  
-  if (document.querySelectorAll('.countdown-timer').length > 0) {
-    updateCountdowns();
-    setInterval(updateCountdowns, 1000);
-  }
-
-})();
+  // Variable global para que profile.js pueda usarla sin Django template tags
+  const PROFILE_UPDATE_URL = "{% url 'perfil-actualizar' %}";
 </script>
+<script src="{% static 'js/profile.js' %}" defer></script>
 {% endblock %}
+

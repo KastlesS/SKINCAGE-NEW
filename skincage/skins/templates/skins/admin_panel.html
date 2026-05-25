@@ -4,30 +4,68 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/skins.css' %}">
     <link rel="stylesheet" href="{% static 'css/admin_panel.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 {% endblock %}
 
 {% block content %}
 <div class="admin-dashboard">
-    <h2><i class="fa-solid fa-gauge-high" style="color: #f39c12; margin-right: 10px;"></i> Panel de Administración</h2>
-    <p style="color: #8b8b9e;">Monitorización en tiempo real de usuarios, reservas y mercado.</p>
+    <div class="admin-header">
+        <div class="admin-title-area">
+            <h2><i class="fa-solid fa-gauge-high" style="color: #f39c12; margin-right: 10px;"></i> Panel de Administración</h2>
+            <p style="color: #8b8b9e;">Monitorización en tiempo real de usuarios, reservas y mercado.</p>
+        </div>
+        <div class="admin-stats">
+            <div class="stat-box">
+                <i class="fa-solid fa-users" style="color: #3b82f6;"></i>
+                <div>
+                    <span id="stat-users">--</span>
+                    <label>Usuarios</label>
+                </div>
+            </div>
+            <div class="stat-box">
+                <i class="fa-solid fa-clock-rotate-left" style="color: #10b981;"></i>
+                <div>
+                    <span id="stat-reservas">--</span>
+                    <label>Reservas Activas</label>
+                </div>
+            </div>
+            <div class="stat-box">
+                <i class="fa-solid fa-gun" style="color: #f59e0b;"></i>
+                <div>
+                    <span id="stat-skins">--</span>
+                    <label>Skins Totales</label>
+                </div>
+            </div>
+        </div>
+    </div>
     
-    <div class="dashboard-grid">
+    <div class="admin-tabs">
+        <button class="tab-btn active" data-target="tab-users"><i class="fa-solid fa-users"></i> Usuarios</button>
+        <button class="tab-btn" data-target="tab-reservas"><i class="fa-solid fa-book-bookmark"></i> Reservas</button>
+        <button class="tab-btn" data-target="tab-skins"><i class="fa-solid fa-gun"></i> Skins</button>
+    </div>
+
+    <div class="tab-content active" id="tab-users">
         <div class="dashboard-card">
-            <h3><i class="fa-solid fa-users"></i> Usuarios Registrados</h3>
+            <h3>Directorio de Usuarios</h3>
             <ul id="users-container" class="data-list">
                 <li class="data-item"><span style="color:#8b8b9e;">Cargando usuarios...</span></li>
             </ul>
         </div>
-        
+    </div>
+
+    <div class="tab-content" id="tab-reservas">
         <div class="dashboard-card">
-            <h3><i class="fa-solid fa-book-bookmark"></i> Reservas Activas</h3>
+            <h3>Reservas en Sistema</h3>
             <ul id="reservas-container" class="data-list">
                 <li class="data-item"><span style="color:#8b8b9e;">Cargando reservas...</span></li>
             </ul>
         </div>
-        
+    </div>
+
+    <div class="tab-content" id="tab-skins">
         <div class="dashboard-card">
-            <h3><i class="fa-solid fa-gun"></i> Skins en el Mercado</h3>
+            <h3>Inventario de Mercado</h3>
             <ul id="skins-container" class="data-list">
                 <li class="data-item"><span style="color:#8b8b9e;">Cargando skins...</span></li>
             </ul>

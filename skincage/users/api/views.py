@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import ProfileSerializer, RegisterSerializer
 from django.contrib.auth import get_user_model
+from django.db.models import F
 
 User = get_user_model()
 
@@ -58,6 +59,36 @@ class AdminUserListView(generics.ListAPIView):
         if not request.user.is_staff:
             return Response({"detail": "Not authorized"}, status=status.HTTP_403_FORBIDDEN)
         
-        users = User.objects.all().values('id', 'username', 'email', 'is_staff', 'date_joined')
+        users = User.objects.all().values('id', 'username', 'email', 'is_staff', 'date_joined', balance=F('profile__balance'))
         return Response(list(users))
+
+class AddBalanceView(APIView):
+    """
+    POST /api/users/balance/add/
+    Body: { "amount": <float> }
+    Añade saldo al perfil del usuario.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        amount_str = request.data.get('amount')
+        try:
+            from decimal import Decimal, InvalidOperation
+            amount = Decimal(str(amount_str))
+            if amount <= 0:
+                return Response({"error": "El importe debe ser mayor que 0."}, status=status.HTTP_400_BAD_REQUEST)
+            if amount > 10000:
+                return Response({"error": "El límite de recarga es 10,000€."}, status=status.HTTP_400_BAD_REQUEST)
+        except (TypeError, ValueError, InvalidOperation):
+            return Response({"error": "Importe no válido."}, status=status.HTTP_400_BAD_REQUEST)
+
+        profile = request.user.profile
+        profile.balance += amount
+        profile.save()
+
+        return Response({
+            "success": True,
+            "new_balance": profile.balance,
+            "message": f"Se han añadido {amount}€ correctamente."
+        }, status=status.HTTP_200_OK)
 

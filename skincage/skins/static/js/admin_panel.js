@@ -1,4 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Inicializar pestañas
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Quitar clase active de todos
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            // Añadir clase active al pulsado y su contenido
+            btn.classList.add('active');
+            const target = document.getElementById(btn.getAttribute('data-target'));
+            if (target) target.classList.add('active');
+        });
+    });
+
+    // Cargar datos
     fetchUsers();
     fetchReservas();
     fetchSkins();
@@ -30,11 +48,13 @@ function createEmptyMessageItem(message) {
 
 async function fetchUsers() {
     const container = document.getElementById('users-container');
+    const statUsers = document.getElementById('stat-users');
     try {
         const response = await fetch('/api/users/all/');
         if (!response.ok) throw new Error('Error al cargar usuarios');
         const users = await response.json();
         
+        statUsers.textContent = users.length;
         emptyContainer(container);
         
         if (users.length === 0) {
@@ -65,12 +85,17 @@ async function fetchUsers() {
             subtitleSpan.className = 'item-subtitle';
             const date = new Date(user.date_joined).toLocaleDateString();
             const email = user.email ? user.email : 'Sin correo electrónico';
-            subtitleSpan.textContent = `${email} • Registrado: ${date}`;
+            
+            // Añadir balance si viene en la API (el modelo original no lo tiene por defecto en admin endpoint, pero lo preparamos por si acaso)
+            const balanceStr = user.balance !== undefined ? ` • Balance: ${user.balance}€` : '';
+            
+            subtitleSpan.textContent = `${email} • Registrado: ${date}${balanceStr}`;
             li.appendChild(subtitleSpan);
             
             container.appendChild(li);
         });
     } catch (error) {
+        statUsers.textContent = "Error";
         emptyContainer(container);
         container.appendChild(createErrorItem(error.message));
     }
@@ -78,17 +103,21 @@ async function fetchUsers() {
 
 async function fetchReservas() {
     const container = document.getElementById('reservas-container');
+    const statReservas = document.getElementById('stat-reservas');
     try {
         const response = await fetch('/api/reservas/');
         if (!response.ok) throw new Error('Error al cargar reservas');
         const reservas = await response.json();
         
-        emptyContainer(container);
-        
         const data = reservas.results || reservas;
+        // Contar reservas activas (confirmadas)
+        const activas = data.filter(r => r.estado === 'confirmada').length;
+        statReservas.textContent = activas;
+        
+        emptyContainer(container);
 
         if (!data || data.length === 0) {
-            container.appendChild(createEmptyMessageItem('No hay reservas actualmente.'));
+            container.appendChild(createEmptyMessageItem('No hay reservas en el sistema.'));
             return;
         }
         
@@ -102,7 +131,8 @@ async function fetchReservas() {
             const skinName = res.skin ? (res.skin.nombre || `Skin ID: ${res.skin}`) : 'Skin Desconocida';
             const titleSpan = document.createElement('span');
             titleSpan.className = 'item-title';
-            titleSpan.textContent = skinName;
+            const userStr = res.usuario ? (res.usuario.username || `Usuario #${res.usuario}`) : 'Desconocido';
+            titleSpan.textContent = `${skinName} — Reservado por ${userStr}`;
             flexRow.appendChild(titleSpan);
             
             const priceSpan = document.createElement('span');
@@ -117,14 +147,29 @@ async function fetchReservas() {
             
             const subtitleSpan = document.createElement('span');
             subtitleSpan.className = 'item-subtitle';
+            subtitleSpan.style.display = 'flex';
+            subtitleSpan.style.alignItems = 'center';
+            subtitleSpan.style.justifyContent = 'space-between';
+            subtitleSpan.style.width = '100%';
+            
+            const infoLeft = document.createElement('span');
             const date = res.fecha_reserva ? new Date(res.fecha_reserva).toLocaleString() : 'Fecha desconocida';
-            const userStr = res.usuario ? `Reservado por ID ${res.usuario}` : '';
-            subtitleSpan.textContent = `Reserva #${res.id} • ${date} ${userStr ? '• ' + userStr : ''}`;
+            infoLeft.textContent = `ID #${res.id} • ${date}`;
+            subtitleSpan.appendChild(infoLeft);
+            
+            const badgeSpan = document.createElement('span');
+            badgeSpan.className = `badge-estado badge-${res.estado}`;
+            // Formatear texto del badge (capitalizado)
+            const estadoTexto = res.estado.charAt(0).toUpperCase() + res.estado.slice(1);
+            badgeSpan.textContent = estadoTexto;
+            subtitleSpan.appendChild(badgeSpan);
+            
             li.appendChild(subtitleSpan);
             
             container.appendChild(li);
         });
     } catch (error) {
+        statReservas.textContent = "Error";
         emptyContainer(container);
         container.appendChild(createErrorItem(error.message));
     }
@@ -132,17 +177,19 @@ async function fetchReservas() {
 
 async function fetchSkins() {
     const container = document.getElementById('skins-container');
+    const statSkins = document.getElementById('stat-skins');
     try {
         const response = await fetch('/api/skin-crud/');
         if (!response.ok) throw new Error('Error al cargar skins');
         const skins = await response.json();
         
-        emptyContainer(container);
-        
         const data = skins.results || skins;
+        statSkins.textContent = data.length;
+        
+        emptyContainer(container);
 
         if (!data || data.length === 0) {
-            container.appendChild(createEmptyMessageItem('No hay skins en el mercado.'));
+            container.appendChild(createEmptyMessageItem('No hay skins registradas.'));
             return;
         }
         
@@ -155,7 +202,15 @@ async function fetchSkins() {
             
             const titleSpan = document.createElement('span');
             titleSpan.className = 'item-title';
-            titleSpan.textContent = skin.nombre;
+            // Añadir Stattrak visualmente
+            if (skin.stattrack) {
+                const st = document.createElement('span');
+                st.textContent = 'ST™ ';
+                st.style.color = '#f97316';
+                st.style.fontSize = '0.8rem';
+                titleSpan.appendChild(st);
+            }
+            titleSpan.appendChild(document.createTextNode(skin.nombre));
             flexRow.appendChild(titleSpan);
             
             const priceSpan = document.createElement('span');
@@ -170,20 +225,28 @@ async function fetchSkins() {
             const subtitleSpan = document.createElement('span');
             subtitleSpan.className = 'item-subtitle';
             subtitleSpan.style.display = 'flex';
-            subtitleSpan.style.gap = '10px';
+            subtitleSpan.style.gap = '15px';
             
             const stockSpan = document.createElement('span');
-            stockSpan.style.color = skin.stock > 0 ? '#2ecc71' : '#e74c3c';
-            stockSpan.textContent = `${skin.stock} en stock`;
+            stockSpan.style.color = skin.stock > 0 ? '#10b981' : '#ef4444';
+            stockSpan.innerHTML = `<i class="fa-solid ${skin.stock > 0 ? 'fa-check' : 'fa-xmark'}"></i> Stock: ${skin.stock}`;
             subtitleSpan.appendChild(stockSpan);
+            
+            if (skin.categoria) {
+                const catSpan = document.createElement('span');
+                catSpan.textContent = skin.categoria;
+                catSpan.style.textTransform = 'capitalize';
+                subtitleSpan.appendChild(catSpan);
+            }
             
             const wearSpan = document.createElement('span');
             wearSpan.textContent = skin.desgaste ? `Float: ${skin.desgaste}` : 'N/A';
             subtitleSpan.appendChild(wearSpan);
             
             const raritySpan = document.createElement('span');
-            if (skin.get_rareza_display) {
-                raritySpan.textContent = skin.get_rareza_display;
+            if (skin.rareza) {
+                raritySpan.textContent = skin.rareza;
+                raritySpan.className = 'badge'; // Usar badge simple para rareza
             }
             subtitleSpan.appendChild(raritySpan);
             
@@ -192,6 +255,7 @@ async function fetchSkins() {
             container.appendChild(li);
         });
     } catch (error) {
+        statSkins.textContent = "Error";
         emptyContainer(container);
         container.appendChild(createErrorItem(error.message));
     }
