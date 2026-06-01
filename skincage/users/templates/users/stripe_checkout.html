@@ -1,0 +1,148 @@
+{% extends "portfolio/base.html" %} {% load static %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+<link rel="stylesheet" href="{% static 'css/stripe.css' %}" />
+{% endblock %} {% block content %}
+<div class="stripe-checkout-container">
+  <!-- Left Side: Product Summary -->
+  <div class="stripe-summary-panel">
+    <div>
+      <div class="stripe-brand">
+        <i
+          class="fa-brands fa-stripe"
+          style="color: #635bff; font-size: 2.5rem"
+        ></i>
+        <span class="stripe-brand-logo">SKINCAGE</span>
+      </div>
+      <div class="stripe-product-info">
+        <div class="stripe-product-title">Recarga de saldo de cuenta</div>
+        <div class="stripe-product-desc">
+          Los fondos se acreditarán instantáneamente en tu balance utilizando la
+          pasarela oficial de pruebas de Stripe.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="stripe-label">Total a pagar</div>
+      <div class="stripe-price-display">
+        {{ amount }} <span class="stripe-currency">EUR</span>
+      </div>
+      <div class="stripe-simulated-tag">
+        <i class="fa-solid fa-flask"></i> Pago de Prueba
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Stripe Checkout Form -->
+  <div class="stripe-form-panel">
+    <!-- Spinner/Loading Overlay -->
+    <div id="stripe-loading-overlay" class="stripe-overlay">
+      <div class="stripe-spinner"></div>
+      <div class="stripe-overlay-text">Procesando pago seguro...</div>
+      <div class="stripe-overlay-sub">
+        Conectando con el servidor oficial de pruebas de Stripe para validar la
+        tarjeta.
+      </div>
+    </div>
+
+    <!-- Success Overlay -->
+    <div id="stripe-success-overlay" class="stripe-overlay">
+      <div class="stripe-success-checkmark">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <div class="stripe-overlay-text">¡Pago completado con éxito!</div>
+      <div class="stripe-overlay-sub">
+        Tarjeta validada en Stripe. Añadiendo {{ amount }} € a tu balance y
+        redirigiendo...
+      </div>
+    </div>
+
+    <div class="stripe-form-title">Pagar con tarjeta (Stripe Elements)</div>
+
+    <div class="stripe-info-alert">
+      <i
+        class="fa-solid fa-circle-info"
+        style="font-size: 1.1rem; margin-top: 2px"
+      ></i>
+      <div>
+        <strong>Modo de prueba oficial:</strong> Introduce la tarjeta de prueba
+        estándar de Stripe: <strong>4242 4242 4242 4242</strong> con cualquier
+        fecha de caducidad futura y cualquier CVC de 3 dígitos.
+      </div>
+    </div>
+
+    <form id="stripe-payment-form" data-amount="{{ amount }}">
+      {% csrf_token %}
+      <div class="stripe-form-group">
+        <label class="stripe-label" for="stripe-email"
+          >Correo electrónico</label
+        >
+        <input
+          type="email"
+          id="stripe-email"
+          class="stripe-input"
+          value="{{ user.email }}"
+          required
+        />
+      </div>
+
+      <div class="stripe-form-group">
+        <label class="stripe-label">Información de la tarjeta segura</label>
+        <div id="stripe-card-container" class="stripe-card-composite">
+          <!-- The Stripe Card Element iframe will be injected here -->
+          <div id="card-element"></div>
+        </div>
+        <!-- Display card errors -->
+        <div
+          id="card-errors"
+          role="alert"
+          style="
+            color: #ef4444;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+          "
+        ></div>
+      </div>
+
+      <div class="stripe-form-group">
+        <label class="stripe-label" for="stripe-name"
+          >Nombre en la tarjeta</label
+        >
+        <input
+          type="text"
+          id="stripe-name"
+          class="stripe-input"
+          value="{{ user.first_name|default:user.username }}"
+          required
+          autocomplete="cc-name"
+        />
+      </div>
+
+      <div class="stripe-form-group">
+        <label class="stripe-label" for="stripe-country">País o región</label>
+        <select id="stripe-country" class="stripe-input">
+          <option value="ES" selected>España</option>
+          <option value="MX">México</option>
+          <option value="AR">Argentina</option>
+          <option value="CO">Colombia</option>
+          <option value="CL">Chile</option>
+          <option value="US">Estados Unidos</option>
+          <option value="OTHER">Otro</option>
+        </select>
+      </div>
+
+      <button type="submit" id="stripe-submit-btn" class="stripe-submit-btn">
+        <i class="fa-solid fa-lock"></i> Pagar {{ amount }} €
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Load official Stripe.js library -->
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'js/stripe.js' %}"></script>
+{% endblock %}

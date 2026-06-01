@@ -1,35 +1,40 @@
 <header class="cabecera">
-    <div class="header-container">
-        <div class="logo">
-            <h1><a href="{% url 'home' %}">SkinCage</a></h1>
-        </div>
-
-        <div class="nav-wrapper">
-            <nav id="navbar">
-                <ul>
-                    <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
-                    <li><a href="{% url 'skins' %}" class="nav-link">Mercado</a></li>
-                    <li><a href="#" class="nav-link">Comunidad</a></li>
-                    
-                    {% if user.is_authenticated %}
-                        <li><a href="{% url 'perfil' %}" class="nav-link">Perfil</a></li>
-                        {% if user.is_staff %}
-                        <li><a href="{% url 'admin_panel' %}" class="nav-link" style="color: #f39c12;">Panel Admin</a></li>
-                        {% endif %}
-                    {% endif %}
-                </ul>
-            </nav>
-
-            <div class="auth-actions">
-                {% if not user.is_authenticated %}
-                    <a href="{% url 'login' %}" class="btn-auth">Iniciar Sesión</a>
-                {% else %}
-                    <form action="{% url 'logout' %}" method="post" class="logout-form">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-auth btn-logout">Logout</button>
-                    </form>
-                {% endif %}
-            </div>
-        </div>
+  <div class="header-container">
+    <div class="logo">
+      <h1><a href="{% url 'home' %}">SkinCage</a></h1>
     </div>
+
+    <div class="nav-wrapper">
+      <nav id="navbar">
+        <ul>
+          <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+          <li><a href="{% url 'skins' %}" class="nav-link">Mercado</a></li>
+
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'perfil' %}" class="nav-link">Perfil</a></li>
+          {% if user.is_staff %}
+          <li>
+            <a
+              href="{% url 'admin_panel' %}"
+              class="nav-link"
+              style="color: #f39c12"
+              >Panel Admin</a
+            >
+          </li>
+          {% endif %} {% endif %}
+        </ul>
+      </nav>
+
+      <div class="auth-actions">
+        {% if not user.is_authenticated %}
+        <a href="{% url 'login' %}" class="btn-auth">Iniciar Sesión</a>
+        {% else %}
+        <form action="{% url 'logout' %}" method="post" class="logout-form">
+          {% csrf_token %}
+          <button type="submit" class="btn-auth btn-logout">Logout</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </header>

@@ -53,3 +53,24 @@ class UpdateProfileView(LoginRequiredMixin, View):
         profile.save()
 
         return JsonResponse({'success': True, 'message': 'Perfil actualizado correctamente.'})
+
+
+class VistaRecargaStripe(LoginRequiredMixin, TemplateView):
+    """Sirve la página de simulación de pago con Stripe utilizando el SDK oficial."""
+    template_name = 'users/stripe_checkout.html'
+    login_url = 'login'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        amount = self.request.GET.get('amount', '0.00')
+        try:
+            amount_val = float(amount)
+            if amount_val < 0:
+                amount = '0.00'
+            else:
+                amount = f"{amount_val:.2f}"
+        except ValueError:
+            amount = '0.00'
+        context['amount'] = amount
+        context['page_title'] = 'Pago con Stripe'
+        return context

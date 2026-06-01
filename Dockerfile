@@ -19,7 +19,7 @@ COPY scripts/entrypoint.sh /entrypoint.sh
 RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 
 # Crear directorio para estáticos
-RUN mkdir -p /code/skincage/static /code/skincage/media
+RUN mkdir -p /code/skincage/static /code/skincage/staticfiles /code/skincage/media
 
 # Por defecto, usar el entrypoint que arranca gunicorn (permite override con 'command' en compose)
 ENTRYPOINT ["/entrypoint.sh"]

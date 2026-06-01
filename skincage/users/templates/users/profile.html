@@ -131,8 +131,14 @@
           </td>
           <td style="color: var(--text-muted); font-size: 0.82rem;">{{ reserva.fecha_reserva|date:"d/m/Y" }}</td>
           <td>
-            {% if reserva.estado == 'confirmada' and reserva.fecha_expiracion %}
-              <span class="countdown-timer" data-expiracion="{{ reserva.fecha_expiracion|date:'U' }}" style="font-family: monospace; font-weight: bold; color: var(--accent-glow);">Calculando...</span>
+            {% if reserva.estado == 'confirmada' %}
+              <span
+                class="countdown-cancel-timer"
+                data-fecha-reserva="{{ reserva.fecha_reserva|date:'U' }}"
+                data-expiracion="{{ reserva.fecha_expiracion|date:'U' }}"
+                data-reserva-id="{{ reserva.id }}"
+                style="font-family: monospace; font-weight: bold;"
+              >...</span>
             {% else %}
               <span style="color: var(--text-muted);">—</span>
             {% endif %}
@@ -143,7 +149,7 @@
                 {% csrf_token %}
                 <button type="submit"
                         class="btn btn-cancel-reserva"
-                        data-fecha-reserva="{{ reserva.fecha_reserva|date:'U' }}"
+                        data-reserva-id="{{ reserva.id }}"
                         style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;">Cancelar</button>
               </form>
             {% else %}

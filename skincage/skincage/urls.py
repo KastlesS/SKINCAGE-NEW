@@ -9,7 +9,7 @@ from django.conf.urls.static import static
 from skins.views import VistaSkins, SkinCreate, SkinUpdate, SkinDeleteView, Home, MercadoViewRegistered, SkinDetailView, AdminPanelView, ConfirmarReservaView, CancelarReservaView
 from login.views import LoginFormView2, Logout, RegisterView
 from skins.api.views import SkinListViewSet, SkinCRUDView, SkinPublicViewSet, ReservaViewSet
-from users.views import ProfilePageView, UpdateProfileView
+from users.views import ProfilePageView, UpdateProfileView, VistaRecargaStripe
 
 router = DefaultRouter()
 router.register('skin-list', SkinListViewSet, basename='skin-list')
@@ -39,4 +39,5 @@ urlpatterns = [
     path('mercado/', MercadoViewRegistered.as_view(), name='mercado'),
     path('perfil/', ProfilePageView.as_view(), name='perfil'),
     path('perfil/actualizar/', UpdateProfileView.as_view(), name='perfil-actualizar'),
+    path('perfil/recargar/', VistaRecargaStripe.as_view(), name='perfil-recargar'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
