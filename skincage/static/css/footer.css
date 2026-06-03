@@ -60,10 +60,73 @@
   font-size: 0.9rem;
 }
 
-/* Ajuste para móviles */
-@media (max-width: 600px) {
+/* =========================
+   FOOTER — MOBILE (≤ 768px)
+========================= */
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 16px 16px;
+  }
+
   .footer-container {
     grid-template-columns: 1fr;
+    gap: 28px;
+    padding-bottom: 28px;
     text-align: center;
+  }
+
+  .footer-logo {
+    font-size: 1.3rem;
+  }
+
+  .footer-column h4 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  .footer-column ul {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
+
+  .footer-column ul li {
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  /* Hover con padding-left no queda bien centrado en mobile */
+  .footer-column a:hover {
+    padding-left: 0;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-bottom {
+    font-size: 0.85rem;
+    padding-top: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 32px 12px 12px;
+  }
+
+  .footer-container {
+    gap: 20px;
+    padding-bottom: 20px;
+  }
+
+  .footer-logo {
+    font-size: 1.1rem;
+  }
+
+  .footer-column p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .footer-bottom {
+    font-size: 0.78rem;
   }
 }

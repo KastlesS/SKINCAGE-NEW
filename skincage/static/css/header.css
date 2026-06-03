@@ -75,3 +75,164 @@
   display: flex;
   align-items: center;
 }
+
+/* =========================
+   HEADER — MOBILE (≤ 768px)
+========================= */
+
+/* Botón hamburguesa — reset del estilo global de button y oculto en desktop */
+.hamburger {
+  /* Reset de estilos globales de button (buttons.css) */
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  /* Layout propio */
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 6px;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+  flex-shrink: 0;
+}
+
+.hamburger:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-main);
+  border-radius: 2px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+/* Estado activo del hamburger → X */
+.hamburger.is-active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.is-active span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.hamburger.is-active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  /* ---- Contenedor principal ---- */
+  .header-container {
+    position: relative;
+    padding: 0 16px;
+    flex-wrap: wrap;
+    row-gap: 0;
+  }
+
+  /* ---- Logo ajustado ---- */
+  .logo a {
+    font-size: 1.4rem;
+  }
+
+  /* ---- Hamburger visible ---- */
+  .hamburger {
+    display: flex;
+    order: 3; /* Va al extremo derecho */
+  }
+
+  /* ---- nav-wrapper ocupa fila completa debajo ---- */
+  .nav-wrapper {
+    order: 4;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    /* Oculto por defecto: altura 0 con overflow hidden */
+    max-height: 0;
+    overflow: hidden;
+    transition:
+      max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.3s ease,
+      padding 0.3s ease;
+    opacity: 0;
+    padding: 0 0;
+    border-top: 0px solid var(--border-color);
+  }
+
+  /* Estado abierto: clase añadida por JS */
+  .nav-wrapper.is-open {
+    max-height: 400px;
+    opacity: 1;
+    padding: 16px 0 20px;
+    border-top: 1px solid var(--border-color);
+  }
+
+  #navbar {
+    width: 100%;
+  }
+
+  /* ---- Navbar en columna ---- */
+  #navbar ul {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+
+  #navbar ul li {
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .nav-link {
+    display: block;
+    padding: 16px 4px;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  .nav-link:hover {
+    background: rgba(168, 85, 247, 0.06);
+    letter-spacing: 1px;
+  }
+
+  /* ---- Botón auth al final del menú ---- */
+  .auth-actions {
+    width: 100%;
+    margin-top: 16px;
+    padding: 0 4px;
+  }
+
+  .auth-actions .btn-auth,
+  .auth-actions .btn-logout {
+    width: 100%;
+    justify-content: center;
+    height: 44px;
+    font-size: 0.95rem;
+  }
+
+  .logout-form {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo a {
+    font-size: 1.2rem;
+  }
+
+  .cabecera {
+    padding: 10px 0;
+  }
+}

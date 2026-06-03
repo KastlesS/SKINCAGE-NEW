@@ -1,0 +1,263 @@
+/* =========================
+   CONFIRMAR RESERVA
+========================= */
+
+.reserva-container {
+  max-width: 1000px;
+  width: 100%;
+  margin: 40px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* ---- Tarjeta de la skin ---- */
+.reserva-skin-card {
+  margin: 0;
+  max-width: 100%;
+}
+
+/* ---- Nombre de la skin ---- */
+.reserva-skin-nombre {
+  font-family: "Orbitron", sans-serif;
+}
+
+/* ---- Precio de la skin ---- */
+.reserva-skin-precio {
+  color: var(--accent);
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: "Orbitron", sans-serif;
+}
+
+/* ---- Detalles (rareza, float) ---- */
+.reserva-skin-detalles {
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+/* ---- Sección del formulario ---- */
+.reserva-form-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ---- Título ---- */
+.reserva-titulo {
+  font-family: "Orbitron", sans-serif;
+  margin-bottom: 20px;
+}
+
+/* ---- Balance actual ---- */
+.balance-info {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+}
+
+/* ---- Selector de duración ---- */
+.duration-selector {
+  margin-bottom: 20px;
+}
+
+.duration-selector label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+}
+
+.duration-selector select {
+  width: 100%;
+  padding: 10px;
+  background: #111118;
+  color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+.duration-selector select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+}
+
+/* ---- Aviso de balance insuficiente ---- */
+.reserva-warning {
+  color: #ef4444;
+  font-weight: bold;
+  margin-bottom: 20px;
+  display: none;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+/* ---- Acciones (botones) ---- */
+.reserva-actions {
+  display: flex;
+  gap: 15px;
+}
+
+/* Botón confirmar */
+.btn-confirmar-reserva {
+  flex: 1;
+  border: none;
+  cursor: pointer;
+}
+
+/* Botón cancelar */
+.btn-cancelar-reserva {
+  flex: 1;
+  text-align: center;
+  background: transparent;
+  border: 1px solid var(--text-muted);
+  color: var(--text-muted);
+}
+
+.btn-cancelar-reserva:hover {
+  border-color: var(--text-main);
+  color: var(--text-main);
+}
+
+/* =========================
+   CONFIRMAR RESERVA — MOBILE (≤ 768px)
+========================= */
+/* =========================
+   CONFIRMAR RESERVA — MOBILE (≤ 768px)
+========================= */
+@media (max-width: 768px) {
+  /* Previene overflow horizontal global en esta página */
+  .reserva-container {
+    grid-template-columns: 1fr;
+    /* Usar padding del viewport en vez de margin para evitar overflow */
+    width: calc(100% - 28px);
+    margin: 16px auto;
+    padding: 20px 16px;
+    box-sizing: border-box;
+    gap: 20px;
+    border-radius: 14px;
+    /* Contener cualquier hijo que desborde */
+    overflow: hidden;
+  }
+
+  /* La tarjeta de la skin debe respetar el contenedor */
+  .reserva-skin-card {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Imagen de la skin centrada y acotada */
+  .skin-image-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .skin-image.detail-image {
+    max-width: 220px;
+    width: 100%;
+    height: auto;
+  }
+
+  .reserva-skin-precio {
+    font-size: 1.25rem;
+  }
+
+  .balance-info {
+    font-size: 1rem;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  .reserva-titulo {
+    font-size: 1.25rem;
+    margin-bottom: 14px;
+  }
+
+  /* Selector de duración a ancho completo */
+  .duration-selector {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .duration-selector select {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Aviso de balance */
+  .reserva-warning {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  /* Botones apilados */
+  .reserva-actions {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .btn-confirmar-reserva,
+  .btn-cancelar-reserva {
+    flex: unset;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    display: block;
+    padding: 14px;
+  }
+}
+
+/* =========================
+   CONFIRMAR RESERVA — MOBILE PEQUEÑO (≤ 480px)
+========================= */
+@media (max-width: 480px) {
+  .reserva-container {
+    width: calc(100% - 16px);
+    margin: 12px auto;
+    padding: 16px 12px;
+    border-radius: 12px;
+    gap: 16px;
+  }
+
+  .skin-image.detail-image {
+    max-width: 180px;
+  }
+
+  .reserva-titulo {
+    font-size: 1.1rem;
+  }
+
+  .balance-info {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+
+  .duration-selector select {
+    font-size: 0.9rem;
+    padding: 9px;
+  }
+
+  .reserva-skin-precio {
+    font-size: 1.1rem;
+  }
+
+  .reserva-skin-nombre {
+    font-size: 1.1rem;
+  }
+}
+

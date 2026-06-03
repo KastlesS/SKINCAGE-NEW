@@ -107,7 +107,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for reserva in reservas %}
+      {% for reserva in reservas %}
         <tr>
           <td>
             {% if reserva.skin.imagen_url %}
@@ -118,19 +118,19 @@
               </div>
             {% endif %}
           </td>
-          <td>
+          <td data-label="Nombre">
             {% if reserva.skin.es_stattrak %}
               <span style="color: #f97316; font-size:0.75rem; font-weight:700;">ST™</span>
             {% endif %}
             {{ reserva.skin.nombre }}
           </td>
-          <td style="color: var(--text-muted); font-size: 0.85rem;">{{ reserva.skin.desgaste }}</td>
-          <td style="color: var(--accent-glow); font-weight:600;">{{ reserva.precio_reserva }} €</td>
-          <td>
+          <td data-label="Float" style="color: var(--text-muted); font-size: 0.85rem;">{{ reserva.skin.desgaste }}</td>
+          <td data-label="Precio" style="color: var(--accent-glow); font-weight:600;">{{ reserva.precio_reserva }} €</td>
+          <td data-label="Estado">
             <span class="badge-estado badge-{{ reserva.estado }}">{{ reserva.get_estado_display }}</span>
           </td>
-          <td style="color: var(--text-muted); font-size: 0.82rem;">{{ reserva.fecha_reserva|date:"d/m/Y" }}</td>
-          <td>
+          <td data-label="Fecha" style="color: var(--text-muted); font-size: 0.82rem;">{{ reserva.fecha_reserva|date:"d/m/Y" }}</td>
+          <td data-label="Tiempo">
             {% if reserva.estado == 'confirmada' %}
               <span
                 class="countdown-cancel-timer"
@@ -143,7 +143,7 @@
               <span style="color: var(--text-muted);">—</span>
             {% endif %}
           </td>
-          <td>
+          <td data-label="Acción">
             {% if reserva.estado == 'confirmada' %}
               <form method="post" action="{% url 'cancelar_reserva' reserva.id %}" onsubmit="return confirm('¿Seguro que quieres cancelar la reserva? El dinero volverá a tu balance.');" style="margin:0;">
                 {% csrf_token %}

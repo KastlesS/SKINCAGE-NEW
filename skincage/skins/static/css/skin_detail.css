@@ -228,7 +228,7 @@
 
 .related-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 15px;
   padding: 10px 5px;
 }
@@ -256,7 +256,7 @@
 
 .related-image {
   width: 100%;
-  height: 100px;
+  height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -275,7 +275,7 @@
 }
 
 .related-name {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: #e1e1e6;
   font-weight: 600;
   white-space: nowrap;
@@ -331,8 +331,144 @@
   }
 }
 
+/* =========================
+   SKIN DETAIL — TABLET (≤ 850px)
+========================= */
 @media (max-width: 850px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+    padding: 25px;
+    gap: 24px;
+  }
+
+  .detail-image-section img {
+    max-width: 300px;
+  }
+
   .related-grid {
-    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+/* =========================
+   SKIN DETAIL — MOBILE (≤ 768px)
+========================= */
+@media (max-width: 768px) {
+  .skin-detail-container {
+    padding: 24px 14px;
+  }
+
+  .detail-layout {
+    padding: 20px 16px;
+    border-radius: 14px;
+    gap: 20px;
+  }
+
+  .detail-image-section img {
+    max-width: 260px;
+  }
+
+  .detail-title {
+    font-size: 1.6rem;
+  }
+
+  .detail-price {
+    font-size: 1.9rem;
+  }
+
+  .info-grid {
+    gap: 10px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 20px;
+  }
+
+  .related-skins-section {
+    margin-top: 36px;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+  }
+
+  .related-grid {
+    gap: 10px;
+    padding: 8px 4px;
+  }
+
+  /* Imagen de card más compacta en mobile */
+  .related-image {
+    height: 110px;
+  }
+
+  /* Controles siempre visibles en touch */
+  .carousel-control-prev,
+  .carousel-control-next {
+    opacity: 0.7;
+    width: 34px;
+    height: 34px;
+  }
+
+  .carousel-control-prev { left: 0; }
+  .carousel-control-next { right: 0; }
+}
+
+/* =========================
+   SKIN DETAIL — MOBILE PEQUEÑO (≤ 480px)
+========================= */
+@media (max-width: 480px) {
+  .skin-detail-container {
+    padding: 16px 10px;
+  }
+
+  .detail-layout {
+    padding: 16px 12px;
+    border-radius: 12px;
+  }
+
+  .detail-image-section img {
+    max-width: 200px;
+  }
+
+  .detail-title {
+    font-size: 1.3rem;
+  }
+
+  .detail-price {
+    font-size: 1.6rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .related-grid {
+    gap: 8px;
+  }
+
+  .related-card {
+    padding: 12px;
+  }
+
+  .related-image {
+    height: 90px;
+  }
+
+  .related-name {
+    font-size: 0.78rem;
+  }
+
+  .related-price {
+    font-size: 0.8rem;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    opacity: 0.8;
   }
 }

@@ -79,7 +79,7 @@
         <div id="relatedSkinsCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 {% for s in related_skins %}
-                    {% if forloop.counter0|divisibleby:4 %}
+                    {% if forloop.counter0|divisibleby:2 %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         <div class="related-grid">
                     {% endif %}
@@ -94,14 +94,14 @@
                         </div>
                     </a>
 
-                    {% if forloop.counter|divisibleby:4 or forloop.last %}
+                    {% if forloop.counter|divisibleby:2 or forloop.last %}
                         </div>
                     </div>
                     {% endif %}
                 {% endfor %}
             </div>
             
-            {% if related_skins|length > 4 %}
+            {% if related_skins|length > 2 %}
             <button class="carousel-control-prev" type="button" data-bs-target="#relatedSkinsCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Anterior</span>

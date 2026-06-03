@@ -216,12 +216,127 @@
   margin-bottom: 15px;
 }
 
+/* =========================
+   HOME — MOBILE (≤ 768px)
+========================= */
 @media (max-width: 768px) {
+  /* ---- Hero / Inicio ---- */
   .inicio {
     flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: auto;
+    padding: 48px 20px 40px;
+    gap: 32px;
+  }
+
+  .content h3 {
+    font-size: 1.75rem;
+    max-width: 100%;
+  }
+
+  .content p {
+    font-size: 0.95rem;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .etiqueta-inicio {
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .lista-beneficios {
+    align-items: center;
+  }
+
+  /* Botones apilados en columna y centrados */
+  .botones-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .botones-header .boton,
+  .botones-header .boton-secundario {
+    width: 100%;
+    max-width: 280px;
     text-align: center;
   }
+
+  /* Imagen hero más pequeña */
+  .imagen-hero {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .imagen-hero img {
+    width: 260px;
+    height: 260px;
+  }
+
+  /* ---- Estadísticas ---- */
+  .estadisticas-simples {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    padding: 40px 20px;
+    margin: 20px auto;
+    max-width: 100%;
+  }
+
+  .estadistica-item h3 {
+    font-size: 2rem;
+  }
+
+  .estadistica-item p {
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* =========================
+   HOME — MOBILE PEQUEÑO (≤ 480px)
+========================= */
+@media (max-width: 480px) {
+  /* ---- Hero / Inicio ---- */
+  .inicio {
+    padding: 36px 16px 32px;
+    gap: 24px;
+  }
+
   .content h3 {
+    font-size: 1.4rem;
+  }
+
+  .etiqueta-inicio {
+    font-size: 0.8rem;
+  }
+
+  .imagen-hero img {
+    width: 200px;
+    height: 200px;
+  }
+
+  /* ---- Estadísticas en 1 columna ---- */
+  .estadisticas-simples {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 32px 16px;
+  }
+
+  .estadistica-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .estadistica-item:last-child {
+    border-bottom: none;
+  }
+
+  .estadistica-item h3 {
     font-size: 1.8rem;
   }
 }
