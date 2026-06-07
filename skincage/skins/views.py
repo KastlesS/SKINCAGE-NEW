@@ -28,18 +28,16 @@ class SkinDetailView(RequestUserMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Get 12 random skins of the same category, excluding the current one
+        
         related = Skin.objects.filter(
             categoria=self.object.categoria
         ).exclude(id=self.object.id).order_by('?')[:12]
         context['related_skins'] = related
 
-        # Preserve filters from URL parameters
         filtros = self.request.GET.copy()
         encoded = urlencode(filtros)
         context['current_filters'] = f"?{encoded}" if encoded else ""
         
-        # Check if skin is currently reserved
         Reserva.expirar_pendientes()
         context['skin_reservada'] = self.object.reservas.filter(
             estado=Reserva.EstadoChoices.CONFIRMADA,
@@ -74,6 +72,7 @@ class ConfirmarReservaView(RequestUserMixin, DetailView):
             
         context = self.get_context_data(object=self.object)
         context['balance'] = request.user.profile.balance
+        context['multiplicadores'] = Reserva.MULTIPLICADORES_DURACION
         return self.render_to_response(context)
         
     def post(self, request, *args, **kwargs):
@@ -95,7 +94,7 @@ class ConfirmarReservaView(RequestUserMixin, DetailView):
         if duracion not in [1, 6, 12, 24, 48, 72]:
             duracion = 24
             
-        precio = self.object.precio
+        precio = Reserva.calcular_precio(self.object.precio, duracion)
         perfil = request.user.profile
         
         with transaction.atomic():

@@ -212,7 +212,6 @@
   }
 }
 
-/* CAROUSEL Y SKINS RELACIONADAS */
 .related-skins-section {
   max-width: 1000px;
   margin: 60px auto 0;
@@ -331,9 +330,6 @@
   }
 }
 
-/* =========================
-   SKIN DETAIL — TABLET (≤ 850px)
-========================= */
 @media (max-width: 850px) {
   .detail-layout {
     grid-template-columns: 1fr;
@@ -350,9 +346,6 @@
   }
 }
 
-/* =========================
-   SKIN DETAIL — MOBILE (≤ 768px)
-========================= */
 @media (max-width: 768px) {
   .skin-detail-container {
     padding: 24px 14px;
@@ -400,12 +393,10 @@
     padding: 8px 4px;
   }
 
-  /* Imagen de card más compacta en mobile */
   .related-image {
     height: 110px;
   }
 
-  /* Controles siempre visibles en touch */
   .carousel-control-prev,
   .carousel-control-next {
     opacity: 0.7;
@@ -413,13 +404,14 @@
     height: 34px;
   }
 
-  .carousel-control-prev { left: 0; }
-  .carousel-control-next { right: 0; }
+  .carousel-control-prev {
+    left: 0;
+  }
+  .carousel-control-next {
+    right: 0;
+  }
 }
 
-/* =========================
-   SKIN DETAIL — MOBILE PEQUEÑO (≤ 480px)
-========================= */
 @media (max-width: 480px) {
   .skin-detail-container {
     padding: 16px 10px;

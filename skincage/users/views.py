@@ -16,7 +16,6 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
         user = self.request.user
         profile = user.profile
 
-        # Skins en reserva
         reservas = Reserva.objects.filter(usuario=user).select_related('skin').order_by('-fecha_reserva')
 
         context['page_title'] = f'Perfil de {user.username}'
@@ -26,14 +25,12 @@ class ProfilePageView(LoginRequiredMixin, TemplateView):
 
 
 class UpdateProfileView(LoginRequiredMixin, View):
-    """Actualiza los datos del perfil del usuario (username, first_name, avatar)."""
     login_url = 'login'
 
     def post(self, request, *args, **kwargs):
         user = request.user
         profile = user.profile
 
-        # Datos de texto
         new_username = request.POST.get('username', '').strip()
         new_first_name = request.POST.get('first_name', '').strip()
 
@@ -46,7 +43,6 @@ class UpdateProfileView(LoginRequiredMixin, View):
         user.first_name = new_first_name
         user.save()
 
-        # Avatar
         if 'avatar' in request.FILES:
             profile.avatar = request.FILES['avatar']
 
@@ -56,7 +52,6 @@ class UpdateProfileView(LoginRequiredMixin, View):
 
 
 class VistaRecargaStripe(LoginRequiredMixin, TemplateView):
-    """Sirve la página de simulación de pago con Stripe utilizando el SDK oficial."""
     template_name = 'users/stripe_checkout.html'
     login_url = 'login'
 

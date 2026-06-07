@@ -88,8 +88,25 @@ class Reserva(models.Model):
         default='',
         verbose_name='Notas',
     )
+
+    MULTIPLICADORES_DURACION = {
+        1:  1.00,  
+        6:  1.10, 
+        12: 1.15,  
+        24: 1.25,  
+        48: 1.40,  
+        72: 1.60,  
+    }
+
     duracion_horas = models.PositiveSmallIntegerField(
-        choices=[(1, '1 hora'), (6, '6 horas'), (12, '12 horas'), (24, '24 horas'), (48, '48 horas'), (72, '72 horas')],
+        choices=[
+            (1,  '1 hora'),
+            (6,  '6 horas'),
+            (12, '12 horas'),
+            (24, '24 horas'),
+            (48, '48 horas'),
+            (72, '72 horas'),
+        ],
         default=24,
         verbose_name='Duración en horas',
     )
@@ -117,6 +134,12 @@ class Reserva(models.Model):
             delta = self.fecha_expiracion - timezone.now()
             return max(delta.total_seconds(), 0)
         return 0
+
+    @classmethod
+    def calcular_precio(cls, precio_base, duracion_horas):
+        from decimal import Decimal
+        multiplicador = Decimal(str(cls.MULTIPLICADORES_DURACION.get(duracion_horas, 1.25)))
+        return (precio_base * multiplicador).quantize(Decimal('0.01'))
 
     @classmethod
     def expirar_pendientes(cls):

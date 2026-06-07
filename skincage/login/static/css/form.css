@@ -10,7 +10,6 @@
   margin: 60px auto;
 }
 
-/* Título (si luego agregas uno) */
 .formulario h1,
 .formulario h2 {
   text-align: center;
@@ -74,7 +73,6 @@
   box-shadow: 0 0 10px rgba(167, 139, 250, 0.4);
 }
 
-/* ── Login Error Banner ─────────────────────────────────── */
 @keyframes slideInError {
   from {
     opacity: 0;
@@ -98,11 +96,22 @@
 }
 
 @keyframes shakeField {
-  0%, 100% { transform: translateX(0); }
-  20%       { transform: translateX(-6px); }
-  40%       { transform: translateX(6px); }
-  60%       { transform: translateX(-4px); }
-  80%       { transform: translateX(4px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
 }
 
 .login-error-banner {
@@ -134,7 +143,6 @@
   flex: 1;
 }
 
-/* Campos con error */
 .form_control.input-error {
   border-color: rgba(239, 68, 68, 0.7);
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);

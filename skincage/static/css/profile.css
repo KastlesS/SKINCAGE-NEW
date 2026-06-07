@@ -1,542 +1,533 @@
-/* =========================
-   PERFIL DE USUARIO
-========================= */
-
 .profile-page {
-    max-width: 960px;
-    margin: 40px auto;
-    padding: 0 20px 80px;
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 0 20px 80px;
 }
 
-/* Header de perfil */
 .profile-header {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 32px;
-    margin-bottom: 32px;
-    position: relative;
-    overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
 }
 
 .profile-header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent), #7c3aed, var(--accent-glow));
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    #7c3aed,
+    var(--accent-glow)
+  );
 }
 
 .profile-avatar-wrapper {
-    position: relative;
-    flex-shrink: 0;
+  position: relative;
+  flex-shrink: 0;
 }
 
 .profile-avatar {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--accent);
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
 }
 
 .avatar-placeholder {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #1f1f2a, #2a1f3d);
-    border: 3px solid var(--accent);
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2.5rem;
-    color: var(--accent);
-    text-transform: uppercase;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1f1f2a, #2a1f3d);
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Orbitron", sans-serif;
+  font-size: 2.5rem;
+  color: var(--accent);
+  text-transform: uppercase;
 }
 
 .avatar-edit-btn {
-    position: absolute;
-    bottom: 4px;
-    right: 4px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--accent);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    font-size: 0.75rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-    transition: 0.2s;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition: 0.2s;
 }
 
 .avatar-edit-btn:hover {
-    background: var(--accent-glow);
-    transform: scale(1.1);
+  background: var(--accent-glow);
+  transform: scale(1.1);
 }
 
 .profile-info {
-    flex: 1;
+  flex: 1;
 }
 
 .profile-username {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.8rem;
-    color: var(--text-main);
-    margin-bottom: 6px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.8rem;
+  color: var(--text-main);
+  margin-bottom: 6px;
 }
 
 .profile-email {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    margin-bottom: 12px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 12px;
 }
 
 .profile-balance-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(168, 85, 247, 0.12);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    border-radius: 12px;
-    padding: 8px 18px;
-    color: var(--accent-glow);
-    font-weight: 600;
-    font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 12px;
+  padding: 8px 18px;
+  color: var(--accent-glow);
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .profile-balance-badge .balance-label {
-    color: var(--text-muted);
-    font-weight: 400;
-    font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 0.85rem;
 }
 
-/* Secciones */
 .profile-section {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 28px;
-    margin-bottom: 24px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 24px;
 }
 
 .profile-section-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1rem;
-    color: var(--accent);
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border-color);
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+    padding: 24px 20px;
+  }
+
+  .profile-username {
+    font-size: 1.4rem;
+  }
+
+  .profile-balance-badge {
+    justify-content: center;
+  }
+
+  .profile-page {
+    margin: 20px auto;
+    padding: 0 12px 60px;
+  }
+
+  .profile-section {
+    padding: 20px 16px;
+  }
+
+  .profile-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #profile-form .btn-save {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 13px;
+  }
+
+  .balance-presets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .btn-balance-preset {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .balance-custom {
+    max-width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .balance-custom .btn-save {
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    justify-content: center;
+    margin-top: 0;
+  }
+
+  .reservas-table,
+  .reservas-table thead,
+  .reservas-table tbody,
+  .reservas-table th,
+  .reservas-table td,
+  .reservas-table tr {
+    display: block;
+  }
+
+  .reservas-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .reservas-table tbody tr {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    padding: 16px;
+    position: relative;
+  }
+
+  .reservas-table tbody tr:hover td {
+    background: transparent;
+  }
+
+  .reservas-table td {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(31, 31, 42, 0.6);
+    font-size: 0.88rem;
+    gap: 12px;
+  }
+
+  .reservas-table td:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .reservas-table td:first-child {
+    padding-top: 0;
+    justify-content: center;
+  }
+
+  .reservas-table td::before {
+    content: attr(data-label);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 500;
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+
+  .reservas-table td:first-child::before {
+    display: none;
+  }
+
+  .skin-thumb {
+    width: 64px;
+    height: 48px;
+  }
+
+  .badge-estado {
+    margin-left: auto;
+  }
 }
 
-/* Formulario edición */
-.profile-form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-/* =========================
-   PERFIL — MOBILE (≤ 768px)
-========================= */
-@media (max-width: 768px) {
-    /* ---- Header de perfil ---- */
-    .profile-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
-        padding: 24px 20px;
-    }
-
-    .profile-username {
-        font-size: 1.4rem;
-    }
-
-    .profile-balance-badge {
-        justify-content: center;
-    }
-
-    /* ---- Página ---- */
-    .profile-page {
-        margin: 20px auto;
-        padding: 0 12px 60px;
-    }
-
-    /* ---- Secciones ---- */
-    .profile-section {
-        padding: 20px 16px;
-    }
-
-    /* ---- Formulario a 1 columna ---- */
-    .profile-form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    /* btn-save del formulario de perfil a ancho completo */
-    #profile-form .btn-save {
-        width: 100%;
-        text-align: center;
-        justify-content: center;
-        padding: 13px;
-    }
-
-    /* ---- Balance: presets en grid uniforme ---- */
-    .balance-presets {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-    }
-
-    .btn-balance-preset {
-        padding: 10px 8px;
-        font-size: 0.85rem;
-        text-align: center;
-    }
-
-    /* ---- Balance custom: input + botón en columna ---- */
-    .balance-custom {
-        max-width: 100%;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .balance-custom .btn-save {
-        width: 100%;
-        padding: 12px;
-        text-align: center;
-        justify-content: center;
-        margin-top: 0;
-    }
-
-    /* ======================================
-       TABLA DE RESERVAS → TARJETAS CARD
-       ====================================== */
-    .reservas-table,
-    .reservas-table thead,
-    .reservas-table tbody,
-    .reservas-table th,
-    .reservas-table td,
-    .reservas-table tr {
-        display: block;
-    }
-
-    /* Ocultar cabecera de la tabla */
-    .reservas-table thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    /* Cada fila es una tarjeta */
-    .reservas-table tbody tr {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        margin-bottom: 16px;
-        padding: 16px;
-        position: relative;
-    }
-
-    .reservas-table tbody tr:hover td {
-        background: transparent;
-    }
-
-    /* Cada celda con etiqueta a la izquierda */
-    .reservas-table td {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 0;
-        border-bottom: 1px solid rgba(31, 31, 42, 0.6);
-        font-size: 0.88rem;
-        gap: 12px;
-    }
-
-    .reservas-table td:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-    }
-
-    .reservas-table td:first-child {
-        padding-top: 0;
-        justify-content: center;
-    }
-
-    /* Pseudo-etiquetas via data-label en el HTML */
-    .reservas-table td::before {
-        content: attr(data-label);
-        color: var(--text-muted);
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        font-weight: 500;
-        flex-shrink: 0;
-        min-width: 90px;
-    }
-
-    /* La columna de imagen no necesita etiqueta */
-    .reservas-table td:first-child::before {
-        display: none;
-    }
-
-    /* Imagen centrada y más grande en card */
-    .skin-thumb {
-        width: 64px;
-        height: 48px;
-    }
-
-    /* Badge de estado a la derecha */
-    .badge-estado {
-        margin-left: auto;
-    }
-}
-
-/* =========================
-   PERFIL — MOBILE PEQUEÑO (≤ 480px)
-========================= */
 @media (max-width: 480px) {
-    .profile-page {
-        margin: 12px auto;
-        padding: 0 8px 48px;
-    }
+  .profile-page {
+    margin: 12px auto;
+    padding: 0 8px 48px;
+  }
 
-    .profile-header {
-        padding: 20px 14px;
-        border-radius: 14px;
-    }
+  .profile-header {
+    padding: 20px 14px;
+    border-radius: 14px;
+  }
 
-    .profile-avatar,
-    .avatar-placeholder {
-        width: 88px;
-        height: 88px;
-    }
+  .profile-avatar,
+  .avatar-placeholder {
+    width: 88px;
+    height: 88px;
+  }
 
-    .avatar-placeholder {
-        font-size: 2rem;
-    }
+  .avatar-placeholder {
+    font-size: 2rem;
+  }
 
-    .profile-username {
-        font-size: 1.2rem;
-    }
+  .profile-username {
+    font-size: 1.2rem;
+  }
 
-    .profile-section {
-        padding: 16px 12px;
-        border-radius: 12px;
-    }
+  .profile-section {
+    padding: 16px 12px;
+    border-radius: 12px;
+  }
 
-    /* Balance: 2 columnas en pantallas muy pequeñas */
-    .balance-presets {
-        grid-template-columns: repeat(2, 1fr);
-    }
+  .balance-presets {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-    .reservas-table tbody tr {
-        padding: 12px;
-    }
+  .reservas-table tbody tr {
+    padding: 12px;
+  }
 
-    .reservas-table td {
-        font-size: 0.82rem;
-    }
+  .reservas-table td {
+    font-size: 0.82rem;
+  }
 
-    .reservas-table td::before {
-        min-width: 76px;
-        font-size: 0.68rem;
-    }
+  .reservas-table td::before {
+    min-width: 76px;
+    font-size: 0.68rem;
+  }
 }
-
 
 .profile-field label {
-    display: block;
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
 }
 
 .profile-field input {
-    width: 100%;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 10px 14px;
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    transition: 0.2s;
-    outline: none;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: var(--text-main);
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  transition: 0.2s;
+  outline: none;
 }
 
 .profile-field input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
 }
 
 .profile-field input[readonly] {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn-save {
-    margin-top: 20px;
-    background: linear-gradient(135deg, var(--accent), #7c3aed);
-    border: none;
-    color: white;
-    padding: 11px 28px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-    font-family: 'Inter', sans-serif;
+  margin-top: 20px;
+  background: linear-gradient(135deg, var(--accent), #7c3aed);
+  border: none;
+  color: white;
+  padding: 11px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: "Inter", sans-serif;
 }
 
 .btn-save:hover {
-    box-shadow: 0 0 15px var(--accent);
-    transform: translateY(-1px);
+  box-shadow: 0 0 15px var(--accent);
+  transform: translateY(-1px);
 }
 
 .profile-feedback {
-    margin-top: 12px;
-    font-size: 0.9rem;
-    display: none;
-    padding: 8px 14px;
-    border-radius: 8px;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  display: none;
+  padding: 8px 14px;
+  border-radius: 8px;
 }
 
 .profile-feedback.success {
-    background: rgba(34, 197, 94, 0.12);
-    border: 1px solid rgba(34, 197, 94, 0.3);
-    color: #4ade80;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
 }
 
 .profile-feedback.error {
-    background: rgba(239, 68, 68, 0.12);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
 }
 
-/* Tabla de reservas */
 .reservas-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
 }
 
 .reservas-table th {
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: left;
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border-color);
-    font-weight: 400;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 400;
 }
 
 .reservas-table td {
-    padding: 12px 12px;
-    border-bottom: 1px solid rgba(31, 31, 42, 0.5);
-    color: var(--text-main);
-    vertical-align: middle;
+  padding: 12px 12px;
+  border-bottom: 1px solid rgba(31, 31, 42, 0.5);
+  color: var(--text-main);
+  vertical-align: middle;
 }
 
-.reservas-table tr:last-child td { border-bottom: none; }
+.reservas-table tr:last-child td {
+  border-bottom: none;
+}
 
 .reservas-table tr:hover td {
-    background: rgba(168, 85, 247, 0.04);
+  background: rgba(168, 85, 247, 0.04);
 }
 
 .skin-thumb {
-    width: 48px;
-    height: 36px;
-    object-fit: contain;
-    border-radius: 4px;
-    background: rgba(255,255,255,0.03);
+  width: 48px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .badge-estado {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.badge-pendiente  { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
-.badge-confirmada { background: rgba(34, 197, 94, 0.15);  color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3);  }
-.badge-cancelada  { background: rgba(239, 68, 68, 0.15);  color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);  }
-.badge-completada { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+.badge-pendiente {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+.badge-confirmada {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+.badge-cancelada {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.badge-completada {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
 
-/* Add Balance Styles */
 .balance-add-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 .balance-presets {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 .btn-balance-preset {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.2s;
-    font-family: 'Orbitron', sans-serif;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+  font-family: "Orbitron", sans-serif;
 }
 .btn-balance-preset:hover {
-    background: rgba(168, 85, 247, 0.1);
-    border-color: var(--accent);
-    color: var(--accent-glow);
+  background: rgba(168, 85, 247, 0.1);
+  border-color: var(--accent);
+  color: var(--accent-glow);
 }
 .balance-custom {
-    display: flex;
-    gap: 10px;
-    max-width: 300px;
+  display: flex;
+  gap: 10px;
+  max-width: 300px;
 }
 .custom-balance-field {
-    flex: 1;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 10px 14px;
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-    outline: none;
-    transition: 0.2s;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text-main);
+  font-family: "Inter", sans-serif;
+  outline: none;
+  transition: 0.2s;
 }
 .custom-balance-field:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.15);
 }
 
 .empty-reservas {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--text-muted);
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
 }
 
 .empty-reservas .empty-icon {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: 12px;
-    opacity: 0.4;
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 12px;
+  opacity: 0.4;
 }

@@ -35,12 +35,6 @@ class ReservaViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
-    """
-    Reservas del usuario autenticado.
-      GET  /api/reservas/        → lista las reservas del usuario
-      POST /api/reservas/        → crea una nueva reserva (body: {skin_id})
-      DELETE /api/reservas/{id}/ → cancela (elimina) una reserva propia
-    """
     serializer_class = ReservaSerializer
     permission_classes = [IsAuthenticated]
 

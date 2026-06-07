@@ -11,10 +11,6 @@ User = get_user_model()
 
 
 class ProfileView(generics.RetrieveUpdateAPIView):
-    """
-    GET  /api/users/profile/  → devuelve el perfil del usuario autenticado
-    PATCH /api/users/profile/ → actualiza campos del perfil
-    """
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
 
@@ -23,11 +19,6 @@ class ProfileView(generics.RetrieveUpdateAPIView):
 
 
 class RegisterView(generics.CreateAPIView):
-    """
-    POST /api/users/register/
-    Body: { username, email, password, password_confirm }
-    Devuelve: { access, refresh } JWT tokens para auto-login.
-    """
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
@@ -36,7 +27,6 @@ class RegisterView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        # Generar tokens JWT para auto-login tras el registro
         refresh = RefreshToken.for_user(user)
         return Response(
             {
@@ -63,11 +53,6 @@ class AdminUserListView(generics.ListAPIView):
         return Response(list(users))
 
 class AddBalanceView(APIView):
-    """
-    POST /api/users/balance/add/
-    Body: { "amount": <float> }
-    Añade saldo al perfil del usuario.
-    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):

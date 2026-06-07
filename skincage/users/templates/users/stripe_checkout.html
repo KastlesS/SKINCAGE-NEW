@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="{% static 'css/stripe.css' %}" />
 {% endblock %} {% block content %}
 <div class="stripe-checkout-container">
-  <!-- Left Side: Product Summary -->
   <div class="stripe-summary-panel">
     <div>
       <div class="stripe-brand">
@@ -36,9 +35,7 @@
     </div>
   </div>
 
-  <!-- Right Side: Stripe Checkout Form -->
   <div class="stripe-form-panel">
-    <!-- Spinner/Loading Overlay -->
     <div id="stripe-loading-overlay" class="stripe-overlay">
       <div class="stripe-spinner"></div>
       <div class="stripe-overlay-text">Procesando pago seguro...</div>
@@ -48,7 +45,6 @@
       </div>
     </div>
 
-    <!-- Success Overlay -->
     <div id="stripe-success-overlay" class="stripe-overlay">
       <div class="stripe-success-checkmark">
         <i class="fa-solid fa-check"></i>
@@ -92,10 +88,8 @@
       <div class="stripe-form-group">
         <label class="stripe-label">Información de la tarjeta segura</label>
         <div id="stripe-card-container" class="stripe-card-composite">
-          <!-- The Stripe Card Element iframe will be injected here -->
           <div id="card-element"></div>
         </div>
-        <!-- Display card errors -->
         <div
           id="card-errors"
           role="alert"
@@ -142,7 +136,6 @@
   </div>
 </div>
 
-<!-- Load official Stripe.js library -->
 <script src="https://js.stripe.com/v3/"></script>
 <script src="{% static 'js/stripe.js' %}"></script>
 {% endblock %}

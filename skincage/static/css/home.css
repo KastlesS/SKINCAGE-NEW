@@ -1,6 +1,3 @@
-/* =========================
-   HOME Y SECCIONES
-========================= */
 .inicio {
   display: flex;
   flex-direction: row;
@@ -216,11 +213,7 @@
   margin-bottom: 15px;
 }
 
-/* =========================
-   HOME — MOBILE (≤ 768px)
-========================= */
 @media (max-width: 768px) {
-  /* ---- Hero / Inicio ---- */
   .inicio {
     flex-direction: column;
     align-items: center;
@@ -250,7 +243,6 @@
     align-items: center;
   }
 
-  /* Botones apilados en columna y centrados */
   .botones-header {
     flex-direction: column;
     align-items: center;
@@ -265,7 +257,6 @@
     text-align: center;
   }
 
-  /* Imagen hero más pequeña */
   .imagen-hero {
     width: 100%;
     display: flex;
@@ -277,7 +268,6 @@
     height: 260px;
   }
 
-  /* ---- Estadísticas ---- */
   .estadisticas-simples {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -297,9 +287,6 @@
   }
 }
 
-/* =========================
-   HOME — MOBILE PEQUEÑO (≤ 480px)
-========================= */
 @media (max-width: 480px) {
   /* ---- Hero / Inicio ---- */
   .inicio {
@@ -320,7 +307,6 @@
     height: 200px;
   }
 
-  /* ---- Estadísticas en 1 columna ---- */
   .estadisticas-simples {
     grid-template-columns: 1fr;
     gap: 16px;

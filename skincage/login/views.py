@@ -50,7 +50,6 @@ class RegisterView(View):
                 return JsonResponse({'error': 'Ya existe una cuenta con ese correo.'}, status=400)
 
             user = User.objects.create_user(username=username, email=email, password=password)
-            # Log the user in after successful registration
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return JsonResponse({'success': True, 'redirect_url': str(reverse_lazy('home'))})
 

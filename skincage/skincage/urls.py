@@ -1,10 +1,8 @@
-"""
-URL configuration for skincage project.
-"""
 from rest_framework.routers import DefaultRouter
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from django.views.generic import TemplateView
 from django.conf.urls.static import static
 from skins.views import VistaSkins, SkinCreate, SkinUpdate, SkinDeleteView, Home, MercadoViewRegistered, SkinDetailView, AdminPanelView, ConfirmarReservaView, CancelarReservaView
 from login.views import LoginFormView2, Logout, RegisterView
@@ -19,6 +17,7 @@ router.register('reservas', ReservaViewSet, basename='reservas')
 
 urlpatterns = [
     path('', Home.as_view(), name="home"),
+    path('about/', TemplateView.as_view(template_name='portfolio/about.html'), name='about'),
     path('skins/', VistaSkins.as_view(), name='skins'),
     path('admin/', admin.site.urls),
     path('panel/', AdminPanelView.as_view(), name='admin_panel'),

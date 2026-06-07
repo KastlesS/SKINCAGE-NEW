@@ -12,35 +12,25 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Cargar variables desde .env (local/dev). En producción se suelen inyectar por entorno/secret manager.
 try:
     from dotenv import load_dotenv  # type: ignore
 
-    # Tu `.env` está en la raíz del repo: SKINCAGE-NEW/.env (un nivel por encima de BASE_DIR)
     load_dotenv(BASE_DIR.parent / ".env")
 except Exception:
-    # Si python-dotenv no está instalado o no existe el archivo, seguimos con os.environ.
     pass
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 if not SECRET_KEY:
     if os.path.exists('/run/secrets/secret_key'):
         with open('/run/secrets/secret_key', 'r') as f:
             SECRET_KEY = f.read().strip()
 
-# Si todavía no hay SECRET_KEY, usar una por defecto (SOLO DESARROLLO)
 if not SECRET_KEY:
     SECRET_KEY = 'django-insecure-development-key-change-me-in-production'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv(
@@ -108,10 +98,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'skincage.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 if os.getenv('DB_ENGINE') == 'django.db.backends.postgresql':
     db_password = os.getenv('DB_PASSWORD')
     if not db_password and os.path.exists('/run/secrets/db_password'):
@@ -137,9 +123,6 @@ else:
     }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -156,9 +139,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -167,21 +147,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Estos son los directorios donde Django busca archivos estáticos
-# NO deben incluir STATIC_ROOT (donde se recolectan los estáticos)
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -197,11 +168,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-# Google OAuth2 (configurar en entorno/producción)
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', '')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', '')
 
-# Redirecciones tras login/logout (social-auth)
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = LOGIN_REDIRECT_URL
 SOCIAL_AUTH_LOGIN_ERROR_URL = 'login'
 SOCIAL_AUTH_LOGIN_URL = 'login'
@@ -209,8 +178,6 @@ SOCIAL_AUTH_LOGIN_URL = 'login'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-# TEMPORALMENTE DESACTIVADO PARA DEBUGGING DE REDIRECCIONES
-# Una vez funcione la app, volver a activar en producción
 SECURE_SSL_REDIRECT = False  # Cambiar a True en producción una vez confirmado que funciona
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
@@ -221,7 +188,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 
 
-# Logging para debugging (eliminar en producción)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

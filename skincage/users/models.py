@@ -3,8 +3,6 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-
-# Modelo legado (mantener mientras se migra)
 class User(models.Model):
     password = models.CharField(verbose_name="Contraseña", null=False, blank=False, max_length=60)
     nombre = models.CharField(verbose_name="Nombre Usuario", null=False, blank=False, max_length=40)
@@ -26,7 +24,6 @@ class User(models.Model):
 
 
 class Profile(models.Model):
-    """Extensión del auth.User de Django con campos propios de SKINCAGE."""
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -76,8 +73,6 @@ class Profile(models.Model):
     def __str__(self):
         return f"Perfil de {self.user.username}"
 
-
-# Señal: crear perfil automáticamente al crear un auth.User
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

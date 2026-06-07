@@ -1,7 +1,3 @@
-/* =========================
-   CONFIRMAR RESERVA
-========================= */
-
 .reserva-container {
   max-width: 1000px;
   width: 100%;
@@ -16,45 +12,37 @@
   box-sizing: border-box;
 }
 
-/* ---- Tarjeta de la skin ---- */
 .reserva-skin-card {
   margin: 0;
   max-width: 100%;
 }
 
-/* ---- Nombre de la skin ---- */
 .reserva-skin-nombre {
   font-family: "Orbitron", sans-serif;
 }
 
-/* ---- Precio de la skin ---- */
-.reserva-skin-precio {
-  color: var(--accent);
-  font-size: 1.5rem;
-  font-weight: bold;
-  font-family: "Orbitron", sans-serif;
+.reserva-skin-precio-base {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 6px;
 }
 
-/* ---- Detalles (rareza, float) ---- */
 .reserva-skin-detalles {
   color: var(--text-muted);
   margin-top: 10px;
 }
 
-/* ---- Sección del formulario ---- */
 .reserva-form-section {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-/* ---- Título ---- */
 .reserva-titulo {
   font-family: "Orbitron", sans-serif;
   margin-bottom: 20px;
 }
 
-/* ---- Balance actual ---- */
 .balance-info {
   font-size: 1.2rem;
   margin-bottom: 20px;
@@ -64,7 +52,6 @@
   border-radius: 8px;
 }
 
-/* ---- Selector de duración ---- */
 .duration-selector {
   margin-bottom: 20px;
 }
@@ -93,7 +80,6 @@
   box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
 }
 
-/* ---- Aviso de balance insuficiente ---- */
 .reserva-warning {
   color: #ef4444;
   font-weight: bold;
@@ -105,20 +91,71 @@
   padding: 10px 14px;
 }
 
-/* ---- Acciones (botones) ---- */
+.precio-reserva-summary {
+  background: rgba(168, 85, 247, 0.06);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.precio-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.precio-row-multiplier {
+  border-top: 1px solid var(--border-color);
+  padding-top: 8px;
+}
+
+.precio-row-total {
+  border-top: 1px solid var(--accent);
+  padding-top: 10px;
+  margin-top: 2px;
+}
+
+.precio-label {
+  font-weight: 500;
+}
+
+.precio-value {
+  font-weight: 600;
+  color: var(--text-main);
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.9rem;
+}
+
+.precio-recargo {
+  color: #f59e0b;
+}
+
+.precio-recargo.recargo-cero {
+  color: var(--text-muted);
+}
+
+.precio-total {
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
 .reserva-actions {
   display: flex;
   gap: 15px;
 }
 
-/* Botón confirmar */
 .btn-confirmar-reserva {
   flex: 1;
   border: none;
   cursor: pointer;
 }
 
-/* Botón cancelar */
 .btn-cancelar-reserva {
   flex: 1;
   text-align: center;
@@ -132,35 +169,24 @@
   color: var(--text-main);
 }
 
-/* =========================
-   CONFIRMAR RESERVA — MOBILE (≤ 768px)
-========================= */
-/* =========================
-   CONFIRMAR RESERVA — MOBILE (≤ 768px)
-========================= */
 @media (max-width: 768px) {
-  /* Previene overflow horizontal global en esta página */
   .reserva-container {
     grid-template-columns: 1fr;
-    /* Usar padding del viewport en vez de margin para evitar overflow */
     width: calc(100% - 28px);
     margin: 16px auto;
     padding: 20px 16px;
     box-sizing: border-box;
     gap: 20px;
     border-radius: 14px;
-    /* Contener cualquier hijo que desborde */
     overflow: hidden;
   }
 
-  /* La tarjeta de la skin debe respetar el contenedor */
   .reserva-skin-card {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
   }
 
-  /* Imagen de la skin centrada y acotada */
   .skin-image-wrapper {
     display: flex;
     justify-content: center;
@@ -187,7 +213,6 @@
     margin-bottom: 14px;
   }
 
-  /* Selector de duración a ancho completo */
   .duration-selector {
     width: 100%;
     box-sizing: border-box;
@@ -198,13 +223,11 @@
     box-sizing: border-box;
   }
 
-  /* Aviso de balance */
   .reserva-warning {
     box-sizing: border-box;
     width: 100%;
   }
 
-  /* Botones apilados */
   .reserva-actions {
     flex-direction: column;
     gap: 10px;
@@ -222,9 +245,6 @@
   }
 }
 
-/* =========================
-   CONFIRMAR RESERVA — MOBILE PEQUEÑO (≤ 480px)
-========================= */
 @media (max-width: 480px) {
   .reserva-container {
     width: calc(100% - 16px);
@@ -260,4 +280,3 @@
     font-size: 1.1rem;
   }
 }
-

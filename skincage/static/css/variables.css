@@ -1,11 +1,4 @@
-/* =========================
-   FUENTES
-========================= */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@500;700&display=swap");
-
-/* =========================
-   VARIABLES DE COLOR
-========================= */
 :root {
   --bg-main: #0a0a0f;
   --bg-secondary: #111118;

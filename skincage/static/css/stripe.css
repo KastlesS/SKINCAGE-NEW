@@ -1,4 +1,3 @@
-/* === Stripe Checkout Premium Custom Styles === */
 .stripe-checkout-container {
   max-width: 1000px;
   margin: 40px auto;
@@ -8,7 +7,6 @@
   color: #f3f4f6;
 }
 
-/* Left Panel - Order Summary */
 .stripe-summary-panel {
   flex: 1;
   display: flex;
@@ -84,7 +82,6 @@
   margin-top: 10px;
 }
 
-/* Right Panel - Payment Form */
 .stripe-form-panel {
   flex: 1.2;
   background: #111827;
@@ -132,7 +129,6 @@
   box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
 }
 
-/* Stripe Card Element styling container */
 .stripe-card-composite {
   background: #1f2937;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -159,7 +155,6 @@
   margin-bottom: 25px;
 }
 
-/* Submit Button */
 .stripe-submit-btn {
   width: 100%;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -189,7 +184,6 @@
   transform: translateY(0);
 }
 
-/* Loading State & Success Overlay */
 .stripe-overlay {
   position: absolute;
   inset: 0;
@@ -249,15 +243,20 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes scaleUp {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
-/* Responsive styling */
 @media (max-width: 768px) {
   .stripe-checkout-container {
     flex-direction: column;

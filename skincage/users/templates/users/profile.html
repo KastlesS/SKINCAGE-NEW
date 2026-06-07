@@ -1,34 +1,57 @@
-{% extends "portfolio/base.html" %}
-{% load static %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/profile.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-{% endblock %}
-
-{% block content %}
+{% extends "portfolio/base.html" %} {% load static %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+{% endblock %} {% block content %}
 <div class="profile-page">
-
-  {# ── CABECERA ── #}
   <div class="profile-header">
     <div class="profile-avatar-wrapper">
       {% if profile.avatar %}
-        <img src="{{ profile.avatar.url }}" alt="Avatar" class="profile-avatar" id="avatar-preview">
+      <img
+        src="{{ profile.avatar.url }}"
+        alt="Avatar"
+        class="profile-avatar"
+        id="avatar-preview"
+      />
       {% else %}
-        <div class="avatar-placeholder" id="avatar-placeholder">
-          {{ user.username|slice:":1" }}
-        </div>
-        <img src="" alt="Avatar" class="profile-avatar" id="avatar-preview" style="display:none;">
+      <div class="avatar-placeholder" id="avatar-placeholder">
+        {{ user.username|slice:":1" }}
+      </div>
+      <img
+        src=""
+        alt="Avatar"
+        class="profile-avatar"
+        id="avatar-preview"
+        style="display: none"
+      />
       {% endif %}
       <button class="avatar-edit-btn" id="avatar-btn" title="Cambiar foto">
-        <i class="fa-solid fa-camera" style="color:white; font-size:0.8rem;"></i>
+        <i
+          class="fa-solid fa-camera"
+          style="color: white; font-size: 0.8rem"
+        ></i>
       </button>
-      <input type="file" id="avatar-input" accept="image/*" style="display:none;">
+      <input
+        type="file"
+        id="avatar-input"
+        accept="image/*"
+        style="display: none"
+      />
     </div>
 
     <div class="profile-info">
-      <div class="profile-username">{{ user.first_name|default:user.username }}</div>
-      <div class="profile-email"><i class="fa-regular fa-envelope" style="margin-right:6px; color:var(--accent);"></i>{{ user.email }}</div>
+      <div class="profile-username">
+        {{ user.first_name|default:user.username }}
+      </div>
+      <div class="profile-email">
+        <i
+          class="fa-regular fa-envelope"
+          style="margin-right: 6px; color: var(--accent)"
+        ></i
+        >{{ user.email }}
+      </div>
       <div class="profile-balance-badge">
         <i class="fa-solid fa-wallet"></i>
         <span class="balance-label">Balance:</span>
@@ -37,7 +60,6 @@
     </div>
   </div>
 
-  {# ── EDITAR DATOS ── #}
   <div class="profile-section">
     <div class="profile-section-title">
       <i class="fa-solid fa-user-pen"></i> Editar información
@@ -47,46 +69,93 @@
       <div class="profile-form-grid">
         <div class="profile-field">
           <label for="pf-username">Nombre de usuario</label>
-          <input type="text" id="pf-username" name="username" value="{{ user.username }}" placeholder="Tu nombre de usuario">
+          <input
+            type="text"
+            id="pf-username"
+            name="username"
+            value="{{ user.username }}"
+            placeholder="Tu nombre de usuario"
+          />
         </div>
         <div class="profile-field">
           <label for="pf-first-name">Nombre visible</label>
-          <input type="text" id="pf-first-name" name="first_name" value="{{ user.first_name }}" placeholder="Tu nombre">
+          <input
+            type="text"
+            id="pf-first-name"
+            name="first_name"
+            value="{{ user.first_name }}"
+            placeholder="Tu nombre"
+          />
         </div>
         <div class="profile-field">
           <label for="pf-email">Correo electrónico</label>
-          <input type="email" id="pf-email" name="email" value="{{ user.email }}" readonly title="El correo no se puede cambiar aquí">
+          <input
+            type="email"
+            id="pf-email"
+            name="email"
+            value="{{ user.email }}"
+            readonly
+            title="El correo no se puede cambiar aquí"
+          />
         </div>
       </div>
       <button type="submit" class="btn-save">
-        <i class="fa-solid fa-floppy-disk" style="margin-right:6px;"></i>Guardar cambios
+        <i class="fa-solid fa-floppy-disk" style="margin-right: 6px"></i>Guardar
+        cambios
       </button>
       <div id="profile-feedback" class="profile-feedback"></div>
     </form>
   </div>
 
-  {# ── AÑADIR FONDOS ── #}
   <div class="profile-section">
     <div class="profile-section-title">
-      <i class="fa-solid fa-coins" style="color: #f59e0b;"></i> Añadir fondos (Simulación)
+      <i class="fa-solid fa-coins" style="color: #f59e0b"></i> Añadir fondos
+      (Simulación)
     </div>
     <div class="balance-add-container">
       <div class="balance-presets">
-        <button type="button" class="btn-balance-preset" data-amount="5">5 €</button>
-        <button type="button" class="btn-balance-preset" data-amount="10">10 €</button>
-        <button type="button" class="btn-balance-preset" data-amount="20">20 €</button>
-        <button type="button" class="btn-balance-preset" data-amount="50">50 €</button>
-        <button type="button" class="btn-balance-preset" data-amount="100">100 €</button>
+        <button type="button" class="btn-balance-preset" data-amount="5">
+          5 €
+        </button>
+        <button type="button" class="btn-balance-preset" data-amount="10">
+          10 €
+        </button>
+        <button type="button" class="btn-balance-preset" data-amount="20">
+          20 €
+        </button>
+        <button type="button" class="btn-balance-preset" data-amount="50">
+          50 €
+        </button>
+        <button type="button" class="btn-balance-preset" data-amount="100">
+          100 €
+        </button>
       </div>
       <div class="balance-custom">
-        <input type="number" id="custom-balance-input" placeholder="Otra cantidad..." min="0.01" step="0.01" class="custom-balance-field">
-        <button type="button" id="btn-add-custom" class="btn-save" style="margin-top:0;">Añadir</button>
+        <input
+          type="number"
+          id="custom-balance-input"
+          placeholder="Otra cantidad..."
+          min="0.01"
+          step="0.01"
+          class="custom-balance-field"
+        />
+        <button
+          type="button"
+          id="btn-add-custom"
+          class="btn-save"
+          style="margin-top: 0"
+        >
+          Añadir
+        </button>
       </div>
-      <div id="balance-feedback" class="profile-feedback" style="margin-top: 15px;"></div>
+      <div
+        id="balance-feedback"
+        class="profile-feedback"
+        style="margin-top: 15px"
+      ></div>
     </div>
   </div>
 
-  {# ── SKINS EN RESERVA ── #}
   <div class="profile-section">
     <div class="profile-section-title">
       <i class="fa-solid fa-shield-halved"></i> Mis reservas
@@ -107,53 +176,105 @@
         </tr>
       </thead>
       <tbody>
-      {% for reserva in reservas %}
+        {% for reserva in reservas %}
         <tr>
           <td>
             {% if reserva.skin.imagen_url %}
-              <img src="{{ reserva.skin.imagen_url }}" alt="{{ reserva.skin.nombre }}" class="skin-thumb">
+            <img
+              src="{{ reserva.skin.imagen_url }}"
+              alt="{{ reserva.skin.nombre }}"
+              class="skin-thumb"
+            />
             {% else %}
-              <div class="skin-thumb" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);">
-                <i class="fa-solid fa-image"></i>
-              </div>
+            <div
+              class="skin-thumb"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--text-muted);
+              "
+            >
+              <i class="fa-solid fa-image"></i>
+            </div>
             {% endif %}
           </td>
           <td data-label="Nombre">
             {% if reserva.skin.es_stattrak %}
-              <span style="color: #f97316; font-size:0.75rem; font-weight:700;">ST™</span>
-            {% endif %}
-            {{ reserva.skin.nombre }}
+            <span style="color: #f97316; font-size: 0.75rem; font-weight: 700"
+              >ST™</span
+            >
+            {% endif %} {{ reserva.skin.nombre }}
           </td>
-          <td data-label="Float" style="color: var(--text-muted); font-size: 0.85rem;">{{ reserva.skin.desgaste }}</td>
-          <td data-label="Precio" style="color: var(--accent-glow); font-weight:600;">{{ reserva.precio_reserva }} €</td>
+          <td
+            data-label="Float"
+            style="color: var(--text-muted); font-size: 0.85rem"
+          >
+            {{ reserva.skin.desgaste }}
+          </td>
+          <td
+            data-label="Precio"
+            style="color: var(--accent-glow); font-weight: 600"
+          >
+            {{ reserva.precio_reserva }} €
+          </td>
           <td data-label="Estado">
-            <span class="badge-estado badge-{{ reserva.estado }}">{{ reserva.get_estado_display }}</span>
+            <span class="badge-estado badge-{{ reserva.estado }}"
+              >{{ reserva.get_estado_display }}</span
+            >
           </td>
-          <td data-label="Fecha" style="color: var(--text-muted); font-size: 0.82rem;">{{ reserva.fecha_reserva|date:"d/m/Y" }}</td>
+          <td
+            data-label="Fecha"
+            style="color: var(--text-muted); font-size: 0.82rem"
+          >
+            {{ reserva.fecha_reserva|date:"d/m/Y" }}
+          </td>
           <td data-label="Tiempo">
             {% if reserva.estado == 'confirmada' %}
-              <span
-                class="countdown-cancel-timer"
-                data-fecha-reserva="{{ reserva.fecha_reserva|date:'U' }}"
-                data-expiracion="{{ reserva.fecha_expiracion|date:'U' }}"
-                data-reserva-id="{{ reserva.id }}"
-                style="font-family: monospace; font-weight: bold;"
-              >...</span>
+            <span
+              class="countdown-cancel-timer"
+              data-fecha-reserva="{{ reserva.fecha_reserva|date:'U' }}"
+              data-expiracion="{{ reserva.fecha_expiracion|date:'U' }}"
+              data-reserva-id="{{ reserva.id }}"
+              style="font-family: monospace; font-weight: bold"
+              >...</span
+            >
             {% else %}
-              <span style="color: var(--text-muted);">—</span>
+            <span style="color: var(--text-muted)">—</span>
             {% endif %}
           </td>
           <td data-label="Acción">
             {% if reserva.estado == 'confirmada' %}
-              <form method="post" action="{% url 'cancelar_reserva' reserva.id %}" onsubmit="return confirm('¿Seguro que quieres cancelar la reserva? El dinero volverá a tu balance.');" style="margin:0;">
-                {% csrf_token %}
-                <button type="submit"
-                        class="btn btn-cancel-reserva"
-                        data-reserva-id="{{ reserva.id }}"
-                        style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;">Cancelar</button>
-              </form>
+            <form
+              method="post"
+              action="{% url 'cancelar_reserva' reserva.id %}"
+              onsubmit="
+                return confirm(
+                  '¿Seguro que quieres cancelar la reserva? El dinero volverá a tu balance.',
+                );
+              "
+              style="margin: 0"
+            >
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="btn btn-cancel-reserva"
+                data-reserva-id="{{ reserva.id }}"
+                style="
+                  background: #ef4444;
+                  color: white;
+                  border: none;
+                  padding: 5px 10px;
+                  border-radius: 4px;
+                  font-size: 0.8rem;
+                  cursor: pointer;
+                "
+              >
+                Cancelar
+              </button>
+            </form>
             {% else %}
-              <span style="color: var(--text-muted);">—</span>
+            <span style="color: var(--text-muted)">—</span>
             {% endif %}
           </td>
         </tr>
@@ -167,13 +288,10 @@
     </div>
     {% endif %}
   </div>
-
 </div>
 
 <script>
-  // Variable global para que profile.js pueda usarla sin Django template tags
   const PROFILE_UPDATE_URL = "{% url 'perfil-actualizar' %}";
 </script>
 <script src="{% static 'js/profile.js' %}" defer></script>
 {% endblock %}
-

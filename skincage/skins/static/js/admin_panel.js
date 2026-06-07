@@ -175,6 +175,10 @@ async function fetchReservas() {
     }
 }
 
+let allSkinsData = [];
+let currentSkinPage = 1;
+const SKINS_PER_PAGE = 20;
+
 async function fetchSkins() {
     const container = document.getElementById('skins-container');
     const statSkins = document.getElementById('stat-skins');
@@ -183,80 +187,137 @@ async function fetchSkins() {
         if (!response.ok) throw new Error('Error al cargar skins');
         const skins = await response.json();
         
-        const data = skins.results || skins;
-        statSkins.textContent = data.length;
+        allSkinsData = skins.results || skins;
+        statSkins.textContent = allSkinsData.length;
         
         emptyContainer(container);
 
-        if (!data || data.length === 0) {
+        if (!allSkinsData || allSkinsData.length === 0) {
             container.appendChild(createEmptyMessageItem('No hay skins registradas.'));
             return;
         }
         
-        data.forEach(skin => {
-            const li = document.createElement('li');
-            li.className = 'data-item';
-            
-            const flexRow = document.createElement('div');
-            flexRow.className = 'flex-row';
-            
-            const titleSpan = document.createElement('span');
-            titleSpan.className = 'item-title';
-            // Añadir Stattrak visualmente
-            if (skin.stattrack) {
-                const st = document.createElement('span');
-                st.textContent = 'ST™ ';
-                st.style.color = '#f97316';
-                st.style.fontSize = '0.8rem';
-                titleSpan.appendChild(st);
+        // Setup pagination listeners once
+        const prevBtn = document.getElementById('skins-prev');
+        const nextBtn = document.getElementById('skins-next');
+        
+        // Remove old listeners to prevent duplicates if fetched again
+        const newPrev = prevBtn.cloneNode(true);
+        const newNext = nextBtn.cloneNode(true);
+        prevBtn.parentNode.replaceChild(newPrev, prevBtn);
+        nextBtn.parentNode.replaceChild(newNext, nextBtn);
+        
+        newPrev.addEventListener('click', () => {
+            if (currentSkinPage > 1) {
+                currentSkinPage--;
+                renderSkinsPage();
             }
-            titleSpan.appendChild(document.createTextNode(skin.nombre));
-            flexRow.appendChild(titleSpan);
-            
-            const priceSpan = document.createElement('span');
-            priceSpan.style.marginLeft = 'auto';
-            priceSpan.style.color = '#f39c12';
-            priceSpan.style.fontWeight = 'bold';
-            priceSpan.textContent = `${skin.precio}€`;
-            flexRow.appendChild(priceSpan);
-            
-            li.appendChild(flexRow);
-            
-            const subtitleSpan = document.createElement('span');
-            subtitleSpan.className = 'item-subtitle';
-            subtitleSpan.style.display = 'flex';
-            subtitleSpan.style.gap = '15px';
-            
-            const stockSpan = document.createElement('span');
-            stockSpan.style.color = skin.stock > 0 ? '#10b981' : '#ef4444';
-            stockSpan.innerHTML = `<i class="fa-solid ${skin.stock > 0 ? 'fa-check' : 'fa-xmark'}"></i> Stock: ${skin.stock}`;
-            subtitleSpan.appendChild(stockSpan);
-            
-            if (skin.categoria) {
-                const catSpan = document.createElement('span');
-                catSpan.textContent = skin.categoria;
-                catSpan.style.textTransform = 'capitalize';
-                subtitleSpan.appendChild(catSpan);
-            }
-            
-            const wearSpan = document.createElement('span');
-            wearSpan.textContent = skin.desgaste ? `Float: ${skin.desgaste}` : 'N/A';
-            subtitleSpan.appendChild(wearSpan);
-            
-            const raritySpan = document.createElement('span');
-            if (skin.rareza) {
-                raritySpan.textContent = skin.rareza;
-                raritySpan.className = 'badge'; // Usar badge simple para rareza
-            }
-            subtitleSpan.appendChild(raritySpan);
-            
-            li.appendChild(subtitleSpan);
-            
-            container.appendChild(li);
         });
+        
+        newNext.addEventListener('click', () => {
+            if (currentSkinPage < Math.ceil(allSkinsData.length / SKINS_PER_PAGE)) {
+                currentSkinPage++;
+                renderSkinsPage();
+            }
+        });
+        
+        renderSkinsPage();
+        
     } catch (error) {
         statSkins.textContent = "Error";
         emptyContainer(container);
         container.appendChild(createErrorItem(error.message));
+    }
+}
+
+function renderSkinsPage() {
+    const container = document.getElementById('skins-container');
+    emptyContainer(container);
+    
+    const startIndex = (currentSkinPage - 1) * SKINS_PER_PAGE;
+    const endIndex = startIndex + SKINS_PER_PAGE;
+    const pageData = allSkinsData.slice(startIndex, endIndex);
+    
+    pageData.forEach(skin => {
+        const li = document.createElement('li');
+        li.className = 'data-item';
+        
+        const flexRow = document.createElement('div');
+        flexRow.className = 'flex-row';
+        
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'item-title';
+        // Añadir Stattrak visualmente
+        if (skin.stattrack) {
+            const st = document.createElement('span');
+            st.textContent = 'ST™ ';
+            st.style.color = '#f97316';
+            st.style.fontSize = '0.8rem';
+            titleSpan.appendChild(st);
+        }
+        titleSpan.appendChild(document.createTextNode(skin.nombre));
+        flexRow.appendChild(titleSpan);
+        
+        const priceSpan = document.createElement('span');
+        priceSpan.style.marginLeft = 'auto';
+        priceSpan.style.color = '#f39c12';
+        priceSpan.style.fontWeight = 'bold';
+        priceSpan.textContent = `${skin.precio}€`;
+        flexRow.appendChild(priceSpan);
+        
+        li.appendChild(flexRow);
+        
+        const subtitleSpan = document.createElement('span');
+        subtitleSpan.className = 'item-subtitle';
+        subtitleSpan.style.display = 'flex';
+        subtitleSpan.style.gap = '15px';
+        
+        const stockSpan = document.createElement('span');
+        stockSpan.style.color = skin.stock > 0 ? '#10b981' : '#ef4444';
+        stockSpan.innerHTML = `<i class="fa-solid ${skin.stock > 0 ? 'fa-check' : 'fa-xmark'}"></i> Stock: ${skin.stock}`;
+        subtitleSpan.appendChild(stockSpan);
+        
+        if (skin.categoria) {
+            const catSpan = document.createElement('span');
+            catSpan.textContent = skin.categoria;
+            catSpan.style.textTransform = 'capitalize';
+            subtitleSpan.appendChild(catSpan);
+        }
+        
+        const wearSpan = document.createElement('span');
+        wearSpan.textContent = skin.desgaste ? `Float: ${skin.desgaste}` : 'N/A';
+        subtitleSpan.appendChild(wearSpan);
+        
+        const raritySpan = document.createElement('span');
+        if (skin.rareza) {
+            raritySpan.textContent = skin.rareza;
+            raritySpan.className = 'badge'; // Usar badge simple para rareza
+        }
+        subtitleSpan.appendChild(raritySpan);
+        
+        li.appendChild(subtitleSpan);
+        container.appendChild(li);
+    });
+    
+    // Update pagination controls
+    const totalPages = Math.ceil(allSkinsData.length / SKINS_PER_PAGE);
+    const pagContainer = document.getElementById('skins-pagination');
+    const prevBtn = document.getElementById('skins-prev');
+    const nextBtn = document.getElementById('skins-next');
+    const infoSpan = document.getElementById('skins-page-info');
+    
+    if (totalPages > 1) {
+        pagContainer.style.display = 'flex';
+        infoSpan.textContent = `Página ${currentSkinPage} de ${totalPages}`;
+        
+        prevBtn.disabled = currentSkinPage === 1;
+        prevBtn.style.opacity = currentSkinPage === 1 ? '0.4' : '1';
+        prevBtn.style.cursor = currentSkinPage === 1 ? 'not-allowed' : 'pointer';
+        
+        nextBtn.disabled = currentSkinPage === totalPages;
+        nextBtn.style.opacity = currentSkinPage === totalPages ? '0.4' : '1';
+        nextBtn.style.cursor = currentSkinPage === totalPages ? 'not-allowed' : 'pointer';
+    } else {
+        pagContainer.style.display = 'none';
     }
 }

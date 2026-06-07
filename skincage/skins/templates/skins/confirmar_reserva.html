@@ -21,7 +21,9 @@
     </div>
     <div class="skin-info p-3">
       <h2 class="reserva-skin-nombre">{{ skin.nombre }}</h2>
-      <div class="reserva-skin-precio">{{ skin.precio }} €</div>
+      <div class="reserva-skin-precio-base">
+        Precio base: {{ skin.precio }} €
+      </div>
       <p class="reserva-skin-detalles">
         Rareza: {{ skin.get_rareza_display }}<br />
         Float: {{ skin.desgaste }}
@@ -46,6 +48,9 @@
         id="skin-price"
         value="{{ skin.precio|stringformat:'f' }}"
       />
+      <script id="multiplicadores-data" type="application/json">
+        {{ multiplicadores|safe }}
+      </script>
 
       <div class="duration-selector">
         <label for="duracion">Selecciona la duración de la reserva:</label>
@@ -57,6 +62,27 @@
           <option value="48">48 horas</option>
           <option value="72">72 horas</option>
         </select>
+      </div>
+
+      <div class="precio-reserva-summary">
+        <div class="precio-row">
+          <span class="precio-label">Precio base</span>
+          <span class="precio-value" id="precio-base-display"
+            >{{ skin.precio }} €</span
+          >
+        </div>
+        <div class="precio-row precio-row-multiplier">
+          <span class="precio-label">Recargo por duración</span>
+          <span class="precio-value precio-recargo" id="precio-recargo-display"
+            >+0.00 €</span
+          >
+        </div>
+        <div class="precio-row precio-row-total">
+          <span class="precio-label">Total a pagar</span>
+          <span class="precio-value precio-total" id="precio-total-display"
+            >{{ skin.precio }} €</span
+          >
+        </div>
       </div>
 
       <div id="balance-warning" class="reserva-warning">

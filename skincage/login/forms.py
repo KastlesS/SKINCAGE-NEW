@@ -3,12 +3,6 @@ from django.contrib.auth.forms import AuthenticationForm
 
 
 class EmailLoginForm(AuthenticationForm):
-    """
-    Formulario de inicio de sesión usando correo electrónico en lugar de username.
-    El campo 'username' de AuthenticationForm se reutiliza internamente por Django,
-    pero aquí se muestra al usuario como 'Correo electrónico'.
-    """
-
     username = forms.EmailField(
         label="Correo electrónico",
         widget=forms.EmailInput(attrs={
