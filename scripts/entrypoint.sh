@@ -5,20 +5,15 @@ set -e
 echo "=== Skincage Entrypoint ==="
 echo "Iniciando Gunicorn..."
 
-# Ejecutar migraciones de la base de datos (idempotente)
 echo "Ejecutando migraciones de base de datos..."
 python skincage/manage.py migrate --noinput
 
-# Recolectar estáticos (idempotente)
 echo "Recolectando archivos estáticos..."
 python skincage/manage.py collectstatic --noinput
 
-# Inicialización automática (crear admin y poblar base de datos)
 echo "Iniciando script de configuración de producción..."
 python skincage/init_prod.py
 
-
-# Iniciar Gunicorn escuchando en el puerto dinámico de Render o por defecto 8000
 exec gunicorn skincage.wsgi:application \
     --bind 0.0.0.0:${PORT:-8000} \
     --workers 3 \

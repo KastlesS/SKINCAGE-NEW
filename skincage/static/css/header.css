@@ -8,7 +8,7 @@
   padding: 12px 0;
 }
 
-.header-container {
+.caja-cabecera {
   max-width: 100%;
   margin: 0 auto;
   display: flex;
@@ -17,7 +17,7 @@
   padding: 0 24px;
 }
 
-.nav-wrapper {
+.envoltura-nav {
   display: flex;
   align-items: center;
   gap: 40px;
@@ -45,7 +45,7 @@
   align-items: center;
 }
 
-.nav-link {
+.enlace-nav {
   text-decoration: none;
   color: var(--text-muted);
   font-weight: 500;
@@ -57,21 +57,21 @@
   line-height: 1;
 }
 
-.nav-link:hover {
+.enlace-nav:hover {
   color: var(--accent-glow);
 }
 
-.auth-actions {
+.acciones-sesion {
   display: flex;
   align-items: center;
 }
 
-.logout-form {
+.formulario-salida {
   display: flex;
   align-items: center;
 }
 
-.hamburger {
+.boton-menu {
   background: transparent !important;
   box-shadow: none !important;
   transform: none !important;
@@ -92,12 +92,12 @@
   flex-shrink: 0;
 }
 
-.hamburger:hover {
+.boton-menu:hover {
   border-color: var(--accent);
   box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
 }
 
-.hamburger span {
+.boton-menu span {
   display: block;
   width: 22px;
   height: 2px;
@@ -107,19 +107,19 @@
   transform-origin: center;
 }
 
-.hamburger.is-active span:nth-child(1) {
+.boton-menu.activo span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
-.hamburger.is-active span:nth-child(2) {
+.boton-menu.activo span:nth-child(2) {
   opacity: 0;
   transform: scaleX(0);
 }
-.hamburger.is-active span:nth-child(3) {
+.boton-menu.activo span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
 
 @media (max-width: 768px) {
-  .header-container {
+  .caja-cabecera {
     position: relative;
     padding: 0 16px;
     flex-wrap: wrap;
@@ -130,12 +130,12 @@
     font-size: 1.4rem;
   }
 
-  .hamburger {
+  .boton-menu {
     display: flex;
     order: 3;
   }
 
-  .nav-wrapper {
+  .envoltura-nav {
     order: 4;
     width: 100%;
     flex-direction: column;
@@ -152,7 +152,7 @@
     border-top: 0px solid var(--border-color);
   }
 
-  .nav-wrapper.is-open {
+  .envoltura-nav.abierto {
     max-height: 400px;
     opacity: 1;
     padding: 16px 0 20px;
@@ -174,7 +174,7 @@
     border-bottom: 1px solid var(--border-color);
   }
 
-  .nav-link {
+  .enlace-nav {
     display: block;
     padding: 16px 4px;
     font-size: 1rem;
@@ -182,26 +182,26 @@
     text-align: center;
   }
 
-  .nav-link:hover {
+  .enlace-nav:hover {
     background: rgba(168, 85, 247, 0.06);
     letter-spacing: 1px;
   }
 
-  .auth-actions {
+  .acciones-sesion {
     width: 100%;
     margin-top: 16px;
     padding: 0 4px;
   }
 
-  .auth-actions .btn-auth,
-  .auth-actions .btn-logout {
+  .acciones-sesion .btn-sesion,
+  .acciones-sesion .btn-salir {
     width: 100%;
     justify-content: center;
     height: 44px;
     font-size: 0.95rem;
   }
 
-  .logout-form {
+  .formulario-salida {
     width: 100%;
   }
 }

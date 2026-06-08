@@ -14,7 +14,7 @@ button:hover {
   transform: translateY(-1px);
 }
 
-.btn-auth {
+.btn-sesion {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +32,7 @@ button:hover {
   font-family: "Inter", sans-serif;
 }
 
-.btn-auth:hover {
+.btn-sesion:hover {
   box-shadow: 0 0 15px var(--accent);
   transform: translateY(-2px);
 }

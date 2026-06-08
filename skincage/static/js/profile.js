@@ -1,212 +1,197 @@
-/* =========================================================
-   profile.js — Lógica de la página de perfil de usuario
-   ========================================================= */
-
 (function () {
-  // ─── Avatar preview & upload ───────────────────────────
-  const avatarBtn = document.getElementById("avatar-btn");
-  const avatarInput = document.getElementById("avatar-input");
-  const avatarPreview = document.getElementById("avatar-preview");
-  const avatarPlaceholder = document.getElementById("avatar-placeholder");
+  const btnAvatar = document.getElementById("avatar-btn");
+  const inputAvatar = document.getElementById("avatar-input");
+  const previaAvatar = document.getElementById("avatar-preview");
+  const placeholder = document.getElementById("avatar-placeholder");
 
-  if (avatarBtn) {
-    avatarBtn.addEventListener("click", () => avatarInput.click());
+  if (btnAvatar) {
+    btnAvatar.addEventListener("click", () => inputAvatar.click());
   }
 
-  if (avatarInput) {
-    avatarInput.addEventListener("change", function () {
-      const file = this.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        avatarPreview.src = e.target.result;
-        avatarPreview.style.display = "block";
-        avatarPreview.classList.add("profile-avatar");
-        if (avatarPlaceholder) avatarPlaceholder.style.display = "none";
+  if (inputAvatar) {
+    inputAvatar.addEventListener("change", function () {
+      const archivo = this.files[0];
+      if (!archivo) return;
+      const lector = new FileReader();
+      lector.onload = function (e) {
+        previaAvatar.src = e.target.result;
+        previaAvatar.style.display = "block";
+        previaAvatar.classList.add("profile-avatar");
+        if (placeholder) placeholder.style.display = "none";
       };
-      reader.readAsDataURL(file);
+      lector.readAsDataURL(archivo);
     });
   }
 
-  // ─── Formulario de perfil ──────────────────────────────
-  const profileForm = document.getElementById("profile-form");
-  const feedback = document.getElementById("profile-feedback");
+  const formularioPerfil = document.getElementById("profile-form");
+  const mensajeEstado = document.getElementById("profile-feedback");
 
-  if (profileForm) {
-    profileForm.addEventListener("submit", function (e) {
+  if (formularioPerfil) {
+    formularioPerfil.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const formData = new FormData();
-      formData.append(
+      const datos = new FormData();
+      datos.append(
         "username",
         document.getElementById("pf-username").value.trim(),
       );
-      formData.append(
+      datos.append(
         "first_name",
         document.getElementById("pf-first-name").value.trim(),
       );
-      const csrfToken = profileForm.querySelector(
+      const tokenCsrf = formularioPerfil.querySelector(
         "[name=csrfmiddlewaretoken]",
       ).value;
 
-      if (avatarInput && avatarInput.files[0]) {
-        formData.append("avatar", avatarInput.files[0]);
+      if (inputAvatar && inputAvatar.files[0]) {
+        datos.append("avatar", inputAvatar.files[0]);
       }
 
-      feedback.style.display = "none";
-      feedback.className = "profile-feedback";
+      mensajeEstado.style.display = "none";
+      mensajeEstado.className = "profile-feedback";
 
       fetch(PROFILE_UPDATE_URL, {
         method: "POST",
-        headers: { "X-CSRFToken": csrfToken },
-        body: formData,
+        headers: { "X-CSRFToken": tokenCsrf },
+        body: datos,
       })
         .then((r) => r.json())
-        .then((data) => {
-          feedback.style.display = "block";
-          if (data.success) {
-            feedback.classList.add("success");
-            feedback.textContent = data.message || "Guardado correctamente.";
+        .then((respuesta) => {
+          mensajeEstado.style.display = "block";
+          if (respuesta.success) {
+            mensajeEstado.classList.add("success");
+            mensajeEstado.textContent =
+              respuesta.message || "Guardado correctamente.";
           } else {
-            feedback.classList.add("error");
-            feedback.textContent = data.error || "Error al guardar.";
+            mensajeEstado.classList.add("error");
+            mensajeEstado.textContent = respuesta.error || "Error al guardar.";
           }
         })
         .catch(() => {
-          feedback.style.display = "block";
-          feedback.classList.add("error");
-          feedback.textContent = "Error de conexión.";
+          mensajeEstado.style.display = "block";
+          mensajeEstado.classList.add("error");
+          mensajeEstado.textContent = "Error de conexión.";
         });
     });
   }
 
-  // ─── Countdown + bloqueo de cancelación (5 min) ────────
-  const CANCEL_WINDOW_MS = 5 * 60 * 1000; // 5 minutos en ms
+  const VENTANA_CANCELACION_MS = 5 * 60 * 1000;
 
-  /**
-   * Fase 1 (primeros 5 min): muestra cuenta atrás para cancelar (MM:SS).
-   * Fase 2 (después de 5 min): muestra tiempo restante de reserva (HH:MM:SS).
-   * Cuando llega a 0 la Fase 2, muestra "Expirada".
-   */
-  function updateCancelCountdowns() {
-    const timers = document.querySelectorAll(".countdown-cancel-timer");
-    const now = Date.now();
+  function actualizarCuentasAtras() {
+    const contadores = document.querySelectorAll(".countdown-cancel-timer");
+    const ahora = Date.now();
 
-    timers.forEach((timer) => {
+    contadores.forEach((contador) => {
       const fechaMs =
-        parseInt(timer.getAttribute("data-fecha-reserva"), 10) * 1000;
-      const cancelExp = fechaMs + CANCEL_WINDOW_MS;
-      const cancelDiffMs = cancelExp - now;
+        parseInt(contador.getAttribute("data-fecha-reserva"), 10) * 1000;
+      const expiraCancelacion = fechaMs + VENTANA_CANCELACION_MS;
+      const msHastaCancelacion = expiraCancelacion - ahora;
 
-      const reservaId = timer.getAttribute("data-reserva-id");
-      const cancelBtn = reservaId
+      const idReserva = contador.getAttribute("data-reserva-id");
+      const btnCancelar = idReserva
         ? document.querySelector(
-            `.btn-cancel-reserva[data-reserva-id="${reservaId}"]`,
+            `.btn-cancel-reserva[data-reserva-id="${idReserva}"]`,
           )
         : null;
 
-      if (!isNaN(cancelDiffMs) && cancelDiffMs > 0) {
-        // ── FASE 1: ventana de cancelación activa ────────────
-        const totalSecs = Math.floor(cancelDiffMs / 1000);
-        const minutes = Math.floor(totalSecs / 60);
-        const seconds = totalSecs % 60;
+      if (!isNaN(msHastaCancelacion) && msHastaCancelacion > 0) {
+        const segsTotal = Math.floor(msHastaCancelacion / 1000);
+        const minutos = Math.floor(segsTotal / 60);
+        const segundos = segsTotal % 60;
 
-        timer.textContent =
-          String(minutes).padStart(2, "0") +
+        contador.textContent =
+          String(minutos).padStart(2, "0") +
           ":" +
-          String(seconds).padStart(2, "0");
-        timer.title = "Tiempo restante para poder cancelar";
+          String(segundos).padStart(2, "0");
+        contador.title = "Tiempo restante para poder cancelar";
 
-        if (totalSecs <= 60) {
-          timer.style.color = "#ef4444"; // rojo: menos de 1 min
-        } else if (totalSecs <= 120) {
-          timer.style.color = "#f59e0b"; // ámbar: menos de 2 min
+        if (segsTotal <= 60) {
+          contador.style.color = "#ef4444";
+        } else if (segsTotal <= 120) {
+          contador.style.color = "#f59e0b";
         } else {
-          timer.style.color = "#22c55e"; // verde: tiempo suficiente
+          contador.style.color = "#22c55e";
         }
 
-        // Botón habilitado durante la ventana de cancelación
-        if (cancelBtn) {
-          cancelBtn.disabled = false;
-          cancelBtn.title = "";
-          cancelBtn.style.opacity = "1";
-          cancelBtn.style.cursor = "pointer";
-          cancelBtn.style.background = "#ef4444";
+        if (btnCancelar) {
+          btnCancelar.disabled = false;
+          btnCancelar.title = "";
+          btnCancelar.style.opacity = "1";
+          btnCancelar.style.cursor = "pointer";
+          btnCancelar.style.background = "#ef4444";
         }
       } else {
-        // ── FASE 2: ventana de cancelación agotada, deshabilitar botón ──
-        if (cancelBtn) {
-          cancelBtn.disabled = true;
-          cancelBtn.title = "El tiempo para cancelar ha expirado";
-          cancelBtn.style.opacity = "0.4";
-          cancelBtn.style.cursor = "not-allowed";
-          cancelBtn.style.background = "#6b7280";
+        if (btnCancelar) {
+          btnCancelar.disabled = true;
+          btnCancelar.title = "El tiempo para cancelar ha expirado";
+          btnCancelar.style.opacity = "0.4";
+          btnCancelar.style.cursor = "not-allowed";
+          btnCancelar.style.background = "#6b7280";
         }
 
-        // Mostrar tiempo restante de la reserva completa
-        const expiracionMs =
-          parseInt(timer.getAttribute("data-expiracion"), 10) * 1000;
-        const reservaDiffMs = expiracionMs - now;
+        const msExpiracion =
+          parseInt(contador.getAttribute("data-expiracion"), 10) * 1000;
+        const msReserva = msExpiracion - ahora;
 
-        if (isNaN(reservaDiffMs) || reservaDiffMs <= 0) {
-          timer.textContent = "Expirada";
-          timer.style.color = "#6b7280";
-          timer.title = "La reserva ha expirado";
+        if (isNaN(msReserva) || msReserva <= 0) {
+          contador.textContent = "Expirada";
+          contador.style.color = "#6b7280";
+          contador.title = "La reserva ha expirado";
         } else {
-          const totalSecs = Math.floor(reservaDiffMs / 1000);
-          const hours = Math.floor(totalSecs / 3600);
-          const minutes = Math.floor((totalSecs % 3600) / 60);
-          const seconds = totalSecs % 60;
+          const segsTotal = Math.floor(msReserva / 1000);
+          const horas = Math.floor(segsTotal / 3600);
+          const minutos = Math.floor((segsTotal % 3600) / 60);
+          const segundos = segsTotal % 60;
 
-          timer.textContent =
-            String(hours).padStart(2, "0") +
+          contador.textContent =
+            String(horas).padStart(2, "0") +
             ":" +
-            String(minutes).padStart(2, "0") +
+            String(minutos).padStart(2, "0") +
             ":" +
-            String(seconds).padStart(2, "0");
-          timer.style.color = "var(--accent-glow, #a78bfa)";
-          timer.title = "Tiempo restante de reserva";
+            String(segundos).padStart(2, "0");
+          contador.style.color = "var(--accent-glow, #a78bfa)";
+          contador.title = "Tiempo restante de reserva";
         }
       }
     });
   }
 
-  const cancelTimers = document.querySelectorAll(".countdown-cancel-timer");
-  if (cancelTimers.length > 0) {
-    updateCancelCountdowns();
-    setInterval(updateCancelCountdowns, 1000);
+  const contadoresCancelacion = document.querySelectorAll(
+    ".countdown-cancel-timer",
+  );
+  if (contadoresCancelacion.length > 0) {
+    actualizarCuentasAtras();
+    setInterval(actualizarCuentasAtras, 1000);
   }
 
-  // ─── Añadir Balance (Simulado) ─────────────────────────
-  const balancePresets = document.querySelectorAll(".btn-balance-preset");
-  const btnAddCustom = document.getElementById("btn-add-custom");
-  const customBalanceInput = document.getElementById("custom-balance-input");
-  const balanceFeedback = document.getElementById("balance-feedback");
+  const botonesPreset = document.querySelectorAll(".btn-balance-preset");
+  const btnPersonalizado = document.getElementById("btn-add-custom");
+  const inputCantidad = document.getElementById("custom-balance-input");
+  const mensajeSaldo = document.getElementById("balance-feedback");
 
-  function addBalance(amount) {
-    if (!amount || amount <= 0) return;
-    const parsedAmount = parseFloat(amount);
-    if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      if (balanceFeedback) {
-        balanceFeedback.style.display = 'block';
-        balanceFeedback.className = 'profile-feedback error';
-        balanceFeedback.textContent = 'Por favor introduce una cantidad válida.';
+  function recargarSaldo(cantidad) {
+    if (!cantidad || cantidad <= 0) return;
+    const cantidadNumerica = parseFloat(cantidad);
+    if (isNaN(cantidadNumerica) || cantidadNumerica <= 0) {
+      if (mensajeSaldo) {
+        mensajeSaldo.style.display = "block";
+        mensajeSaldo.className = "profile-feedback error";
+        mensajeSaldo.textContent = "Por favor introduce una cantidad válida.";
       }
       return;
     }
-    // Redirigir a la página oficial simulada con Stripe.js
-    window.location.href = `/perfil/recargar/?amount=${parsedAmount.toFixed(2)}`;
+    window.location.href = `/perfil/recargar/?amount=${cantidadNumerica.toFixed(2)}`;
   }
 
-  balancePresets.forEach((btn) => {
+  botonesPreset.forEach((btn) => {
     btn.addEventListener("click", function () {
-      addBalance(this.getAttribute("data-amount"));
+      recargarSaldo(this.getAttribute("data-amount"));
     });
   });
 
-  if (btnAddCustom) {
-    btnAddCustom.addEventListener("click", function () {
-      addBalance(customBalanceInput.value);
+  if (btnPersonalizado) {
+    btnPersonalizado.addEventListener("click", function () {
+      recargarSaldo(inputCantidad.value);
     });
   }
 })();

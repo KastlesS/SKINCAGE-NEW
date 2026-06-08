@@ -1,323 +1,318 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar pestañas
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
+document.addEventListener("DOMContentLoaded", () => {
+    const botonesPestana = document.querySelectorAll(".tab-btn");
+    const contenidosPestana = document.querySelectorAll(".tab-content");
 
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Quitar clase active de todos
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-            
-            // Añadir clase active al pulsado y su contenido
-            btn.classList.add('active');
-            const target = document.getElementById(btn.getAttribute('data-target'));
-            if (target) target.classList.add('active');
+    botonesPestana.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            botonesPestana.forEach((b) => b.classList.remove("active"));
+            contenidosPestana.forEach((c) => c.classList.remove("active"));
+
+            btn.classList.add("active");
+            const destino = document.getElementById(btn.getAttribute("data-target"));
+            if (destino) destino.classList.add("active");
         });
     });
 
-    // Cargar datos
-    fetchUsers();
+    fetchUsuarios();
     fetchReservas();
     fetchSkins();
 });
 
-function emptyContainer(container) {
-    while (container.firstChild) {
-        container.removeChild(container.firstChild);
+function vaciarContenedor(contenedor) {
+    while (contenedor.firstChild) {
+        contenedor.removeChild(contenedor.firstChild);
     }
 }
 
-function createErrorItem(message) {
-    const li = document.createElement('li');
-    li.className = 'data-item';
-    li.style.color = '#e74c3c';
-    li.textContent = `Error: ${message}`;
+function crearItemError(mensaje) {
+    const li = document.createElement("li");
+    li.className = "data-item";
+    li.style.color = "#e74c3c";
+    li.textContent = `Error: ${mensaje}`;
     return li;
 }
 
-function createEmptyMessageItem(message) {
-    const li = document.createElement('li');
-    li.className = 'data-item';
-    const span = document.createElement('span');
-    span.style.color = '#8b8b9e';
-    span.textContent = message;
+function crearItemVacio(mensaje) {
+    const li = document.createElement("li");
+    li.className = "data-item";
+    const span = document.createElement("span");
+    span.style.color = "#8b8b9e";
+    span.textContent = mensaje;
     li.appendChild(span);
     return li;
 }
 
-async function fetchUsers() {
-    const container = document.getElementById('users-container');
-    const statUsers = document.getElementById('stat-users');
+async function fetchUsuarios() {
+    const contenedor = document.getElementById("users-container");
+    const contadorUsuarios = document.getElementById("stat-users");
     try {
-        const response = await fetch('/api/users/all/');
-        if (!response.ok) throw new Error('Error al cargar usuarios');
-        const users = await response.json();
-        
-        statUsers.textContent = users.length;
-        emptyContainer(container);
-        
-        if (users.length === 0) {
-            container.appendChild(createEmptyMessageItem('No hay usuarios registrados.'));
+        const peticion = await fetch("/api/users/all/");
+        if (!peticion.ok) throw new Error("Error al cargar usuarios");
+        const usuarios = await peticion.json();
+
+        contadorUsuarios.textContent = usuarios.length;
+        vaciarContenedor(contenedor);
+
+        if (usuarios.length === 0) {
+            contenedor.appendChild(crearItemVacio("No hay usuarios registrados."));
             return;
         }
-        
-        users.forEach(user => {
-            const li = document.createElement('li');
-            li.className = 'data-item';
-            
-            const flexRow = document.createElement('div');
-            flexRow.className = 'flex-row';
-            
-            const titleSpan = document.createElement('span');
-            titleSpan.className = 'item-title';
-            titleSpan.textContent = user.username;
-            flexRow.appendChild(titleSpan);
-            
-            const roleBadge = document.createElement('span');
-            roleBadge.className = user.is_staff ? 'badge admin' : 'badge';
-            roleBadge.textContent = user.is_staff ? 'Admin' : 'Usuario';
-            flexRow.appendChild(roleBadge);
-            
-            li.appendChild(flexRow);
-            
-            const subtitleSpan = document.createElement('span');
-            subtitleSpan.className = 'item-subtitle';
-            const date = new Date(user.date_joined).toLocaleDateString();
-            const email = user.email ? user.email : 'Sin correo electrónico';
-            
-            // Añadir balance si viene en la API (el modelo original no lo tiene por defecto en admin endpoint, pero lo preparamos por si acaso)
-            const balanceStr = user.balance !== undefined ? ` • Balance: ${user.balance}€` : '';
-            
-            subtitleSpan.textContent = `${email} • Registrado: ${date}${balanceStr}`;
-            li.appendChild(subtitleSpan);
-            
-            container.appendChild(li);
+
+        usuarios.forEach((usuario) => {
+            const li = document.createElement("li");
+            li.className = "data-item";
+
+            const fila = document.createElement("div");
+            fila.className = "flex-row";
+
+            const nombreSpan = document.createElement("span");
+            nombreSpan.className = "item-title";
+            nombreSpan.textContent = usuario.username;
+            fila.appendChild(nombreSpan);
+
+            const etiquetaRol = document.createElement("span");
+            etiquetaRol.className = usuario.is_staff ? "badge admin" : "badge";
+            etiquetaRol.textContent = usuario.is_staff ? "Admin" : "Usuario";
+            fila.appendChild(etiquetaRol);
+
+            li.appendChild(fila);
+
+            const subtituloSpan = document.createElement("span");
+            subtituloSpan.className = "item-subtitle";
+            const fechaRegistro = new Date(usuario.date_joined).toLocaleDateString();
+            const correo = usuario.email ? usuario.email : "Sin correo electrónico";
+
+            const saldoTexto = usuario.balance !== undefined ? ` • Balance: ${usuario.balance}€` : "";
+
+            subtituloSpan.textContent = `${correo} • Registrado: ${fechaRegistro}${saldoTexto}`;
+            li.appendChild(subtituloSpan);
+
+            contenedor.appendChild(li);
         });
-    } catch (error) {
-        statUsers.textContent = "Error";
-        emptyContainer(container);
-        container.appendChild(createErrorItem(error.message));
+    } catch (fallo) {
+        contadorUsuarios.textContent = "Error";
+        vaciarContenedor(contenedor);
+        contenedor.appendChild(crearItemError(fallo.message));
     }
 }
 
 async function fetchReservas() {
-    const container = document.getElementById('reservas-container');
-    const statReservas = document.getElementById('stat-reservas');
+    const contenedor = document.getElementById("reservas-container");
+    const contadorReservas = document.getElementById("stat-reservas");
     try {
-        const response = await fetch('/api/reservas/');
-        if (!response.ok) throw new Error('Error al cargar reservas');
-        const reservas = await response.json();
-        
-        const data = reservas.results || reservas;
-        // Contar reservas activas (confirmadas)
-        const activas = data.filter(r => r.estado === 'confirmada').length;
-        statReservas.textContent = activas;
-        
-        emptyContainer(container);
+        const peticion = await fetch("/api/reservas/");
+        if (!peticion.ok) throw new Error("Error al cargar reservas");
+        const reservas = await peticion.json();
 
-        if (!data || data.length === 0) {
-            container.appendChild(createEmptyMessageItem('No hay reservas en el sistema.'));
+        const lista = reservas.results || reservas;
+        const activas = lista.filter((r) => r.estado === "confirmada").length;
+        contadorReservas.textContent = activas;
+
+        vaciarContenedor(contenedor);
+
+        if (!lista || lista.length === 0) {
+            contenedor.appendChild(crearItemVacio("No hay reservas en el sistema."));
             return;
         }
-        
-        data.forEach(res => {
-            const li = document.createElement('li');
-            li.className = 'data-item';
-            
-            const flexRow = document.createElement('div');
-            flexRow.className = 'flex-row';
-            
-            const skinName = res.skin ? (res.skin.nombre || `Skin ID: ${res.skin}`) : 'Skin Desconocida';
-            const titleSpan = document.createElement('span');
-            titleSpan.className = 'item-title';
-            const userStr = res.usuario ? (res.usuario.username || `Usuario #${res.usuario}`) : 'Desconocido';
-            titleSpan.textContent = `${skinName} — Reservado por ${userStr}`;
-            flexRow.appendChild(titleSpan);
-            
-            const priceSpan = document.createElement('span');
-            priceSpan.style.marginLeft = 'auto';
-            priceSpan.style.color = '#f39c12';
-            priceSpan.style.fontWeight = 'bold';
-            const price = res.precio_reserva ? res.precio_reserva : '0.00';
-            priceSpan.textContent = `${price}€`;
-            flexRow.appendChild(priceSpan);
-            
-            li.appendChild(flexRow);
-            
-            const subtitleSpan = document.createElement('span');
-            subtitleSpan.className = 'item-subtitle';
-            subtitleSpan.style.display = 'flex';
-            subtitleSpan.style.alignItems = 'center';
-            subtitleSpan.style.justifyContent = 'space-between';
-            subtitleSpan.style.width = '100%';
-            
-            const infoLeft = document.createElement('span');
-            const date = res.fecha_reserva ? new Date(res.fecha_reserva).toLocaleString() : 'Fecha desconocida';
-            infoLeft.textContent = `ID #${res.id} • ${date}`;
-            subtitleSpan.appendChild(infoLeft);
-            
-            const badgeSpan = document.createElement('span');
-            badgeSpan.className = `badge-estado badge-${res.estado}`;
-            // Formatear texto del badge (capitalizado)
-            const estadoTexto = res.estado.charAt(0).toUpperCase() + res.estado.slice(1);
-            badgeSpan.textContent = estadoTexto;
-            subtitleSpan.appendChild(badgeSpan);
-            
-            li.appendChild(subtitleSpan);
-            
-            container.appendChild(li);
+
+        lista.forEach((reserva) => {
+            const li = document.createElement("li");
+            li.className = "data-item";
+
+            const fila = document.createElement("div");
+            fila.className = "flex-row";
+
+            const nombreSkin = reserva.skin
+                ? reserva.skin.nombre || `Skin ID: ${reserva.skin}`
+                : "Skin Desconocida";
+            const tituloSpan = document.createElement("span");
+            tituloSpan.className = "item-title";
+            const nombreUsuario = reserva.usuario
+                ? reserva.usuario.username || `Usuario #${reserva.usuario}`
+                : "Desconocido";
+            tituloSpan.textContent = `${nombreSkin} — Reservado por ${nombreUsuario}`;
+            fila.appendChild(tituloSpan);
+
+            const precioSpan = document.createElement("span");
+            precioSpan.style.marginLeft = "auto";
+            precioSpan.style.color = "#f39c12";
+            precioSpan.style.fontWeight = "bold";
+            const precio = reserva.precio_reserva ? reserva.precio_reserva : "0.00";
+            precioSpan.textContent = `${precio}€`;
+            fila.appendChild(precioSpan);
+
+            li.appendChild(fila);
+
+            const subtituloSpan = document.createElement("span");
+            subtituloSpan.className = "item-subtitle";
+            subtituloSpan.style.display = "flex";
+            subtituloSpan.style.alignItems = "center";
+            subtituloSpan.style.justifyContent = "space-between";
+            subtituloSpan.style.width = "100%";
+
+            const infoIzquierda = document.createElement("span");
+            const fechaReserva = reserva.fecha_reserva
+                ? new Date(reserva.fecha_reserva).toLocaleString()
+                : "Fecha desconocida";
+            infoIzquierda.textContent = `ID #${reserva.id} • ${fechaReserva}`;
+            subtituloSpan.appendChild(infoIzquierda);
+
+            const etiquetaEstado = document.createElement("span");
+            etiquetaEstado.className = `badge-estado badge-${reserva.estado}`;
+            const textoEstado =
+                reserva.estado.charAt(0).toUpperCase() + reserva.estado.slice(1);
+            etiquetaEstado.textContent = textoEstado;
+            subtituloSpan.appendChild(etiquetaEstado);
+
+            li.appendChild(subtituloSpan);
+
+            contenedor.appendChild(li);
         });
-    } catch (error) {
-        statReservas.textContent = "Error";
-        emptyContainer(container);
-        container.appendChild(createErrorItem(error.message));
+    } catch (fallo) {
+        contadorReservas.textContent = "Error";
+        vaciarContenedor(contenedor);
+        contenedor.appendChild(crearItemError(fallo.message));
     }
 }
 
-let allSkinsData = [];
-let currentSkinPage = 1;
-const SKINS_PER_PAGE = 20;
+let todasLasSkins = [];
+let paginaActual = 1;
+const SKINS_POR_PAGINA = 20;
 
 async function fetchSkins() {
-    const container = document.getElementById('skins-container');
-    const statSkins = document.getElementById('stat-skins');
+    const contenedor = document.getElementById("skins-container");
+    const contadorSkins = document.getElementById("stat-skins");
     try {
-        const response = await fetch('/api/skin-crud/');
-        if (!response.ok) throw new Error('Error al cargar skins');
-        const skins = await response.json();
-        
-        allSkinsData = skins.results || skins;
-        statSkins.textContent = allSkinsData.length;
-        
-        emptyContainer(container);
+        const peticion = await fetch("/api/skin-crud/");
+        if (!peticion.ok) throw new Error("Error al cargar skins");
+        const skins = await peticion.json();
 
-        if (!allSkinsData || allSkinsData.length === 0) {
-            container.appendChild(createEmptyMessageItem('No hay skins registradas.'));
+        todasLasSkins = skins.results || skins;
+        contadorSkins.textContent = todasLasSkins.length;
+
+        vaciarContenedor(contenedor);
+
+        if (!todasLasSkins || todasLasSkins.length === 0) {
+            contenedor.appendChild(crearItemVacio("No hay skins registradas."));
             return;
         }
-        
-        // Setup pagination listeners once
-        const prevBtn = document.getElementById('skins-prev');
-        const nextBtn = document.getElementById('skins-next');
-        
-        // Remove old listeners to prevent duplicates if fetched again
-        const newPrev = prevBtn.cloneNode(true);
-        const newNext = nextBtn.cloneNode(true);
-        prevBtn.parentNode.replaceChild(newPrev, prevBtn);
-        nextBtn.parentNode.replaceChild(newNext, nextBtn);
-        
-        newPrev.addEventListener('click', () => {
-            if (currentSkinPage > 1) {
-                currentSkinPage--;
-                renderSkinsPage();
+
+        const btnAnterior = document.getElementById("skins-prev");
+        const btnSiguiente = document.getElementById("skins-next");
+
+        const nuevoAnterior = btnAnterior.cloneNode(true);
+        const nuevoSiguiente = btnSiguiente.cloneNode(true);
+        btnAnterior.parentNode.replaceChild(nuevoAnterior, btnAnterior);
+        btnSiguiente.parentNode.replaceChild(nuevoSiguiente, btnSiguiente);
+
+        nuevoAnterior.addEventListener("click", () => {
+            if (paginaActual > 1) {
+                paginaActual--;
+                pintarPaginaSkins();
             }
         });
-        
-        newNext.addEventListener('click', () => {
-            if (currentSkinPage < Math.ceil(allSkinsData.length / SKINS_PER_PAGE)) {
-                currentSkinPage++;
-                renderSkinsPage();
+
+        nuevoSiguiente.addEventListener("click", () => {
+            if (paginaActual < Math.ceil(todasLasSkins.length / SKINS_POR_PAGINA)) {
+                paginaActual++;
+                pintarPaginaSkins();
             }
         });
-        
-        renderSkinsPage();
-        
-    } catch (error) {
-        statSkins.textContent = "Error";
-        emptyContainer(container);
-        container.appendChild(createErrorItem(error.message));
+
+        pintarPaginaSkins();
+    } catch (fallo) {
+        contadorSkins.textContent = "Error";
+        vaciarContenedor(contenedor);
+        contenedor.appendChild(crearItemError(fallo.message));
     }
 }
 
-function renderSkinsPage() {
-    const container = document.getElementById('skins-container');
-    emptyContainer(container);
-    
-    const startIndex = (currentSkinPage - 1) * SKINS_PER_PAGE;
-    const endIndex = startIndex + SKINS_PER_PAGE;
-    const pageData = allSkinsData.slice(startIndex, endIndex);
-    
-    pageData.forEach(skin => {
-        const li = document.createElement('li');
-        li.className = 'data-item';
-        
-        const flexRow = document.createElement('div');
-        flexRow.className = 'flex-row';
-        
-        const titleSpan = document.createElement('span');
-        titleSpan.className = 'item-title';
-        // Añadir Stattrak visualmente
+function pintarPaginaSkins() {
+    const contenedor = document.getElementById("skins-container");
+    vaciarContenedor(contenedor);
+
+    const inicio = (paginaActual - 1) * SKINS_POR_PAGINA;
+    const fin = inicio + SKINS_POR_PAGINA;
+    const skinsPagina = todasLasSkins.slice(inicio, fin);
+
+    skinsPagina.forEach((skin) => {
+        const li = document.createElement("li");
+        li.className = "data-item";
+
+        const fila = document.createElement("div");
+        fila.className = "flex-row";
+
+        const tituloSpan = document.createElement("span");
+        tituloSpan.className = "item-title";
         if (skin.stattrack) {
-            const st = document.createElement('span');
-            st.textContent = 'ST™ ';
-            st.style.color = '#f97316';
-            st.style.fontSize = '0.8rem';
-            titleSpan.appendChild(st);
+            const stattrak = document.createElement("span");
+            stattrak.textContent = "ST™ ";
+            stattrak.style.color = "#f97316";
+            stattrak.style.fontSize = "0.8rem";
+            tituloSpan.appendChild(stattrak);
         }
-        titleSpan.appendChild(document.createTextNode(skin.nombre));
-        flexRow.appendChild(titleSpan);
-        
-        const priceSpan = document.createElement('span');
-        priceSpan.style.marginLeft = 'auto';
-        priceSpan.style.color = '#f39c12';
-        priceSpan.style.fontWeight = 'bold';
-        priceSpan.textContent = `${skin.precio}€`;
-        flexRow.appendChild(priceSpan);
-        
-        li.appendChild(flexRow);
-        
-        const subtitleSpan = document.createElement('span');
-        subtitleSpan.className = 'item-subtitle';
-        subtitleSpan.style.display = 'flex';
-        subtitleSpan.style.gap = '15px';
-        
-        const stockSpan = document.createElement('span');
-        stockSpan.style.color = skin.stock > 0 ? '#10b981' : '#ef4444';
-        stockSpan.innerHTML = `<i class="fa-solid ${skin.stock > 0 ? 'fa-check' : 'fa-xmark'}"></i> Stock: ${skin.stock}`;
-        subtitleSpan.appendChild(stockSpan);
-        
+        tituloSpan.appendChild(document.createTextNode(skin.nombre));
+        fila.appendChild(tituloSpan);
+
+        const precioSpan = document.createElement("span");
+        precioSpan.style.marginLeft = "auto";
+        precioSpan.style.color = "#f39c12";
+        precioSpan.style.fontWeight = "bold";
+        precioSpan.textContent = `${skin.precio}€`;
+        fila.appendChild(precioSpan);
+
+        li.appendChild(fila);
+
+        const subtituloSpan = document.createElement("span");
+        subtituloSpan.className = "item-subtitle";
+        subtituloSpan.style.display = "flex";
+        subtituloSpan.style.gap = "15px";
+
+        const stockSpan = document.createElement("span");
+        stockSpan.style.color = skin.stock > 0 ? "#10b981" : "#ef4444";
+        stockSpan.innerHTML = `<i class="fa-solid ${skin.stock > 0 ? "fa-check" : "fa-xmark"}"></i> Stock: ${skin.stock}`;
+        subtituloSpan.appendChild(stockSpan);
+
         if (skin.categoria) {
-            const catSpan = document.createElement('span');
+            const catSpan = document.createElement("span");
             catSpan.textContent = skin.categoria;
-            catSpan.style.textTransform = 'capitalize';
-            subtitleSpan.appendChild(catSpan);
+            catSpan.style.textTransform = "capitalize";
+            subtituloSpan.appendChild(catSpan);
         }
-        
-        const wearSpan = document.createElement('span');
-        wearSpan.textContent = skin.desgaste ? `Float: ${skin.desgaste}` : 'N/A';
-        subtitleSpan.appendChild(wearSpan);
-        
-        const raritySpan = document.createElement('span');
+
+        const desgasteSpan = document.createElement("span");
+        desgasteSpan.textContent = skin.desgaste ? `Float: ${skin.desgaste}` : "N/A";
+        subtituloSpan.appendChild(desgasteSpan);
+
+        const rarezaSpan = document.createElement("span");
         if (skin.rareza) {
-            raritySpan.textContent = skin.rareza;
-            raritySpan.className = 'badge'; // Usar badge simple para rareza
+            rarezaSpan.textContent = skin.rareza;
+            rarezaSpan.className = "badge";
         }
-        subtitleSpan.appendChild(raritySpan);
-        
-        li.appendChild(subtitleSpan);
-        container.appendChild(li);
+        subtituloSpan.appendChild(rarezaSpan);
+
+        li.appendChild(subtituloSpan);
+        contenedor.appendChild(li);
     });
-    
-    // Update pagination controls
-    const totalPages = Math.ceil(allSkinsData.length / SKINS_PER_PAGE);
-    const pagContainer = document.getElementById('skins-pagination');
-    const prevBtn = document.getElementById('skins-prev');
-    const nextBtn = document.getElementById('skins-next');
-    const infoSpan = document.getElementById('skins-page-info');
-    
-    if (totalPages > 1) {
-        pagContainer.style.display = 'flex';
-        infoSpan.textContent = `Página ${currentSkinPage} de ${totalPages}`;
-        
-        prevBtn.disabled = currentSkinPage === 1;
-        prevBtn.style.opacity = currentSkinPage === 1 ? '0.4' : '1';
-        prevBtn.style.cursor = currentSkinPage === 1 ? 'not-allowed' : 'pointer';
-        
-        nextBtn.disabled = currentSkinPage === totalPages;
-        nextBtn.style.opacity = currentSkinPage === totalPages ? '0.4' : '1';
-        nextBtn.style.cursor = currentSkinPage === totalPages ? 'not-allowed' : 'pointer';
+
+    const totalPaginas = Math.ceil(todasLasSkins.length / SKINS_POR_PAGINA);
+    const contenedorPaginacion = document.getElementById("skins-pagination");
+    const btnAnterior = document.getElementById("skins-prev");
+    const btnSiguiente = document.getElementById("skins-next");
+    const infoSpan = document.getElementById("skins-page-info");
+
+    if (totalPaginas > 1) {
+        contenedorPaginacion.style.display = "flex";
+        infoSpan.textContent = `Página ${paginaActual} de ${totalPaginas}`;
+
+        btnAnterior.disabled = paginaActual === 1;
+        btnAnterior.style.opacity = paginaActual === 1 ? "0.4" : "1";
+        btnAnterior.style.cursor = paginaActual === 1 ? "not-allowed" : "pointer";
+
+        btnSiguiente.disabled = paginaActual === totalPaginas;
+        btnSiguiente.style.opacity = paginaActual === totalPaginas ? "0.4" : "1";
+        btnSiguiente.style.cursor = paginaActual === totalPaginas ? "not-allowed" : "pointer";
     } else {
-        pagContainer.style.display = 'none';
+        contenedorPaginacion.style.display = "none";
     }
 }

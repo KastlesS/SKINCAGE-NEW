@@ -1,59 +1,46 @@
-/**
- * login_errors.js
- * Maneja la visualización animada de errores en el formulario de inicio de sesión.
- * Se activa cuando Django devuelve form.errors (credenciales incorrectas).
- */
-
 (function () {
   "use strict";
 
-  const banner = document.getElementById("login-error-banner");
-  if (!banner) return; // No hay errores, nada que hacer
+  const aviso = document.getElementById("aviso-credenciales");
+  if (!aviso) return;
+  const campoUsuario = document.querySelector("#id_username");
+  const campoContrasena = document.querySelector("#id_password");
 
-  const usernameInput = document.querySelector("#id_username");
-  const passwordInput = document.querySelector("#id_password");
+  [campoUsuario, campoContrasena].forEach((campo) => {
+    if (!campo) return;
+    campo.classList.add("campo-error");
 
-  // 1. Animar la entrada del banner (ya visible via CSS animation)
-  //    y añadir clase de error a los campos
-  [usernameInput, passwordInput].forEach((input) => {
-    if (!input) return;
-    input.classList.add("input-error");
-
-    // Limpiar clase de error al empezar a escribir
-    input.addEventListener(
+    campo.addEventListener(
       "input",
-      function clearError() {
-        input.classList.remove("input-error");
-        // Si ambos campos están limpios, ocultar el banner
-        const allClean = ![usernameInput, passwordInput].some((i) =>
-          i?.classList.contains("input-error")
+      function quitarError() {
+        campo.classList.remove("campo-error");
+        const todoLimpio = ![campoUsuario, campoContrasena].some((c) =>
+          c?.classList.contains("campo-error"),
         );
-        if (allClean) dismissBanner();
+        if (todoLimpio) ocultarAviso();
       },
-      { once: true }
+      { once: true },
     );
   });
 
-  // 2. Auto-dismiss del banner tras 6 segundos
-  const autoDismissTimer = setTimeout(dismissBanner, 6000);
+  const temporizadorOcultar = setTimeout(ocultarAviso, 6000);
 
-  // 3. Botón de cierre (si existe)
-  const closeBtn = banner.querySelector(".login-error-close");
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      clearTimeout(autoDismissTimer);
-      dismissBanner();
+  const btnCerrar = aviso.querySelector(".btn-cerrar-aviso");
+  if (btnCerrar) {
+    btnCerrar.addEventListener("click", () => {
+      clearTimeout(temporizadorOcultar);
+      ocultarAviso();
     });
   }
 
-  function dismissBanner() {
-    banner.classList.add("login-error-banner--hiding");
-    banner.addEventListener(
+  function ocultarAviso() {
+    aviso.classList.add("aviso-credenciales--ocultando");
+    aviso.addEventListener(
       "animationend",
       () => {
-        banner.style.display = "none";
+        aviso.style.display = "none";
       },
-      { once: true }
+      { once: true },
     );
   }
 })();

@@ -1,60 +1,60 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const loginSection = document.getElementById("login-section");
-  const registerSection = document.getElementById("register-section");
-  const showRegisterBtn = document.getElementById("show-register");
-  const showLoginBtn = document.getElementById("show-login");
-  const registerForm = document.getElementById("register-form");
-  const registerError = document.getElementById("register-error");
+  const seccionLogin = document.getElementById("seccion-login");
+  const seccionRegistro = document.getElementById("seccion-registro");
+  const btnMostrarRegistro = document.getElementById("btn-ir-registro");
+  const btnMostrarLogin = document.getElementById("btn-ir-login");
+  const formularioRegistro = document.getElementById("formulario-registro");
+  const errorRegistro = document.getElementById("error-registro");
 
-  function checkHash() {
+  function revisarHash() {
     if (window.location.hash === "#register") {
-      if (loginSection && registerSection) {
-        loginSection.style.display = "none";
-        registerSection.style.display = "block";
+      if (seccionLogin && seccionRegistro) {
+        seccionLogin.style.display = "none";
+        seccionRegistro.style.display = "block";
       }
     } else if (window.location.hash === "#login" || !window.location.hash) {
-      if (loginSection && registerSection) {
-        registerSection.style.display = "none";
-        loginSection.style.display = "block";
+      if (seccionLogin && seccionRegistro) {
+        seccionRegistro.style.display = "none";
+        seccionLogin.style.display = "block";
       }
     }
   }
 
-  if (showRegisterBtn) {
-    showRegisterBtn.addEventListener("click", function (e) {
+  if (btnMostrarRegistro) {
+    btnMostrarRegistro.addEventListener("click", function (e) {
       e.preventDefault();
       window.location.hash = "#register";
     });
   }
 
-  if (showLoginBtn) {
-    showLoginBtn.addEventListener("click", function (e) {
+  if (btnMostrarLogin) {
+    btnMostrarLogin.addEventListener("click", function (e) {
       e.preventDefault();
       window.location.hash = "#login";
     });
   }
 
-  checkHash();
-  window.addEventListener("hashchange", checkHash);
+  revisarHash();
+  window.addEventListener("hashchange", revisarHash);
 
-  if (registerForm) {
-    registerForm.addEventListener("submit", function (e) {
+  if (formularioRegistro) {
+    formularioRegistro.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const username = document.getElementById("reg_username").value.trim();
-      const email = document.getElementById("reg_email").value.trim();
-      const password = document.getElementById("reg_password").value;
+      const usuario = document.getElementById("reg_username").value.trim();
+      const correo = document.getElementById("reg_email").value.trim();
+      const contrasena = document.getElementById("reg_password").value;
 
-      const csrfToken =
+      const tokenCsrf =
         document.getElementById("reg-csrf").value ||
         document.querySelector("[name=csrfmiddlewaretoken]").value;
 
-      registerError.style.display = "none";
-      registerError.innerText = "";
+      errorRegistro.style.display = "none";
+      errorRegistro.innerText = "";
 
-      if (!username) {
-        registerError.style.display = "block";
-        registerError.innerText = "El nombre de usuario es obligatorio.";
+      if (!usuario) {
+        errorRegistro.style.display = "block";
+        errorRegistro.innerText = "El nombre de usuario es obligatorio.";
         return;
       }
 
@@ -62,28 +62,28 @@ document.addEventListener("DOMContentLoaded", function () {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
+          "X-CSRFToken": tokenCsrf,
         },
         body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password,
+          username: usuario,
+          email: correo,
+          password: contrasena,
         }),
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            window.location.href = data.redirect_url || "/";
+        .then((res) => res.json())
+        .then((respuesta) => {
+          if (respuesta.success) {
+            window.location.href = respuesta.redirect_url || "/";
           } else {
-            registerError.style.display = "block";
-            registerError.innerText =
-              data.error || "Ocurrió un error al registrarse.";
+            errorRegistro.style.display = "block";
+            errorRegistro.innerText =
+              respuesta.error || "Ocurrió un error al registrarse.";
           }
         })
-        .catch((error) => {
-          console.error("Error:", error);
-          registerError.style.display = "block";
-          registerError.innerText = "Error de conexión. Inténtalo de nuevo.";
+        .catch((err) => {
+          console.error("Error:", err);
+          errorRegistro.style.display = "block";
+          errorRegistro.innerText = "Error de conexión. Inténtalo de nuevo.";
         });
     });
   }
