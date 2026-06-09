@@ -16,7 +16,7 @@
   --header-height: 58px;
 }
 
-.skincage-layout {
+.disposicion-tienda {
   display: flex;
   gap: 14px;
   padding: 14px;
@@ -28,7 +28,7 @@
   box-sizing: border-box;
 }
 
-.sidebar-filters {
+.filtros-lateral {
   width: 220px;
   min-width: 220px;
   background: var(--bg-sidebar);
@@ -43,7 +43,7 @@
   flex-shrink: 0;
 }
 
-.main-content {
+.contenido-principal {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -58,22 +58,22 @@
   align-content: start;
 }
 
-.filter-section {
+.seccion-filtro {
   margin-bottom: 18px;
   padding-bottom: 14px;
   border-bottom: 1px solid var(--border-color);
 }
 
-.filter-header {
+.titulo-filtro {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
 
-.filter-header h3,
-.filter-section h3,
-.filter-section h4 {
+.titulo-filtro h3,
+.seccion-filtro h3,
+.seccion-filtro h4 {
   font-size: 0.8rem;
   font-weight: 700;
   color: white;
@@ -102,30 +102,30 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(124, 77, 255, 0.2);
 }
 
-.search-input-wrapper {
+.buscador {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.search-input-wrapper i {
+.buscador i {
   position: absolute;
   left: 10px;
   color: var(--text-muted);
   font-size: 0.8rem;
 }
 
-.search-input-wrapper input {
+.buscador input {
   padding-left: 30px !important;
 }
 
-.wear-bar-wrapper {
+.barra-wear {
   position: relative;
   height: 22px;
   margin-bottom: 14px;
 }
 
-.wear-color-bar {
+.rango-wear {
   height: 7px;
   width: 100%;
   border-radius: 4px;
@@ -141,28 +141,28 @@ input:focus {
   );
 }
 
-.wear-inputs-row {
+.controles-wear {
   display: flex;
   gap: 10px;
   margin-bottom: 12px;
 }
-.wear-field {
+.valor-wear {
   flex: 1;
 }
-.wear-field label {
+.valor-wear label {
   display: block;
   font-size: 0.72rem;
   color: var(--text-muted);
   margin-bottom: 4px;
 }
 
-.wear-shorthand-buttons {
+.botones-wear {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 4px;
 }
 
-.wear-shorthand-buttons button {
+.botones-wear button {
   background: #1c1c24;
   border: 1px solid transparent;
   color: var(--text-muted);
@@ -172,21 +172,21 @@ input:focus {
   font-size: 0.72rem;
 }
 
-.wear-shorthand-buttons button:hover {
+.botones-wear button:hover {
   background: var(--accent-purple);
   color: white;
 }
 
-.price-inputs-row {
+.controles-precio {
   display: flex;
   gap: 8px;
 }
 
-.price-field {
+.campo-precio {
   flex: 1;
 }
 
-.price-field label {
+.campo-precio label {
   display: block;
   font-size: 0.72rem;
   color: var(--text-muted);
@@ -194,17 +194,17 @@ input:focus {
   font-weight: 500;
 }
 
-.input-with-symbol {
+.campo-moneda {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-with-symbol input {
+.campo-moneda input {
   padding-right: 24px !important;
 }
 
-.input-with-symbol .symbol {
+.campo-moneda .symbol {
   position: absolute;
   right: 10px;
   color: var(--text-muted);
@@ -212,11 +212,11 @@ input:focus {
   pointer-events: none;
 }
 
-.filter-actions {
+.envio-filtros {
   margin-top: 6px;
 }
 
-.btn-apply-filters {
+.btn-filtrar {
   width: 100%;
   background: linear-gradient(135deg, var(--accent-purple), #5c35cc);
   color: white;
@@ -229,12 +229,12 @@ input:focus {
   transition: 0.2s;
 }
 
-.btn-apply-filters:hover {
+.btn-filtrar:hover {
   box-shadow: 0 0 12px rgba(124, 77, 255, 0.5);
   transform: translateY(-1px);
 }
 
-.skin-card {
+.tarjeta-skin {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -248,31 +248,31 @@ input:focus {
   overflow: hidden;
 }
 
-.skin-card:hover {
+.tarjeta-skin:hover {
   transform: translateY(-3px);
   border-color: var(--accent-purple);
   box-shadow: 0 4px 20px rgba(124, 77, 255, 0.15);
 }
 
-.card-upper {
+.zona-imagen {
   padding: 8px;
   background: var(--rarity-gradient);
   flex: 1;
 }
 
-.image-container {
+.foto-skin {
   padding: 6px;
   text-align: center;
 }
 
-.image-container img {
+.foto-skin img {
   width: 100%;
   height: 100px;
   object-fit: contain;
   filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.6));
 }
 
-.skin-title {
+.nombre-skin {
   font-size: 0.7rem;
   line-height: 1.3;
   margin-top: 5px;
@@ -282,24 +282,24 @@ input:focus {
   color: var(--text-main);
 }
 
-.orange-text {
+.texto-naranja {
   color: var(--stattrak-orange);
   font-weight: 600;
 }
 
-.card-lower {
+.zona-info {
   background: rgba(0, 0, 0, 0.25);
   padding: 7px 9px;
   border-top: 1px solid var(--border-color);
 }
 
-.price {
+.precio {
   font-size: 0.88rem;
   font-weight: 700;
   color: #fff;
 }
 
-.float-bar-visual {
+.barra-float {
   height: 3px;
   background: #2a2a35;
   border-radius: 2px;
@@ -308,7 +308,7 @@ input:focus {
   overflow: hidden;
 }
 
-.float-bar-visual::before {
+.barra-float::before {
   content: "";
   position: absolute;
   width: 100%;
@@ -316,7 +316,7 @@ input:focus {
   background: linear-gradient(90deg, #2ecc71, #f1c40f, #e74c3c);
 }
 
-.float-marker {
+.aguja-float {
   position: absolute;
   top: 0;
   width: 2px;
@@ -325,14 +325,14 @@ input:focus {
   z-index: 2;
 }
 
-.pagination-container {
+.paginador {
   display: flex;
   justify-content: center;
   padding: 20px 0 10px;
   width: 100%;
 }
 
-.pagination-capsule {
+.capsula {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -342,7 +342,7 @@ input:focus {
   border: 1px solid var(--border-color);
 }
 
-.page-nav {
+.enlace-pagina {
   color: var(--text-muted);
   text-decoration: none;
   font-size: 0.82rem;
@@ -354,12 +354,12 @@ input:focus {
   gap: 5px;
 }
 
-.page-nav:hover {
+.enlace-pagina:hover {
   background: rgba(124, 77, 255, 0.12);
   color: var(--accent-purple);
 }
 
-.page-current {
+.pagina-activa {
   color: white;
   font-size: 0.82rem;
   padding: 0 14px;
@@ -367,18 +367,18 @@ input:focus {
   border-right: 1px solid var(--border-color);
 }
 
-.page-current strong {
+.pagina-activa strong {
   color: var(--accent-purple);
 }
 
-.no-results {
+.vacio {
   grid-column: 1 / -1;
   text-align: center;
   padding: 40px;
   color: var(--text-muted);
 }
 
-.custom-checkbox {
+.casilla-personalizada {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -386,7 +386,7 @@ input:focus {
   font-size: 0.82rem;
 }
 
-.custom-checkbox input[type="checkbox"] {
+.casilla-personalizada input[type="checkbox"] {
   width: auto !important;
   cursor: pointer;
 }
@@ -401,19 +401,19 @@ input:focus {
   .skins-grid {
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   }
-  .sidebar-filters {
+  .filtros-lateral {
     width: 190px;
     min-width: 190px;
   }
 }
 
 @media (max-width: 768px) {
-  .skincage-layout {
+  .disposicion-tienda {
     flex-direction: column;
     padding: 10px;
     gap: 10px;
   }
-  .sidebar-filters {
+  .filtros-lateral {
     width: 100%;
     min-width: 100%;
     position: static;
@@ -426,7 +426,7 @@ input:focus {
     grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
     gap: 10px;
   }
-  .filter-section {
+  .seccion-filtro {
     margin-bottom: 14px;
     padding-bottom: 10px;
   }
@@ -437,24 +437,24 @@ input:focus {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
-  .image-container img {
+  .foto-skin img {
     height: 80px;
   }
-  .skin-title {
+  .nombre-skin {
     font-size: 0.65rem;
   }
   .price {
     font-size: 0.8rem;
   }
-  .wear-shorthand-buttons {
+  .botones-wear {
     grid-template-columns: repeat(3, 1fr);
     row-gap: 6px;
   }
-  .pagination-capsule {
+  .capsula {
     padding: 6px 12px;
   }
-  .page-nav,
-  .page-current {
+  .enlace-pagina,
+  .pagina-activa {
     font-size: 0.75rem;
     padding: 3px 8px;
   }

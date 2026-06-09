@@ -158,14 +158,24 @@
 
 .btn-cancelar-reserva {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   background: transparent;
-  border: 1px solid var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: var(--text-muted);
+  border-radius: 12px;
+  text-decoration: none;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
 }
 
 .btn-cancelar-reserva:hover {
-  border-color: var(--text-main);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.35);
   color: var(--text-main);
 }
 

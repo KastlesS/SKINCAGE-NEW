@@ -1,11 +1,11 @@
-.skin-detail-container {
+.vista-detalle {
   padding: 40px 20px;
   min-height: calc(100vh - 120px);
   background: #0a0a0f;
   color: #e1e1e6;
 }
 
-.back-link {
+.enlace-retorno {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -16,11 +16,11 @@
   transition: color 0.2s;
 }
 
-.back-link:hover {
+.enlace-retorno:hover {
   color: #7c4dff;
 }
 
-.detail-layout {
+.estructura-detalle {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
@@ -33,7 +33,7 @@
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
 }
 
-.detail-image-section {
+.columna-imagen {
   background: radial-gradient(
     circle at center,
     rgba(124, 77, 255, 0.15) 0%,
@@ -46,20 +46,20 @@
   padding: 20px;
 }
 
-.detail-image-section img {
+.columna-imagen img {
   width: 100%;
   max-width: 400px;
   height: auto;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.8));
 }
 
-.detail-info-section {
+.columna-datos {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.skin-badge {
+.insignia {
   display: inline-block;
   padding: 4px 12px;
   border-radius: 6px;
@@ -99,14 +99,14 @@
   color: black;
 }
 
-.detail-title {
+.titulo-skin {
   font-size: 2.2rem;
   font-weight: 800;
   margin: 0;
   line-height: 1.2;
 }
 
-.stattrak-tag {
+.sello-stattrak {
   color: #ff9800;
   font-size: 1rem;
   margin-bottom: 5px;
@@ -114,14 +114,14 @@
   font-weight: 600;
 }
 
-.detail-price {
+.coste-skin {
   font-size: 2.5rem;
   font-weight: 800;
   color: #fff;
   margin: 10px 0;
 }
 
-.info-grid {
+.rejilla-datos {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
@@ -130,30 +130,30 @@
   padding-top: 20px;
 }
 
-.info-item {
+.ficha-dato {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.info-label {
+.etiq-dato {
   color: #8b8b9e;
   font-size: 0.75rem;
   text-transform: uppercase;
   font-weight: 700;
 }
 
-.info-value {
+.valor-dato {
   color: white;
   font-size: 1rem;
   font-weight: 500;
 }
 
-.wear-progress-container {
+.progreso-desgaste {
   margin-top: 25px;
 }
 
-.wear-bar-full {
+.barra-desgaste {
   height: 8px;
   background: linear-gradient(90deg, #2ecc71, #f1c40f, #e67e22, #e74c3c);
   border-radius: 4px;
@@ -161,7 +161,7 @@
   margin-top: 10px;
 }
 
-.wear-pointer {
+.aguja-desgaste {
   position: absolute;
   top: -4px;
   width: 4px;
@@ -172,14 +172,14 @@
   transform: translateX(-50%);
 }
 
-.action-buttons {
+.zona-botones {
   margin-top: auto;
   padding-top: 30px;
   display: flex;
   gap: 15px;
 }
 
-.btn-reserve {
+.btn-reservar {
   flex: 1;
   background: linear-gradient(135deg, #7c4dff, #5c35cc);
   color: white;
@@ -196,28 +196,28 @@
   text-align: center;
 }
 
-.btn-reserve:hover {
+.btn-reservar:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 20px rgba(124, 77, 255, 0.4);
   color: white;
 }
 
 @media (max-width: 850px) {
-  .detail-layout {
+  .estructura-detalle {
     grid-template-columns: 1fr;
     padding: 25px;
   }
-  .detail-image-section img {
+  .columna-imagen img {
     max-width: 300px;
   }
 }
 
-.related-skins-section {
+.similares {
   max-width: 1000px;
   margin: 60px auto 0;
 }
 
-.section-title {
+.titulo-bloque {
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 25px;
@@ -225,14 +225,14 @@
   text-align: left;
 }
 
-.related-grid {
+.grid-similares {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
   padding: 10px 5px;
 }
 
-.related-card {
+.tarjeta-similar {
   background: #16161c;
   border: 1px solid #2d2d3a;
   border-radius: 12px;
@@ -247,13 +247,13 @@
   gap: 10px;
 }
 
-.related-card:hover {
+.tarjeta-similar:hover {
   transform: translateY(-5px);
   border-color: #7c4dff;
   color: white;
 }
 
-.related-image {
+.imagen-similar {
   width: 100%;
   height: 140px;
   display: flex;
@@ -261,19 +261,19 @@
   justify-content: center;
 }
 
-.related-image img {
+.imagen-similar img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
 }
 
-.related-info {
+.info-similar {
   width: 100%;
   text-align: center;
 }
 
-.related-name {
+.nombre-similar {
   font-size: 0.85rem;
   color: #e1e1e6;
   font-weight: 600;
@@ -283,7 +283,7 @@
   margin-bottom: 4px;
 }
 
-.related-price {
+.precio-similar {
   font-size: 0.85rem;
   color: white;
   font-weight: 700;
@@ -331,69 +331,69 @@
 }
 
 @media (max-width: 850px) {
-  .detail-layout {
+  .estructura-detalle {
     grid-template-columns: 1fr;
     padding: 25px;
     gap: 24px;
   }
 
-  .detail-image-section img {
+  .columna-imagen img {
     max-width: 300px;
   }
 
-  .related-grid {
+  .grid-similares {
     gap: 12px;
   }
 }
 
 @media (max-width: 768px) {
-  .skin-detail-container {
+  .vista-detalle {
     padding: 24px 14px;
   }
 
-  .detail-layout {
+  .estructura-detalle {
     padding: 20px 16px;
     border-radius: 14px;
     gap: 20px;
   }
 
-  .detail-image-section img {
+  .columna-imagen img {
     max-width: 260px;
   }
 
-  .detail-title {
+  .titulo-skin {
     font-size: 1.6rem;
   }
 
-  .detail-price {
+  .coste-skin {
     font-size: 1.9rem;
   }
 
-  .info-grid {
+  .rejilla-datos {
     gap: 10px;
   }
 
-  .action-buttons {
+  .zona-botones {
     flex-direction: column;
     gap: 10px;
     padding-top: 20px;
   }
 
-  .related-skins-section {
+  .similares {
     margin-top: 36px;
   }
 
-  .section-title {
+  .titulo-bloque {
     font-size: 1.2rem;
     margin-bottom: 16px;
   }
 
-  .related-grid {
+  .grid-similares {
     gap: 10px;
     padding: 8px 4px;
   }
 
-  .related-image {
+  .imagen-similar {
     height: 110px;
   }
 
@@ -413,49 +413,49 @@
 }
 
 @media (max-width: 480px) {
-  .skin-detail-container {
+  .vista-detalle {
     padding: 16px 10px;
   }
 
-  .detail-layout {
+  .estructura-detalle {
     padding: 16px 12px;
     border-radius: 12px;
   }
 
-  .detail-image-section img {
+  .columna-imagen img {
     max-width: 200px;
   }
 
-  .detail-title {
+  .titulo-skin {
     font-size: 1.3rem;
   }
 
-  .detail-price {
+  .coste-skin {
     font-size: 1.6rem;
   }
 
-  .info-grid {
+  .rejilla-datos {
     grid-template-columns: 1fr;
     gap: 8px;
   }
 
-  .related-grid {
+  .grid-similares {
     gap: 8px;
   }
 
-  .related-card {
+  .tarjeta-similar {
     padding: 12px;
   }
 
-  .related-image {
+  .imagen-similar {
     height: 90px;
   }
 
-  .related-name {
+  .nombre-similar {
     font-size: 0.78rem;
   }
 
-  .related-price {
+  .precio-similar {
     font-size: 0.8rem;
   }
 

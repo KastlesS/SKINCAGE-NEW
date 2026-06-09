@@ -1,10 +1,10 @@
-.form-section {
+.bloque-form {
   background: #16161c;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.form-section h2 {
+.bloque-form h2 {
   margin-top: 0;
   color: white;
   font-size: 1.8rem;
@@ -13,22 +13,22 @@
   padding-bottom: 15px;
 }
 
-.form-section p {
+.bloque-form p {
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
 }
-.form-section label {
+.bloque-form label {
   color: #8b8b9e;
   font-size: 0.85rem;
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 5px;
 }
-.form-section input[type="text"],
-.form-section input[type="number"],
-.form-section select,
-.form-section input[type="file"] {
+.bloque-form input[type="text"],
+.bloque-form input[type="number"],
+.bloque-form select,
+.bloque-form input[type="file"] {
   width: 100%;
   padding: 12px 15px;
   background: #1a1a24;
@@ -38,21 +38,21 @@
   font-size: 1rem;
   transition: border-color 0.2s;
 }
-.form-section input:focus,
-.form-section select:focus {
+.bloque-form input:focus,
+.bloque-form select:focus {
   outline: none;
   border-color: #7c4dff;
 }
-.form-section input[type="checkbox"] {
+.bloque-form input[type="checkbox"] {
   margin-bottom: 15px;
   align-self: flex-start;
 }
-.form-section .helptext {
+.bloque-form .helptext {
   color: #6b6b7e;
   font-size: 0.75rem;
   margin-top: 5px;
 }
-.btn-submit {
+.btn-enviar {
   background: linear-gradient(135deg, #7c4dff, #5c35cc);
   color: white;
   border: none;
@@ -68,11 +68,11 @@
   margin-top: 10px;
   margin-bottom: 15px;
 }
-.btn-submit:hover {
+.btn-enviar:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 20px rgba(124, 77, 255, 0.4);
 }
-.btn-danger-custom {
+.btn-eliminar-skin {
   display: block;
   background: #e74c3c;
   color: white;
@@ -86,12 +86,12 @@
     transform 0.2s,
     background 0.2s;
 }
-.btn-danger-custom:hover {
+.btn-eliminar-skin:hover {
   transform: translateY(-2px);
   background: #c0392b;
   color: white;
 }
-.preview-wrapper {
+.prevision {
   background: #1a1a24;
   border-radius: 15px;
   padding: 30px;

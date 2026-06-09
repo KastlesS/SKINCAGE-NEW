@@ -2,34 +2,35 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/skins.css' %}">
-    <link rel="stylesheet" href="{% static 'css/admin_panel.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/skins.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin_panel.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 {% endblock %}
 
 {% block content %}
-<div class="admin-dashboard">
-    <div class="admin-header">
-        <div class="admin-title-area">
-            <h2><i class="fa-solid fa-gauge-high" style="color: #f39c12; margin-right: 10px;"></i> Panel de Administración</h2>
+<div class="panel-admin">
+    <div class="cabecera-panel">
+        <div class="zona-titulo">
+            <h2><i class="fa-solid fa-gauge-high" style="color: #f39c12; margin-right: 10px;"></i> Panel de
+                Administración</h2>
             <p style="color: #8b8b9e;">Monitorización en tiempo real de usuarios, reservas y mercado.</p>
         </div>
-        <div class="admin-stats">
-            <div class="stat-box">
+        <div class="bloque-stats">
+            <div class="caja-stat">
                 <i class="fa-solid fa-users" style="color: #3b82f6;"></i>
                 <div>
                     <span id="stat-users">--</span>
                     <label>Usuarios</label>
                 </div>
             </div>
-            <div class="stat-box">
+            <div class="caja-stat">
                 <i class="fa-solid fa-clock-rotate-left" style="color: #10b981;"></i>
                 <div>
                     <span id="stat-reservas">--</span>
                     <label>Reservas Activas</label>
                 </div>
             </div>
-            <div class="stat-box">
+            <div class="caja-stat">
                 <i class="fa-solid fa-gun" style="color: #f59e0b;"></i>
                 <div>
                     <span id="stat-skins">--</span>
@@ -38,42 +39,146 @@
             </div>
         </div>
     </div>
-    
-    <div class="admin-tabs">
-        <button class="tab-btn active" data-target="tab-users"><i class="fa-solid fa-users"></i> Usuarios</button>
-        <button class="tab-btn" data-target="tab-reservas"><i class="fa-solid fa-book-bookmark"></i> Reservas</button>
-        <button class="tab-btn" data-target="tab-skins"><i class="fa-solid fa-gun"></i> Skins</button>
+
+    <div class="barra-pestanas">
+        <button class="btn-pestana active" data-target="tab-users"><i class="fa-solid fa-users"></i> Usuarios</button>
+        <button class="btn-pestana" data-target="tab-reservas"><i class="fa-solid fa-book-bookmark"></i> Reservas</button>
+        <button class="btn-pestana" data-target="tab-skins"><i class="fa-solid fa-gun"></i> Skins</button>
     </div>
 
-    <div class="tab-content active" id="tab-users">
-        <div class="dashboard-card">
+    <div class="panel-pestana active" id="tab-users">
+        <div class="tarjeta">
             <h3>Directorio de Usuarios</h3>
-            <ul id="users-container" class="data-list">
-                <li class="data-item"><span style="color:#8b8b9e;">Cargando usuarios...</span></li>
+            <ul id="users-container" class="listado">
+                <li class="entrada"><span style="color:#8b8b9e;">Cargando usuarios...</span></li>
             </ul>
         </div>
     </div>
 
-    <div class="tab-content" id="tab-reservas">
-        <div class="dashboard-card">
+    <div class="panel-pestana" id="tab-reservas">
+        <div class="tarjeta">
             <h3>Reservas en Sistema</h3>
-            <ul id="reservas-container" class="data-list">
-                <li class="data-item"><span style="color:#8b8b9e;">Cargando reservas...</span></li>
+            <ul id="reservas-container" class="listado">
+                <li class="entrada"><span style="color:#8b8b9e;">Cargando reservas...</span></li>
             </ul>
         </div>
     </div>
 
-    <div class="tab-content" id="tab-skins">
-        <div class="dashboard-card">
-            <h3>Inventario de Mercado</h3>
-            <ul id="skins-container" class="data-list">
-                <li class="data-item"><span style="color:#8b8b9e;">Cargando skins...</span></li>
-            </ul>
-            <div class="admin-pagination" id="skins-pagination" style="display: none; justify-content: center; gap: 15px; margin-top: 20px; align-items: center;">
-                <button id="skins-prev" style="padding: 8px 16px; border-radius: 6px; border: 1px solid #2d2d3a; background: #16161c; color: white; cursor: pointer; transition: 0.2s;">&laquo; Anterior</button>
-                <span id="skins-page-info" style="color: #8b8b9e; font-size: 0.9rem;">Página 1</span>
-                <button id="skins-next" style="padding: 8px 16px; border-radius: 6px; border: 1px solid #2d2d3a; background: #16161c; color: white; cursor: pointer; transition: 0.2s;">Siguiente &raquo;</button>
+    <div class="panel-pestana" id="tab-skins">
+        <div class="tarjeta">
+            <div class="cabecera-inventario">
+                <h3>Inventario de Mercado</h3>
+                <button id="btn-nueva-skin" class="btn-nueva">
+                    <i class="fa-solid fa-plus"></i> Nueva Skin
+                </button>
             </div>
+            <ul id="skins-container" class="listado">
+                <li class="entrada"><span style="color:#8b8b9e;">Cargando skins...</span></li>
+            </ul>
+            <div class="paginacion-admin" id="skins-pagination"
+                style="display: none; justify-content: center; gap: 15px; margin-top: 20px; align-items: center;">
+                <button id="skins-prev"
+                    style="padding: 8px 16px; border-radius: 6px; border: 1px solid #2d2d3a; background: #16161c; color: white; cursor: pointer; transition: 0.2s;">&laquo;
+                    Anterior</button>
+                <span id="skins-page-info" style="color: #8b8b9e; font-size: 0.9rem;">Página 1</span>
+                <button id="skins-next"
+                    style="padding: 8px 16px; border-radius: 6px; border: 1px solid #2d2d3a; background: #16161c; color: white; cursor: pointer; transition: 0.2s;">Siguiente
+                    &raquo;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-skin" class="fondo-modal" role="dialog" aria-modal="true" aria-labelledby="modal-skin-titulo">
+    <div class="caja-modal">
+        <div class="encab-modal">
+            <h3 id="modal-skin-titulo"><i class="fa-solid fa-gun"></i> <span id="modal-skin-accion">Nueva Skin</span>
+            </h3>
+            <button class="modal-cerrar" id="modal-skin-cerrar" aria-label="Cerrar">&times;</button>
+        </div>
+        <form id="form-skin" novalidate>
+            <input type="hidden" id="skin-id-editar" value="">
+            <div class="rejilla-form">
+                <div class="grupo-campo">
+                    <label for="skin-nombre">Nombre <span class="req">*</span></label>
+                    <input type="text" id="skin-nombre" placeholder="AK-47 | Redline" required maxlength="50">
+                </div>
+                <div class="grupo-campo">
+                    <label for="skin-precio">Precio (€) <span class="req">*</span></label>
+                    <input type="number" id="skin-precio" placeholder="99.99" step="0.01" min="0" required>
+                </div>
+                <div class="grupo-campo">
+                    <label for="skin-desgaste">Float (desgaste) <span class="req">*</span></label>
+                    <input type="number" id="skin-desgaste" placeholder="0.15" step="0.000000000001" min="0" max="1"
+                        required>
+                </div>
+                <div class="grupo-campo">
+                    <label for="skin-stock">Stock <span class="req">*</span></label>
+                    <input type="number" id="skin-stock" placeholder="1" min="0" required>
+                </div>
+                <div class="grupo-campo">
+                    <label for="skin-categoria">Categoría <span class="req">*</span></label>
+                    <select id="skin-categoria" required>
+                        <option value="">-- Seleccionar --</option>
+                        <option value="PISTOL">Pistola</option>
+                        <option value="SMG">Subfusil</option>
+                        <option value="RIFLE">Rifle</option>
+                        <option value="SNIPER">Francotirador</option>
+                        <option value="SHOTGUN">Escopeta</option>
+                        <option value="MACHINE_GUN">Ametralladora</option>
+                        <option value="KNIFE">Cuchillo</option>
+                        <option value="GLOVES">Guantes</option>
+                    </select>
+                </div>
+                <div class="grupo-campo">
+                    <label for="skin-rareza">Rareza <span class="req">*</span></label>
+                    <select id="skin-rareza" required>
+                        <option value="">-- Seleccionar --</option>
+                        <option value="CONSUMER">Consumer Grade</option>
+                        <option value="INDUSTRIAL">Industrial Grade</option>
+                        <option value="MIL_SPEC">Mil-Spec</option>
+                        <option value="RESTRICTED">Restricted</option>
+                        <option value="CLASSIFIED">Classified</option>
+                        <option value="COVERT">Covert</option>
+                        <option value="CONTRABAND">Contraband</option>
+                    </select>
+                </div>
+                <div class="grupo-campo grupo-casilla">
+                    <label class="etiq-casilla">
+                        <input type="checkbox" id="skin-stattrack">
+                        <span class="casilla-visual"></span>
+                        StatTrak™
+                    </label>
+                </div>
+            </div>
+            <div id="form-skin-error" class="aviso-error" style="display:none;"></div>
+            <div class="pie-modal">
+                <button type="button" class="btn-descartar" id="btn-form-cancelar">Cancelar</button>
+                <button type="submit" class="btn-confirmar" id="btn-form-guardar">
+                    <i class="fa-solid fa-floppy-disk"></i> Guardar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="modal-eliminar" class="fondo-modal" role="dialog" aria-modal="true" aria-labelledby="modal-eliminar-titulo">
+    <div class="caja-modal caja-modal-sm">
+        <div class="encab-modal">
+            <h3 id="modal-eliminar-titulo"><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i>
+                Eliminar Skin</h3>
+            <button class="modal-cerrar" id="modal-eliminar-cerrar" aria-label="Cerrar">&times;</button>
+        </div>
+        <div class="cuerpo-modal">
+            <p>¿Estás seguro de que quieres eliminar <strong id="skin-nombre-eliminar"></strong>?</p>
+            <p style="color:#8b8b9e; font-size:0.85rem;">Esta acción no se puede deshacer y eliminará la skin del
+                mercado permanentemente.</p>
+        </div>
+        <div class="pie-modal">
+            <button type="button" class="btn-descartar" id="btn-eliminar-cancelar">Cancelar</button>
+            <button type="button" class="btn-borrar" id="btn-eliminar-confirmar">
+                <i class="fa-solid fa-trash"></i> Eliminar
+            </button>
         </div>
     </div>
 </div>

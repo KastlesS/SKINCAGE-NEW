@@ -27,60 +27,60 @@
   {% endfor %}
 </div>
 {% endif %} {% endblock messages %} {% block content %}
-<div class="skin-detail-container">
-  <div class="detail-layout">
+<div class="vista-detalle">
+  <div class="estructura-detalle">
     {% if object %}
-    <div class="preview-wrapper">
-      <div class="detail-image-section">
+    <div class="prevision">
+      <div class="columna-imagen">
         <img
           src="{{ object.imagen_url|default:'/static/img/placeholder_skin.png' }}"
           alt="{{ object.nombre }}"
         />
       </div>
 
-      <div class="info-header">
-        <span class="skin-badge rarity-{{ object.rareza|lower }}">
+      <div class="cabecera-datos">
+        <span class="insignia rarity-{{ object.rareza|lower }}">
           {{ object.get_rareza_display }}
         </span>
         {% if object.es_stattrak %}
-        <span class="stattrak-tag">StatTrak™ Tecnología</span>
+        <span class="sello-stattrak">StatTrak™ Tecnología</span>
         {% endif %}
-        <h1 class="detail-title" style="font-size: 1.8rem">
+        <h1 class="titulo-skin" style="font-size: 1.8rem">
           {{ object.nombre }}
         </h1>
-        <div class="detail-price" style="font-size: 2rem">
+        <div class="coste-skin" style="font-size: 2rem">
           {{ object.precio }} €
         </div>
       </div>
 
-      <div class="info-grid">
-        <div class="info-item">
-          <span class="info-label">Categoría</span>
-          <span class="info-value" style="font-size: 0.95rem"
+      <div class="rejilla-datos">
+        <div class="ficha-dato">
+          <span class="etiq-dato">Categoría</span>
+          <span class="valor-dato" style="font-size: 0.95rem"
             >{{ object.get_categoria_display }}</span
           >
         </div>
-        <div class="info-item">
-          <span class="info-label">Disponibilidad</span>
-          <span class="info-value" style="font-size: 0.95rem"
+        <div class="ficha-dato">
+          <span class="etiq-dato">Disponibilidad</span>
+          <span class="valor-dato" style="font-size: 0.95rem"
             >{% if object.stock > 0 %}{{ object.stock }} en stock{% else %}Agotado{% endif %}</span
           >
         </div>
-        <div class="info-item">
-          <span class="info-label">ID</span>
-          <span class="info-value" style="font-size: 0.95rem"
+        <div class="ficha-dato">
+          <span class="etiq-dato">ID</span>
+          <span class="valor-dato" style="font-size: 0.95rem"
             >#{{ object.id|stringformat:"05d" }}</span
           >
         </div>
       </div>
 
-      <div class="wear-progress-container">
-        <span class="info-label"
+      <div class="progreso-desgaste">
+        <span class="etiq-dato"
           >Desgaste (Float): <strong>{{ object.desgaste }}</strong></span
         >
-        <div class="wear-bar-full">
+        <div class="barra-desgaste">
           <div
-            class="wear-pointer"
+            class="aguja-desgaste"
             style="left: calc({{ object.desgaste }} * 100%)"
           ></div>
         </div>
@@ -95,7 +95,7 @@
     </div>
     {% else %}
     <div
-      class="preview-wrapper"
+      class="prevision"
       style="justify-content: center; align-items: center; text-align: center"
     >
       <i
@@ -109,16 +109,16 @@
     </div>
     {% endif %}
 
-    <div class="form-section">
+    <div class="bloque-form">
       <h2>{{ object|yesno:'Actualizar skin,Crear nueva skin' }}</h2>
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %} {{ form.as_p }}
-        <button type="submit" class="btn-submit">
+        <button type="submit" class="btn-enviar">
           {{ object|yesno:'Guardar Cambios,Crear Skin' }}
         </button>
       </form>
       {% if object %}
-      <a class="btn-danger-custom" href="{% url 'delete' object.id %}"
+      <a class="btn-eliminar-skin" href="{% url 'delete' object.id %}"
         >Eliminar</a
       >
       {% endif %}
