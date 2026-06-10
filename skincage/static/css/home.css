@@ -288,7 +288,6 @@
 }
 
 @media (max-width: 480px) {
-  /* ---- Hero / Inicio ---- */
   .inicio {
     padding: 36px 16px 32px;
     gap: 24px;

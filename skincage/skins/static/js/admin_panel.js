@@ -1,5 +1,3 @@
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
 function getCsrfToken() {
   const cookie = document.cookie
     .split(";")
@@ -30,8 +28,6 @@ function crearItemVacio(mensaje) {
   li.appendChild(span);
   return li;
 }
-
-// ─── Modales ─────────────────────────────────────────────────────────────────
 
 let skinIdEliminar = null;
 
@@ -78,10 +74,7 @@ function cerrarModalEliminar() {
   document.getElementById("modal-eliminar").classList.remove("visible");
 }
 
-// ─── Inicialización ───────────────────────────────────────────────────────────
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Pestañas
   const botonesPestana = document.querySelectorAll(".btn-pestana");
   const contenidosPestana = document.querySelectorAll(".panel-pestana");
 
@@ -95,12 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Botón nueva skin
   document
     .getElementById("btn-nueva-skin")
     .addEventListener("click", () => abrirModalSkin(null));
 
-  // Cerrar modales
   document
     .getElementById("modal-skin-cerrar")
     .addEventListener("click", cerrarModalSkin);
@@ -114,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("btn-eliminar-cancelar")
     .addEventListener("click", cerrarModalEliminar);
 
-  // Click fuera del modal para cerrar
   document.getElementById("modal-skin").addEventListener("click", (e) => {
     if (e.target === e.currentTarget) cerrarModalSkin();
   });
@@ -122,20 +112,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === e.currentTarget) cerrarModalEliminar();
   });
 
-  // Formulario guardar (crear / editar)
   document.getElementById("form-skin").addEventListener("submit", async (e) => {
     e.preventDefault();
     await guardarSkin();
   });
 
-  // Confirmar eliminación
   document
     .getElementById("btn-eliminar-confirmar")
     .addEventListener("click", async () => {
       await eliminarSkin();
     });
 
-  // Escape cierra modales
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       cerrarModalSkin();
@@ -147,8 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchReservas();
   fetchSkins();
 });
-
-// ─── CRUD Skins ──────────────────────────────────────────────────────────────
 
 async function guardarSkin() {
   const errorDiv = document.getElementById("form-skin-error");
@@ -165,7 +150,6 @@ async function guardarSkin() {
     stattrack: document.getElementById("skin-stattrack").checked,
   };
 
-  // Validación básica
   if (!payload.nombre || !payload.categoria || !payload.rareza) {
     errorDiv.textContent = "Completa todos los campos obligatorios.";
     errorDiv.style.display = "block";
@@ -234,8 +218,6 @@ async function eliminarSkin() {
     btnConfirmar.innerHTML = '<i class="fa-solid fa-trash"></i> Eliminar';
   }
 }
-
-// ─── Fetch Usuarios ──────────────────────────────────────────────────────────
 
 async function fetchUsuarios() {
   const contenedor = document.getElementById("users-container");
@@ -450,14 +432,12 @@ function pintarPaginaSkins() {
     tituloSpan.appendChild(document.createTextNode(skin.nombre));
     fila.appendChild(tituloSpan);
 
-    // Precio
     const precioSpan = document.createElement("span");
     precioSpan.style.color = "#f39c12";
     precioSpan.style.fontWeight = "bold";
     precioSpan.textContent = `${skin.precio}€`;
     fila.appendChild(precioSpan);
 
-    // Botones de acción
     const acciones = document.createElement("div");
     acciones.className = "acciones-fila";
 
@@ -480,7 +460,6 @@ function pintarPaginaSkins() {
     fila.appendChild(acciones);
     li.appendChild(fila);
 
-    // Subtítulo con detalles
     const subtituloSpan = document.createElement("span");
     subtituloSpan.className = "detalle-entrada";
     subtituloSpan.style.display = "flex";
