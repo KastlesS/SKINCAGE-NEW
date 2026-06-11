@@ -38,3 +38,4 @@ urllib3==2.6.3
 whitenoise==6.8.2
 pytz>=2024.1
 
+django-anymail[resend]==11.1
