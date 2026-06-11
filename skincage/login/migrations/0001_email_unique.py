@@ -3,18 +3,38 @@ from django.db import migrations, connection
 
 def aplicar_unique_email(apps, schema_editor):
     """
-    Aplica un índice UNIQUE sobre auth_user.email.
+    Aplica UNIQUE constraint sobre auth_user.email.
     Compatible con PostgreSQL y SQLite.
-
-    La limpieza de duplicados se omite aquí porque:
-    - En una BD nueva (dev) no hay duplicados.
-    - En producción (PostgreSQL) el índice se aplica manualmente o en un
-      entorno donde ya se garantiza la unicidad.
+    Limpia duplicados conservando el usuario con el ID más bajo.
     """
     db_engine = connection.vendor
 
     with schema_editor.connection.cursor() as cursor:
         if db_engine == 'postgresql':
+            # 1. Eliminar social auth de usuarios duplicados
+            cursor.execute("""
+                DELETE FROM social_auth_usersocialauth
+                WHERE user_id IN (
+                    SELECT id FROM auth_user
+                    WHERE email != ''
+                      AND id NOT IN (
+                          SELECT MIN(id) FROM auth_user
+                          WHERE email != ''
+                          GROUP BY email
+                      )
+                );
+            """)
+            # 2. Eliminar los usuarios duplicados
+            cursor.execute("""
+                DELETE FROM auth_user
+                WHERE email != ''
+                  AND id NOT IN (
+                      SELECT MIN(id) FROM auth_user
+                      WHERE email != ''
+                      GROUP BY email
+                  );
+            """)
+            # 3. Aplicar la constraint (idempotente)
             cursor.execute("""
                 DO $$
                 BEGIN
@@ -29,6 +49,15 @@ def aplicar_unique_email(apps, schema_editor):
             """)
         else:
             # SQLite: índice único parcial (excluye emails vacíos)
+            cursor.execute("""
+                DELETE FROM auth_user
+                WHERE email != ''
+                  AND rowid NOT IN (
+                      SELECT MIN(rowid) FROM auth_user
+                      WHERE email != ''
+                      GROUP BY email
+                  );
+            """)
             cursor.execute("""
                 CREATE UNIQUE INDEX IF NOT EXISTS auth_user_email_unique
                 ON auth_user (email)
@@ -50,8 +79,7 @@ def revertir_unique_email(apps, schema_editor):
 
 class Migration(migrations.Migration):
     """
-    Aplica UNIQUE constraint sobre auth_user.email.
-    Depende de que auth y social_django estén migrados primero.
+    Limpia emails duplicados y aplica UNIQUE constraint sobre auth_user.email.
     """
 
     dependencies = [
