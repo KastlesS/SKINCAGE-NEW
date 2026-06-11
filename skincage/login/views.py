@@ -14,46 +14,53 @@ from .forms import EmailLoginForm
 
 @receiver(user_logged_in)
 def enviar_correo_inicio_sesion(sender, request, user, **kwargs):
-    """Manda un correo de aviso cada vez que el usuario inicia sesión."""
+    """Manda un correo de aviso cada vez que el usuario inicia sesión.
+    Se ejecuta en un hilo separado para no bloquear la respuesta HTTP."""
     if not user.email:
         return
+
+    import threading
+    from django.utils import timezone
+    import pytz
+
+    ip = (
+        request.META.get('HTTP_X_FORWARDED_FOR', '').split(',')[0].strip()
+        or request.META.get('REMOTE_ADDR', 'desconocida')
+    )
+
+    hora_utc = timezone.now()
     try:
-        ip = (
-            request.META.get('HTTP_X_FORWARDED_FOR', '').split(',')[0].strip()
-            or request.META.get('REMOTE_ADDR', 'desconocida')
-        )
-        from django.utils import timezone
-        import pytz
-
-        hora_utc = timezone.now()
-        try:
-            tz_madrid = pytz.timezone('Europe/Madrid')
-            hora_local = hora_utc.astimezone(tz_madrid).strftime('%d/%m/%Y a las %H:%M')
-        except Exception:
-            hora_local = hora_utc.strftime('%d/%m/%Y a las %H:%M UTC')
-
-        cuerpo_html = render_to_string('login/email_inicio_sesion.html', {
-            'usuario': user.username or user.email,
-            'hora': hora_local,
-            'ip': ip,
-            'frontend_url': getattr(settings, 'FRONTEND_URL', 'https://skincage.online'),
-        })
-
-        send_mail(
-            subject='🔔 Nuevo inicio de sesión en Skincage',
-            message=(
-                f'Hola {user.username or user.email},\n\n'
-                f'Se ha iniciado sesión en tu cuenta Skincage el {hora_local} '
-                f'desde la IP {ip}.\n\n'
-                'Si no fuiste tú, cambia tu contraseña inmediatamente.'
-            ),
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[user.email],
-            html_message=cuerpo_html,
-            fail_silently=True,
-        )
+        tz_madrid = pytz.timezone('Europe/Madrid')
+        hora_local = hora_utc.astimezone(tz_madrid).strftime('%d/%m/%Y a las %H:%M')
     except Exception:
-        pass  
+        hora_local = hora_utc.strftime('%d/%m/%Y a las %H:%M UTC')
+
+    def _enviar():
+        try:
+            cuerpo_html = render_to_string('login/email_inicio_sesion.html', {
+                'usuario': user.username or user.email,
+                'hora': hora_local,
+                'ip': ip,
+                'frontend_url': getattr(settings, 'FRONTEND_URL', 'https://skincage.online'),
+            })
+            send_mail(
+                subject='🔔 Nuevo inicio de sesión en Skincage',
+                message=(
+                    f'Hola {user.username or user.email},\n\n'
+                    f'Se ha iniciado sesión en tu cuenta Skincage el {hora_local} '
+                    f'desde la IP {ip}.\n\n'
+                    'Si no fuiste tú, cambia tu contraseña inmediatamente.'
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                html_message=cuerpo_html,
+                fail_silently=True,
+            )
+        except Exception:
+            pass
+
+    hilo = threading.Thread(target=_enviar, daemon=True)
+    hilo.start()
 
 class LoginFormView2(LoginView):
     template_name = 'login/login.html'
