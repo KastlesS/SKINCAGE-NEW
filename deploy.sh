@@ -28,8 +28,19 @@ docker compose -f docker-compose.prod.yml pull
 
 echo "Iniciando base de datos..."
 docker compose -f docker-compose.prod.yml up -d db
+
 echo "Esperando a que PostgreSQL esté listo..."
-timeout 60 sh -c 'until docker compose -f docker-compose.prod.yml exec -T db pg_isready -U skincage_user -d skincage_db; do sleep 2; done'
+INTENTOS=0
+MAX_INTENTOS=30
+until docker compose -f docker-compose.prod.yml exec -T db pg_isready -U skincage_user -d skincage_db > /dev/null 2>&1; do
+    INTENTOS=$((INTENTOS + 1))
+    if [ "$INTENTOS" -ge "$MAX_INTENTOS" ]; then
+        echo "ERROR: PostgreSQL no respondió después de 60 segundos."
+        exit 1
+    fi
+    echo "  Esperando... ($INTENTOS/$MAX_INTENTOS)"
+    sleep 2
+done
 echo "✓ Base de datos lista"
 
 echo "Aplicando migraciones..."
