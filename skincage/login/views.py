@@ -150,24 +150,36 @@ class SolicitudRecuperacionView(View):
                     reverse_lazy('cambiar_contrasena', kwargs={'token': token})
                 )
 
-                cuerpo_html = render_to_string('login/email_recuperacion.html', {
-                    'usuario': user.username or user.email,
-                    'reset_url': reset_url,
-                    'frontend_url': getattr(settings, 'FRONTEND_URL', 'https://skincage.online'),
-                })
+                import threading
 
-                send_mail(
-                    subject='🔑 Recupera tu contraseña de Skincage',
-                    message=(
-                        f'Hola {user.username or user.email},\n\n'
-                        f'Haz clic en este enlace para restablecer tu contraseña:\n{reset_url}\n\n'
-                        'El enlace caduca en 1 hora. Si no solicitaste esto, ignora este correo.'
-                    ),
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[email],
-                    html_message=cuerpo_html,
-                    fail_silently=False,
+                def _enviar_recuperacion(usuario, url, email_destino):
+                    try:
+                        cuerpo_html = render_to_string('login/email_recuperacion.html', {
+                            'usuario': usuario.username or usuario.email,
+                            'reset_url': url,
+                            'frontend_url': getattr(settings, 'FRONTEND_URL', 'https://skincage.online'),
+                        })
+                        send_mail(
+                            subject='🔑 Recupera tu contraseña de Skincage',
+                            message=(
+                                f'Hola {usuario.username or usuario.email},\n\n'
+                                f'Haz clic en este enlace para restablecer tu contraseña:\n{url}\n\n'
+                                'El enlace caduca en 1 hora. Si no solicitaste esto, ignora este correo.'
+                            ),
+                            from_email=settings.DEFAULT_FROM_EMAIL,
+                            recipient_list=[email_destino],
+                            html_message=cuerpo_html,
+                            fail_silently=True,
+                        )
+                    except Exception:
+                        pass
+
+                hilo = threading.Thread(
+                    target=_enviar_recuperacion,
+                    args=(user, reset_url, email),
+                    daemon=True,
                 )
+                hilo.start()
 
             return render(request, 'login/recuperar_contrasena.html', {
                 'form': form,
