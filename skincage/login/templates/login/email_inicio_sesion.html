@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nuevo inicio de sesión – Skincage</title>
+</head>
+<body style="margin:0; padding:0; background-color:#0a0a14; font-family: 'Segoe UI', Arial, sans-serif;">
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#0a0a14; padding: 40px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="480"
+          style="background: linear-gradient(160deg, #121220, #0d0d1a); border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); overflow: hidden; max-width: 100%;">
+
+          <!-- Cabecera -->
+          <tr>
+            <td style="background: linear-gradient(135deg, #1e3a5f, #1a1a3a); padding: 32px 40px; text-align: center;">
+              <span style="font-size: 2rem;">🔔</span>
+              <h1 style="color: #ffffff; margin: 12px 0 0; font-size: 1.4rem; letter-spacing: 1px; font-family: Arial, sans-serif;">
+                SKINCAGE
+              </h1>
+              <p style="color: rgba(255,255,255,0.6); font-size: 0.8rem; margin: 4px 0 0; letter-spacing: 2px; text-transform: uppercase;">
+                Aviso de seguridad
+              </p>
+            </td>
+          </tr>
+
+          <!-- Cuerpo -->
+          <tr>
+            <td style="padding: 36px 40px;">
+              <p style="color: #cfcfe8; font-size: 0.95rem; margin: 0 0 16px;">
+                Hola <strong style="color: #ffffff;">{{ usuario }}</strong>,
+              </p>
+              <p style="color: #9090b8; font-size: 0.9rem; line-height: 1.7; margin: 0 0 24px;">
+                Hemos detectado un <strong style="color: #cfcfe8;">nuevo inicio de sesión</strong>
+                en tu cuenta de Skincage.
+              </p>
+
+              <!-- Detalles del acceso -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; margin-bottom: 24px;">
+                <tr>
+                  <td style="padding: 16px 20px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td style="padding: 6px 0; color: #6060a0; font-size: 0.82rem; width: 90px;">📅 Fecha</td>
+                        <td style="padding: 6px 0; color: #cfcfe8; font-size: 0.85rem;">{{ hora }}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 6px 0; color: #6060a0; font-size: 0.82rem;">🌐 IP</td>
+                        <td style="padding: 6px 0; color: #cfcfe8; font-size: 0.85rem; font-family: monospace;">{{ ip }}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Alerta si no eras tú -->
+              <div style="background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); border-radius: 10px; padding: 14px 18px; margin-bottom: 28px;">
+                <p style="color: #fca5a5; font-size: 0.85rem; margin: 0; line-height: 1.6;">
+                  ⚠️ <strong>¿No fuiste tú?</strong> Si no reconoces este inicio de sesión,
+                  cambia tu contraseña inmediatamente.
+                </p>
+              </div>
+
+              <!-- Botón cambiar contraseña -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td align="center">
+                    <a href="{{ frontend_url }}/recuperar/"
+                      style="display: inline-block; padding: 12px 30px; background: linear-gradient(135deg, #991b1b, #dc2626); color: #ffffff; font-size: 0.9rem; font-weight: 600; text-decoration: none; border-radius: 10px; letter-spacing: 0.3px;">
+                      Cambiar contraseña
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Pie -->
+          <tr>
+            <td style="padding: 20px 40px 28px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+              <p style="color: #505075; font-size: 0.78rem; margin: 0;">
+                Si fuiste tú quien inició sesión, puedes ignorar este correo.
+              </p>
+              <p style="font-size: 0.75rem; color: #404060; margin: 6px 0 0;">
+                © 2025 Skincage ·
+                <a href="{{ frontend_url }}" style="color: #6060a0; text-decoration: none;">skincage.online</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

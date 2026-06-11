@@ -5,7 +5,7 @@ from django.conf import settings
 from django.views.generic import TemplateView
 from django.conf.urls.static import static
 from skins.views import VistaSkins, SkinCreate, SkinUpdate, SkinDeleteView, Home, MercadoViewRegistered, SkinDetailView, AdminPanelView, ConfirmarReservaView, CancelarReservaView
-from login.views import LoginFormView2, Logout, RegisterView
+from login.views import LoginFormView2, Logout, RegisterView, SolicitudRecuperacionView, CambiarContrasenaView
 from skins.api.views import SkinListViewSet, SkinCRUDView, SkinPublicViewSet, ReservaViewSet
 from users.views import ProfilePageView, UpdateProfileView, VistaRecargaStripe
 
@@ -30,6 +30,8 @@ urlpatterns = [
     path('login/', LoginFormView2.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
     path('logout/', Logout.as_view(), name='logout'),
+    path('recuperar/', SolicitudRecuperacionView.as_view(), name='recuperar_contrasena'),
+    path('recuperar/<str:token>/', CambiarContrasenaView.as_view(), name='cambiar_contrasena'),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('api/', include(router.urls)),
     path('api/auth/', include('djoser.urls')),

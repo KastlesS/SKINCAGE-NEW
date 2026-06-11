@@ -21,6 +21,10 @@
   margin-bottom: 1.3rem;
 }
 
+.campo-formulario.campo-password {
+  margin-bottom: 0.4rem;
+}
+
 .campo-formulario label {
   display: block;
   margin-bottom: 0.4rem;
@@ -194,4 +198,21 @@
   border-color: rgba(239, 68, 68, 0.7);
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
   animation: shakeField 0.45s ease both;
+}
+
+.enlace-recuperacion {
+  text-align: right;
+  margin-bottom: 1.2rem;
+}
+
+.enlace-recuperacion a {
+  font-size: 0.82rem;
+  color: #7c5fc8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.enlace-recuperacion a:hover {
+  color: #a78bfa;
+  text-decoration: underline;
 }

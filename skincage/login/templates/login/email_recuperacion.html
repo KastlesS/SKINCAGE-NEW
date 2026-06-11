@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recupera tu contraseña – Skincage</title>
+</head>
+<body style="margin:0; padding:0; background-color:#0a0a14; font-family: 'Segoe UI', Arial, sans-serif;">
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#0a0a14; padding: 40px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="480"
+          style="background: linear-gradient(160deg, #121220, #0d0d1a); border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); overflow: hidden; max-width: 100%;">
+
+          <!-- Cabecera morada -->
+          <tr>
+            <td style="background: linear-gradient(135deg, #6d28d9, #4c1d95); padding: 32px 40px; text-align: center;">
+              <span style="font-size: 2.2rem;">🔑</span>
+              <h1 style="color: #ffffff; margin: 12px 0 0; font-size: 1.4rem; letter-spacing: 1px; font-family: Arial, sans-serif;">
+                SKINCAGE
+              </h1>
+              <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin: 4px 0 0; letter-spacing: 2px; text-transform: uppercase;">
+                Recuperación de contraseña
+              </p>
+            </td>
+          </tr>
+
+          <!-- Cuerpo -->
+          <tr>
+            <td style="padding: 36px 40px;">
+              <p style="color: #cfcfe8; font-size: 0.95rem; margin: 0 0 16px;">
+                Hola <strong style="color: #ffffff;">{{ usuario }}</strong>,
+              </p>
+              <p style="color: #9090b8; font-size: 0.9rem; line-height: 1.7; margin: 0 0 28px;">
+                Recibimos una solicitud para restablecer la contraseña de tu cuenta en Skincage.
+                Haz clic en el botón de abajo para elegir una nueva contraseña:
+              </p>
+
+              <!-- Botón CTA -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td align="center" style="padding: 0 0 28px;">
+                    <a href="{{ reset_url }}"
+                      style="display: inline-block; padding: 14px 36px; background: linear-gradient(135deg, #6d28d9, #8b5cf6); color: #ffffff; font-size: 0.95rem; font-weight: 700; text-decoration: none; border-radius: 10px; letter-spacing: 0.5px; box-shadow: 0 0 20px rgba(139,92,246,0.4);">
+                      Restablecer contraseña
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Aviso caducidad -->
+              <div style="background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); border-radius: 10px; padding: 14px 18px; margin-bottom: 24px;">
+                <p style="color: #a78bfa; font-size: 0.85rem; margin: 0; line-height: 1.5;">
+                  ⏱ Este enlace <strong>caduca en 1 hora</strong>. Si no realizaste esta solicitud, puedes ignorar este correo con total seguridad.
+                </p>
+              </div>
+
+              <p style="color: #6060a0; font-size: 0.8rem; margin: 0 0 8px;">
+                Si el botón no funciona, copia y pega este enlace en tu navegador:
+              </p>
+              <p style="word-break: break-all; font-size: 0.78rem; margin: 0;">
+                <a href="{{ reset_url }}" style="color: #7c3aed; text-decoration: none;">{{ reset_url }}</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Pie -->
+          <tr>
+            <td style="padding: 20px 40px 28px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+              <p style="color: #4040608; font-size: 0.78rem; margin: 0; color: #505075;">
+                © 2025 Skincage · Marketplace de CS2
+              </p>
+              <p style="font-size: 0.75rem; color: #404060; margin: 6px 0 0;">
+                <a href="{{ frontend_url }}" style="color: #6060a0; text-decoration: none;">skincage.online</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

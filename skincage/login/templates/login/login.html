@@ -4,14 +4,12 @@
 {% endblock %} {% block content %}
 <div class="formulario">
   <div id="seccion-login">
-    <h3
-      style="
+    <h3 style="
         color: #fff;
         text-align: center;
         margin-bottom: 25px;
         font-family: &quot;Orbitron&quot;, sans-serif;
-      "
-    >
+      ">
       Iniciar Sesión
     </h3>
     <form action="." method="post">
@@ -20,9 +18,9 @@
         <span class="icono-aviso">⚠</span>
         <span class="texto-aviso">
           {% if form.non_field_errors %}
-            {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+          {% for error in form.non_field_errors %}{{ error }}{% endfor %}
           {% else %}
-            Correo o contraseña incorrectos. Inténtalo de nuevo.
+          Correo o contraseña incorrectos. Inténtalo de nuevo.
           {% endif %}
         </span>
       </div>
@@ -31,9 +29,14 @@
         <label for="id_username">Correo electrónico</label>
         {{ form.username|add_class:'entrada'|attr:'autocomplete:email'|attr:'placeholder:Ingrese su correo electrónico' }}
       </div>
-      <div class="campo-formulario">
+      <div class="campo-formulario campo-password">
         <label for="id_password">Contraseña</label>
         {{ form.password|add_class:'entrada'|attr:'autocomplete:off'|attr:'placeholder:Ingrese su contraseña' }}
+      </div>
+      <div class="enlace-recuperacion">
+        <a href="{% url 'recuperar_contrasena' %}" id="link-recuperar-pwd">
+          ¿Olvidaste tu contraseña?
+        </a>
       </div>
       <button type="submit" class="btn-enviar">Iniciar sesión</button>
     </form>
@@ -41,10 +44,7 @@
     <hr class="separador" />
 
     <div class="grupo-boton">
-      <a
-        class="btn-contorno"
-        href="{% url 'social:begin' 'google-oauth2' %}"
-      >
+      <a class="btn-contorno" href="{% url 'social:begin' 'google-oauth2' %}">
         Iniciar sesión con Google
       </a>
     </div>
@@ -68,52 +68,22 @@
       Crear una cuenta
     </h3>
     <form id="formulario-registro">
-      <input
-        type="hidden"
-        id="reg-csrf"
-        name="csrfmiddlewaretoken"
-        value="{{ csrf_token }}"
-      />
-      <div
-        id="error-registro"
-        class="aviso-error"
-        style="display: none"
-      ></div>
+      <input type="hidden" id="reg-csrf" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+      <div id="error-registro" class="aviso-error" style="display: none"></div>
       <div class="campo-formulario">
         <label for="reg_username" style="color: #fff">Nombre de usuario</label>
-        <input
-          type="text"
-          id="reg_username"
-          name="username"
-          class="entrada"
-          placeholder="Elige un nombre de usuario"
-          required
-          autocomplete="off"
-        />
+        <input type="text" id="reg_username" name="username" class="entrada" placeholder="Elige un nombre de usuario"
+          required autocomplete="off" />
       </div>
       <div class="campo-formulario">
         <label for="reg_email" style="color: #fff">Correo electrónico</label>
-        <input
-          type="email"
-          id="reg_email"
-          name="email"
-          class="entrada"
-          placeholder="Ingrese su correo"
-          required
-          autocomplete="off"
-        />
+        <input type="email" id="reg_email" name="email" class="entrada" placeholder="Ingrese su correo" required
+          autocomplete="off" />
       </div>
       <div class="campo-formulario">
         <label for="reg_password" style="color: #fff">Contraseña</label>
-        <input
-          type="password"
-          id="reg_password"
-          name="password"
-          class="entrada"
-          placeholder="Ingrese su contraseña"
-          required
-          autocomplete="off"
-        />
+        <input type="password" id="reg_password" name="password" class="entrada" placeholder="Ingrese su contraseña"
+          required autocomplete="off" />
       </div>
       <button type="submit" class="btn-enviar">Registrarse</button>
     </form>

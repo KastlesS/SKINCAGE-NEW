@@ -1,0 +1,98 @@
+{% extends "portfolio/base.html" %} {% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}" />
+<link rel="stylesheet" href="{% static 'css/recuperacion.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="formulario-nueva-pwd">
+  <!-- Icono llave -->
+  <div class="icono-key">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="9" cy="9" r="6" stroke="url(#gk1)" stroke-width="2"/>
+      <path d="M13.5 13.5L22 22" stroke="url(#gk2)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M19 19l2-2" stroke="url(#gk2)" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="9" cy="9" r="2.5" fill="url(#gk1)"/>
+      <defs>
+        <linearGradient id="gk1" x1="3" y1="3" x2="15" y2="15" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#a78bfa"/>
+          <stop offset="1" stop-color="#6d28d9"/>
+        </linearGradient>
+        <linearGradient id="gk2" x1="13" y1="13" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#8b5cf6"/>
+          <stop offset="1" stop-color="#4c1d95"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <h1 class="titulo-nueva-pwd">Nueva contraseña</h1>
+  <p class="subtitulo-nueva-pwd">
+    Elige una contraseña segura de al menos 8 caracteres.
+  </p>
+
+  {% if exito %}
+    <div class="aviso-exito">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      <span>
+        ¡Tu contraseña se ha actualizado correctamente!
+        <a href="{% url 'login' %}" style="color: #4ade80; text-decoration: underline; margin-left: 4px;">Inicia sesión</a>
+      </span>
+    </div>
+  {% else %}
+    <form method="post" id="form-nueva-pwd" novalidate>
+      {% csrf_token %}
+
+      <!-- Errores generales (contraseñas no coinciden) -->
+      {% if form.non_field_errors %}
+        <div class="aviso-credenciales" role="alert">
+          <span class="icono-aviso">⚠</span>
+          <span class="texto-aviso">
+            {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+          </span>
+        </div>
+      {% endif %}
+
+      <div class="campo-formulario">
+        <label for="id_nueva_contrasena">Nueva contraseña</label>
+        {{ form.nueva_contrasena }}
+        <div class="indicador-fuerza" id="indicador-fuerza">
+          <div class="barra" id="barra-1"></div>
+          <div class="barra" id="barra-2"></div>
+          <div class="barra" id="barra-3"></div>
+          <div class="barra" id="barra-4"></div>
+        </div>
+        <p class="req-pwd">Mínimo 8 caracteres</p>
+        {% if form.nueva_contrasena.errors %}
+          <div class="aviso-error" style="margin-top: 0.5rem">
+            {% for error in form.nueva_contrasena.errors %}{{ error }}{% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="campo-formulario">
+        <label for="id_confirmar_contrasena">Confirmar contraseña</label>
+        {{ form.confirmar_contrasena }}
+        {% if form.confirmar_contrasena.errors %}
+          <div class="aviso-error" style="margin-top: 0.5rem">
+            {% for error in form.confirmar_contrasena.errors %}{{ error }}{% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="btn-enviar" id="btn-actualizar-pwd">
+        Actualizar contraseña
+      </button>
+    </form>
+  {% endif %}
+
+  <div class="enlace-login">
+    <a href="{% url 'login' %}">← Volver a iniciar sesión</a>
+  </div>
+</div>
+
+<script src="{% static 'js/fuerza_contrasena.js' %}"></script>
+{% endblock %}

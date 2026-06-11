@@ -1,0 +1,67 @@
+{% extends "portfolio/base.html" %} {% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}" />
+<link rel="stylesheet" href="{% static 'css/recuperacion.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="formulario-recuperacion">
+  <!-- Icono candado -->
+  <div class="icono-lock">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3" y="11" width="18" height="12" rx="2" fill="url(#grad1)" opacity="0.9"/>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="url(#grad2)" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="12" cy="16" r="1.5" fill="#fff" opacity="0.9"/>
+      <defs>
+        <linearGradient id="grad1" x1="3" y1="11" x2="21" y2="23" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#6d28d9"/>
+          <stop offset="1" stop-color="#8b5cf6"/>
+        </linearGradient>
+        <linearGradient id="grad2" x1="7" y1="7" x2="17" y2="11" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#a78bfa"/>
+          <stop offset="1" stop-color="#6d28d9"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <h1 class="titulo-recuperacion">Recuperar contraseña</h1>
+  <p class="subtitulo-recuperacion">
+    Introduce el correo asociado a tu cuenta y te enviaremos<br>
+    un enlace para restablecer tu contraseña.
+  </p>
+
+  {% if enviado %}
+    <div class="aviso-exito">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      <span>
+        Si ese correo está registrado, recibirás un mensaje con las instrucciones
+        para restablecer tu contraseña. Revisa también la carpeta de spam.
+      </span>
+    </div>
+  {% else %}
+    <form method="post" id="form-recuperacion" novalidate>
+      {% csrf_token %}
+      <div class="campo-formulario">
+        <label for="id_email_recuperacion">Correo electrónico</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+          <div class="aviso-error" style="margin-top: 0.5rem">
+            {% for error in form.email.errors %}{{ error }}{% endfor %}
+          </div>
+        {% endif %}
+      </div>
+      <button type="submit" class="btn-enviar" id="btn-enviar-recuperacion">
+        Enviar enlace de recuperación
+      </button>
+    </form>
+  {% endif %}
+
+  <div class="enlace-login">
+    <a href="{% url 'login' %}">← Volver a iniciar sesión</a>
+  </div>
+</div>
+{% endblock %}
