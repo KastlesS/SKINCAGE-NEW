@@ -28,6 +28,7 @@ services:
   migrate:
     container_name: skincage_migrate
     image: kastles/skincage:latest
+    entrypoint: []
     command: python skincage/manage.py migrate --noinput
     environment:
       - DEBUG=False
