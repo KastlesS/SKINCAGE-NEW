@@ -1,0 +1,18 @@
+services:
+  web:
+    container_name: skincage_web
+    image: skincage:latest
+    volumes:
+      - static_volume:/code/skincage/staticfiles
+      - media_volume:/code/skincage/media
+    networks:
+      - skincage_net
+
+volumes:
+  static_volume:
+  media_volume:
+  db_volume:
+
+networks:
+  skincage_net:
+    driver: bridge

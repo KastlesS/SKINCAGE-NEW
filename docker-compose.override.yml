@@ -1,0 +1,26 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: skincage:latest
+    entrypoint: []
+    command: >
+      sh -c "python skincage/manage.py migrate --noinput &&
+             python skincage/manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./skincage:/code/skincage
+      - static_volume:/code/skincage/staticfiles
+      - media_volume:/code/skincage/media
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-local-dev-key-not-for-production
+      - ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+      - DB_ENGINE=django.db.backends.sqlite3
+      - SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=${SOCIAL_AUTH_GOOGLE_OAUTH2_KEY}
+      - SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=${SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET}
+    networks:
+      - skincage_net
+    restart: unless-stopped

@@ -1,16 +1,10 @@
 .env
-deploy.sh
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 skincage/db.sqlite3
-*.yml
 /secrets/
 db_password.txt
 secret_key.txt
-# /scripts/  <- Permitido para poder subir entrypoint.sh
-/nginx/
-# *.sh       <- Permitido para scripts de arranque de producción
-*.conf
 # scrape_skins.py <- Permitido para poder poblar la base de datos en producción si lo deseas
