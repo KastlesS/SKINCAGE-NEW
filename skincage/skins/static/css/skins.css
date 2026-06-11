@@ -172,7 +172,8 @@ input:focus {
   font-size: 0.72rem;
 }
 
-.botones-wear button:hover {
+.botones-wear button:hover,
+.botones-wear button.active {
   background: var(--accent-purple);
   color: white;
 }

@@ -5,12 +5,7 @@
       <h1><a href="{% url 'home' %}">SkinCage</a></h1>
     </div>
 
-    <button
-      class="boton-menu"
-      id="boton-menu"
-      aria-label="Abrir menú"
-      aria-expanded="false"
-    >
+    <button class="boton-menu" id="boton-menu" aria-label="Abrir menú" aria-expanded="false">
       <span></span>
       <span></span>
       <span></span>
@@ -21,17 +16,13 @@
         <ul>
           <li><a href="{% url 'home' %}" class="enlace-nav">Home</a></li>
           <li><a href="{% url 'skins' %}" class="enlace-nav">Mercado</a></li>
+          <li><a href="{% url 'about' %}" class="enlace-nav">Contacto</a></li>
 
           {% if user.is_authenticated %}
           <li><a href="{% url 'perfil' %}" class="enlace-nav">Perfil</a></li>
           {% if user.is_staff %}
           <li>
-            <a
-              href="{% url 'admin_panel' %}"
-              class="enlace-nav"
-              style="color: #f39c12"
-              >Panel Admin</a
-            >
+            <a href="{% url 'admin_panel' %}" class="enlace-nav" style="color: #f39c12">Panel Admin</a>
           </li>
           {% endif %} {% endif %}
         </ul>
