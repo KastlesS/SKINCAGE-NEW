@@ -5,108 +5,104 @@ import random
 import requests
 from decimal import Decimal
 
-# Añadir el directorio base de Django al sys.path
-base_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(base_dir, 'skincage'))
+
+directorio_base = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(directorio_base, 'skincage'))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'skincage.settings')
 django.setup()
 
 from skins.models import Skin, Categoria, Rareza
 from images.models import Imagen
 
-def get_categoria(weapon_name, category_name):
-    cat_lower = category_name.lower()
-    weapon_lower = weapon_name.lower()
+def obtener_categoria(nombre_arma, nombre_categoria):
+    categoria_minuscula = nombre_categoria.lower()
+    arma_minuscula = nombre_arma.lower()
 
-    if 'pistol' in cat_lower: return Categoria.PISTOL
-    if 'smg' in cat_lower: return Categoria.SMG
-    if 'sniper' in cat_lower: return Categoria.SNIPER
-    if 'rifle' in cat_lower: return Categoria.RIFLE
-    if 'shotgun' in cat_lower: return Categoria.SHOTGUN
-    if 'machinegun' in cat_lower or 'machine gun' in cat_lower: return Categoria.MACHINE_GUN
-    if 'knife' in cat_lower: return Categoria.KNIFE
-    if 'glove' in cat_lower or 'hand wraps' in weapon_lower: return Categoria.GLOVES
+    if 'pistol' in categoria_minuscula: return Categoria.PISTOL
+    if 'smg' in categoria_minuscula: return Categoria.SMG
+    if 'sniper' in categoria_minuscula: return Categoria.SNIPER
+    if 'rifle' in categoria_minuscula: return Categoria.RIFLE
+    if 'shotgun' in categoria_minuscula: return Categoria.SHOTGUN
+    if 'machinegun' in categoria_minuscula or 'machine gun' in categoria_minuscula: return Categoria.MACHINE_GUN
+    if 'knife' in categoria_minuscula: return Categoria.KNIFE
+    if 'glove' in categoria_minuscula or 'hand wraps' in arma_minuscula: return Categoria.GLOVES
     
-    # Defaults
-    if 'awp' in weapon_lower or 'ssg' in weapon_lower or 'g3sg1' in weapon_lower or 'scar-20' in weapon_lower:
+    if 'awp' in arma_minuscula or 'ssg' in arma_minuscula or 'g3sg1' in arma_minuscula or 'scar-20' in arma_minuscula:
         return Categoria.SNIPER
-    if 'ak-47' in weapon_lower or 'm4a4' in weapon_lower or 'm4a1-s' in weapon_lower or 'aug' in weapon_lower or 'sg 553' in weapon_lower or 'famas' in weapon_lower or 'galil' in weapon_lower:
+    if 'ak-47' in arma_minuscula or 'm4a4' in arma_minuscula or 'm4a1-s' in arma_minuscula or 'aug' in arma_minuscula or 'sg 553' in arma_minuscula or 'famas' in arma_minuscula or 'galil' in arma_minuscula:
         return Categoria.RIFLE
-    if 'glock' in weapon_lower or 'usp' in weapon_lower or 'p250' in weapon_lower or 'deagle' in weapon_lower or 'five-seven' in weapon_lower or 'tec-9' in weapon_lower or 'cz75' in weapon_lower or 'r8' in weapon_lower or 'dual berettas' in weapon_lower:
+    if 'glock' in arma_minuscula or 'usp' in arma_minuscula or 'p250' in arma_minuscula or 'deagle' in arma_minuscula or 'five-seven' in arma_minuscula or 'tec-9' in arma_minuscula or 'cz75' in arma_minuscula or 'r8' in arma_minuscula or 'dual berettas' in arma_minuscula:
         return Categoria.PISTOL
-    if 'mac-10' in weapon_lower or 'mp9' in weapon_lower or 'mp7' in weapon_lower or 'ump-45' in weapon_lower or 'p90' in weapon_lower or 'bizon' in weapon_lower:
+    if 'mac-10' in arma_minuscula or 'mp9' in arma_minuscula or 'mp7' in arma_minuscula or 'ump-45' in arma_minuscula or 'p90' in arma_minuscula or 'bizon' in arma_minuscula:
         return Categoria.SMG
-    if 'nova' in weapon_lower or 'xm1014' in weapon_lower or 'mag-7' in weapon_lower or 'sawed-off' in weapon_lower:
+    if 'nova' in arma_minuscula or 'xm1014' in arma_minuscula or 'mag-7' in arma_minuscula or 'sawed-off' in arma_minuscula:
         return Categoria.SHOTGUN
-    if 'm249' in weapon_lower or 'negev' in weapon_lower:
+    if 'm249' in arma_minuscula or 'negev' in arma_minuscula:
         return Categoria.MACHINE_GUN
         
-    return Categoria.RIFLE # default fallback
+    return Categoria.RIFLE 
 
-def get_rareza(rarity_name):
-    rarity = rarity_name.lower()
-    if 'consumer' in rarity: return Rareza.CONSUMER
-    if 'industrial' in rarity: return Rareza.INDUSTRIAL
-    if 'mil-spec' in rarity or 'milspec' in rarity: return Rareza.MIL_SPEC
-    if 'restricted' in rarity: return Rareza.RESTRICTED
-    if 'classified' in rarity: return Rareza.CLASSIFIED
-    if 'covert' in rarity or 'extraordinary' in rarity: return Rareza.COVERT
-    if 'contraband' in rarity: return Rareza.CONTRABAND
+def obtener_rareza(nombre_rareza):
+    rareza_minuscula = nombre_rareza.lower()
+    if 'consumer' in rareza_minuscula: return Rareza.CONSUMER
+    if 'industrial' in rareza_minuscula: return Rareza.INDUSTRIAL
+    if 'mil-spec' in rareza_minuscula or 'milspec' in rareza_minuscula: return Rareza.MIL_SPEC
+    if 'restricted' in rareza_minuscula: return Rareza.RESTRICTED
+    if 'classified' in rareza_minuscula: return Rareza.CLASSIFIED
+    if 'covert' in rareza_minuscula or 'extraordinary' in rareza_minuscula: return Rareza.COVERT
+    if 'contraband' in rareza_minuscula: return Rareza.CONTRABAND
     return Rareza.MIL_SPEC
 
-def scrape_and_populate(limit=50):
-    url = "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json"
-    print(f"Descargando datos de skins desde: {url}")
-    response = requests.get(url)
+def poblar_base_datos(limite=50):
+    url_api = "https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/skins.json"
+    respuesta = requests.get(url_api)
     
-    if response.status_code != 200:
-        print(f"Error al descargar datos: {response.status_code}")
+    if respuesta.status_code != 200:
+        print(f"Error al descargar datos: {respuesta.status_code}")
         return
 
-    skins_data = response.json()
-    print(f"Se obtuvieron {len(skins_data)} skins. Insertando {limit}...")
+    datos_skins = respuesta.json()
 
-    # Barajar para obtener skins aleatorias
-    random.shuffle(skins_data)
-    count = 0
+    random.shuffle(datos_skins)
+    contador = 0
 
-    for data in skins_data:
-        if count >= limit:
+    for datos in datos_skins:
+        if contador >= limite:
             break
             
-        nombre = data.get("name", "Unknown Skin")
+        nombre = datos.get("name", "Unknown Skin")
         if "Vanilla" in nombre:
             continue
             
-        category_obj = data.get("category", {})
-        weapon_obj = data.get("weapon", {})
-        rarity_obj = data.get("rarity", {})
+        obj_categoria = datos.get("category", {})
+        obj_arma = datos.get("weapon", {})
+        obj_rareza = datos.get("rarity", {})
         
-        cat_name = category_obj.get("name", "")
-        weap_name = weapon_obj.get("name", "")
-        rarity_name = rarity_obj.get("name", "")
+        nombre_cat = obj_categoria.get("name", "")
+        nombre_arm = obj_arma.get("name", "")
+        nombre_rar = obj_rareza.get("name", "")
         
-        categoria = get_categoria(weap_name, cat_name)
-        rareza = get_rareza(rarity_name)
+        categoria = obtener_categoria(nombre_arm, nombre_cat)
+        rareza = obtener_rareza(nombre_rar)
         
-        min_float = data.get("min_float", 0.0)
-        max_float = data.get("max_float", 1.0)
-        if min_float is None: min_float = 0.0
-        if max_float is None: max_float = 1.0
+        desgaste_min = datos.get("min_float", 0.0)
+        desgaste_max = datos.get("max_float", 1.0)
+        if desgaste_min is None: desgaste_min = 0.0
+        if desgaste_max is None: desgaste_max = 1.0
         
-        desgaste = Decimal(random.uniform(min_float, max_float)).quantize(Decimal('0.000000000000'))
+        desgaste = Decimal(random.uniform(desgaste_min, desgaste_max)).quantize(Decimal('0.000000000000'))
         
-        stattrack = data.get("stattrak", False)
+        stattrack = datos.get("stattrak", False)
         
         precio = Decimal(random.uniform(5.0, 500.0)).quantize(Decimal('0.00'))
         stock = random.randint(0, 50)
         
-        imagen_url = data.get("image", "")
+        imagen_url = datos.get("image", "")
 
         if not imagen_url:
             continue
 
-        skin_obj, created = Skin.objects.get_or_create(
+        skin_obj, creada = Skin.objects.get_or_create(
             nombre=nombre,
             defaults={
                 'desgaste': desgaste,
@@ -118,17 +114,12 @@ def scrape_and_populate(limit=50):
             }
         )
 
-        if created:
+        if creada:
             Imagen.objects.create(id_skin=skin_obj, url=imagen_url)
-            print(f"Insertado: {nombre} ({categoria} - {rareza})")
-            count += 1
+            contador += 1
         else:
-            # Si ya existía, asegurarse de que tiene imagen
             if not skin_obj.imagenes.exists():
                  Imagen.objects.create(id_skin=skin_obj, url=imagen_url)
 
-    print(f"\n¡Se han insertado {count} nuevas skins en la base de datos!")
-
 if __name__ == "__main__":
-    # Insertaremos 500 skins por defecto
-    scrape_and_populate(500)
+    poblar_base_datos(500)
