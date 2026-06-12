@@ -2,7 +2,6 @@ import os
 import sys
 import django
 
-# Añadir el directorio actual al path y configurar Django
 base_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(base_dir)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'skincage.settings')
@@ -17,7 +16,6 @@ User = get_user_model()
 def main():
     print("=== Iniciando Configuración Automatizada de Producción ===")
 
-    # 1. Crear superusuario programáticamente si no existe
     admin_username = os.getenv('ADMIN_USERNAME', 'admin')
     admin_email = os.getenv('ADMIN_EMAIL', 'admin@skincage.com')
     admin_password = os.getenv('ADMIN_PASSWORD', 'AdminPassword123!')
@@ -29,12 +27,10 @@ def main():
     else:
         print(f"El superusuario '{admin_username}' ya existe. Saltando creación.")
 
-    # 2. Correr el scraper para poblar la base de datos si está vacía
     skin_count = Skin.objects.count()
     if skin_count == 0:
         print("La base de datos de skins está vacía. Iniciando carga automática de skins...")
         try:
-            # Poblamos con 1000 skins inicialmente
             scrape_and_populate(1000)
             print("¡Carga automática de skins completada!")
         except Exception as e:

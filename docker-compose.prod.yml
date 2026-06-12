@@ -87,6 +87,15 @@ services:
         condition: service_healthy
       migrate:
         condition: service_completed_successfully
+      redis:
+        condition: service_started
+    restart: unless-stopped
+
+  redis:
+    container_name: skincage_redis
+    image: redis:7-alpine
+    networks:
+      - skincage_net
     restart: unless-stopped
 
   nginx:
